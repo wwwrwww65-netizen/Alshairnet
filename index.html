@@ -23,6 +23,37 @@
     <!-- ملف الألوان الرئيسي — يحتوي على جميع الألوان في مكان واحد بشرح عربي -->
     <link rel="stylesheet" href="css/theme-colors.css">
     
+    <!-- فحص حالة تسجيل الدخول المباشرة من سيرفر المايكروتك لمنع أي وميض أو انتقال خاطئ -->
+    <script>
+        var __mTikLoggedIn = "$(logged-in)";
+        if (__mTikLoggedIn === "yes") {
+            document.documentElement.classList.add("is-mTik-logged-in");
+        } else if (__mTikLoggedIn === "no") {
+            document.documentElement.classList.add("is-mTik-logged-out");
+        }
+    </script>
+    <style id="mTik-screen-shield">
+        /* منع وميض الشاشة عند إعادة تحميل الصفحة للمسجلين أو غير المسجلين */
+        html.is-mTik-logged-in #login {
+            display: none !important;
+            visibility: hidden !important;
+        }
+        html.is-mTik-logged-in #status {
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        html.is-mTik-logged-out #status {
+            display: none !important;
+            visibility: hidden !important;
+        }
+        html.is-mTik-logged-out #login {
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+    </style>
+
     <!-- درع الحماية من وميض المتغيرات (FOUC Shield) وتثبيت مساحة الحاوية لمنع خروج الشعار -->
     <style id="fouc-shield">
         [data-network-name]:not(title), [data-news-line] {

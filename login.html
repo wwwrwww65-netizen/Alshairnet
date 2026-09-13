@@ -3,9 +3,19 @@ $(if var == "")
 	window.location.href="index.html"
 </script>
 $(else)
+$(if error)
+{
+	"error"				: "$(error)",
+	"logged_in" 		: "$(logged-in)",
+	"action"			: "onLoginError"
+}
+$(else)
 {
 	"logged_in" 		: "$(logged-in)",
 	"link_login_only" 	: "$(link-login-only)",
-	"action"			: "onLoggedIn"
+	"error"				: "$(error)",
+	"action"			: "$(if logged-in == 'yes')onLoggedIn$(else)onStatusQuery$(endif)"
 }
 $(endif)
+$(endif)
+
