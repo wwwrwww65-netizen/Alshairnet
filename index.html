@@ -16,10 +16,7 @@
     <link rel="stylesheet" href="fonts/Almarai.css">
     <link rel="stylesheet" href="css/fontello.min.css">
     <link rel="stylesheet" href="css/style.min.css">
-    <link rel="stylesheet" href="css/loyalty-system.css">
-    <link rel="stylesheet" href="css/loyalty-modal.css">
-    <link rel="stylesheet" href="css/loyalty-modal-notifaction.css">
-    <script src="js/loyalty-button.js"></script>
+
     <link rel="stylesheet" href="css/notifications-system.css">
     <!-- Announcements System CSS -->
     <link rel="stylesheet" href="css/announcements-style.css">
@@ -302,35 +299,6 @@
                         </div>
                     </div>
 
-                    <!-- 2. بطاقة المميزات الثلاثية (Network Features Strip Card) -->
-                    <div class="app-card network-features-strip-card">
-                        <div class="feature-strip-item">
-                            <div class="feature-strip-icon-wrap">
-                                <svg viewBox="0 0 24 24" class="feature-strip-icon">
-                                    <path d="M7 2v11h3v9l7-12h-4l4-8z"/>
-                                </svg>
-                            </div>
-                            <span class="feature-strip-label">اتصال سريع</span>
-                        </div>
-                        <div class="feature-strip-divider"></div>
-                        <div class="feature-strip-item">
-                            <div class="feature-strip-icon-wrap">
-                                <svg viewBox="0 0 24 24" class="feature-strip-icon">
-                                    <path d="M19 3H5L2 9l10 12L22 9l-3-6zM5.5 5h13l1.8 3.6-8.3 10-8.3-10L5.5 5z"/>
-                                </svg>
-                            </div>
-                            <span class="feature-strip-label">خدمة مميزة</span>
-                        </div>
-                        <div class="feature-strip-divider"></div>
-                        <div class="feature-strip-item">
-                            <div class="feature-strip-icon-wrap">
-                                <svg viewBox="0 0 24 24" class="feature-strip-icon">
-                                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
-                                </svg>
-                            </div>
-                            <span class="feature-strip-label">ثقة متجددة</span>
-                        </div>
-                    </div>
 
 
                     <!-- 2026 Swipeable Touch Carousel (With 3D Legacy compatibility) -->
@@ -398,101 +366,7 @@
                         </div>
                     </section>
 
-                    <!-- Unregistered Loyalty Section -->
-                    <div id="loyalty-unregistered-section">
-                        <!-- Notice / Points System Alert Box -->
-                        <div class="points-notice-alert" role="alert">
-                            <div class="notice-icon-wrap">
-                                <svg viewBox="0 0 24 24" class="notice-icon">
-                                    <path
-                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
-                                </svg>
-                            </div>
-                            <div class="notice-content">
-                                <strong class="notice-tag">تنبيه:</strong>
-                                <span class="notice-text">أنت غير مسجل حالياً في نظام النقاط لذلك لن يتم احتساب أي نقاط عند
-                                    تسجيل الدخول..</span>
-                            </div>
-                        </div>
 
-                        <!-- Points Registration Trigger Button (Matching Primary Gold Button Style) -->
-                        <button type="button" class="button points-register-btn loyalty-register-btn" id="openPointsRegisterBtn"
-                            parent-id="points-register-modal" aria-label="انقر للتسجيل في نظام النقاط">
-                            <svg viewBox="0 0 24 24" class="points-btn-icon">
-                                <path
-                                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                            </svg>
-                            <span class="button-text">انقر للتسجيل في نظام النقاط</span>
-                        </button>
-                    </div>
-
-                    <!-- Registered Loyalty Section (User Dashboard Card) -->
-                    <div id="loyalty-registered-section" style="display: none;">
-                        <div class="loyalty-user-card">
-                            <!-- User Header -->
-                            <div class="loyalty-user-header">
-                                <div class="loyalty-user-profile-info">
-                                    <div class="loyalty-user-avatar">
-                                        <svg viewBox="0 0 24 24">
-                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                        </svg>
-                                    </div>
-                                    <div class="loyalty-user-details">
-                                        <span class="loyalty-user-title">حساب نظام النقاط</span>
-                                        <span class="loyalty-user-phone-number" id="loyalty-user-phone">77XXXXXXX</span>
-                                    </div>
-                                </div>
-                                <button type="button" id="loyalty-logout-btn" class="loyalty-logout-pill-btn" title="تسجيل الخروج من نظام النقاط">
-                                    <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: currentColor;">
-                                        <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
-                                    </svg>
-                                    <span>خروج</span>
-                                </button>
-                            </div>
-
-                            <!-- Points Display Banner -->
-                            <div class="loyalty-points-display-banner">
-                                <div class="loyalty-points-label">
-                                    <svg viewBox="0 0 24 24">
-                                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                                    </svg>
-                                    <span>رصيد نقاطك الحالي:</span>
-                                </div>
-                                <div class="loyalty-points-count-badge">
-                                    <span class="loyalty-points-value">0</span>
-                                    <span class="loyalty-points-unit">نقطة</span>
-                                </div>
-                            </div>
-
-                            <!-- Loyalty Action Buttons Grid -->
-                            <div class="loyalty-actions-grid">
-                                <button type="button" class="loyalty-action-card-btn" id="loyalty-loan-btn">
-                                    <svg viewBox="0 0 24 24">
-                                        <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
-                                    </svg>
-                                    <span>طلب سلفة</span>
-                                </button>
-                                <button type="button" class="loyalty-action-card-btn" id="loyalty-buy-card-btn">
-                                    <svg viewBox="0 0 24 24">
-                                        <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
-                                    </svg>
-                                    <span>استبدال كرت</span>
-                                </button>
-                                <button type="button" class="loyalty-action-card-btn" id="loyalty-saved-cards-btn">
-                                    <svg viewBox="0 0 24 24">
-                                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-                                    </svg>
-                                    <span>الكروت المحفوظة</span>
-                                </button>
-                                <button type="button" class="loyalty-action-card-btn" id="loyalty-account-btn">
-                                    <svg viewBox="0 0 24 24">
-                                        <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
-                                    </svg>
-                                    <span>الدخول الى حسابي</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- Separate Cards Login Form Wrapper -->
                     <form class="login-form" name="login" onsubmit="return false;">
@@ -572,28 +446,7 @@
                             </button>
                         </div>
 
-                        <!-- 4. بطاقة إيقاف التحديثات والمتجر المستقلة (Updates Blocker Card) -->
-                        <div class="app-card updates-toggle-card">
-                            <div class="toggle-container-modern">
-                                <div class="toggle-info">
-                                    <span class="toggle-title">
-                                        <svg viewBox="0 0 24 24" class="section-icon">
-                                            <path
-                                                d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
-                                        </svg>
-                                        <span>إيقاف التحديثات والمتجر</span>
-                                    </span>
-                                    <span class="toggle-desc">التحديثات والمتجر تستهلك الرصيد بسرعة</span>
-                                </div>
-                                <div class="toggle-action-side">
-                                    <span class="toggle-status-label" id="updateStatusText">متوقف</span>
-                                    <label class="switch-wrap">
-                                        <input type="checkbox" value="_Uon" id="chupdate">
-                                        <span class="slider-pill"></span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+
 
                     </form>
 
@@ -832,115 +685,7 @@
                     })();
                 </script>
 
-                <!-- 2026 MODAL BOTTOM SHEET: POINTS REGISTRATION & AUTH (#points-register-modal) -->
-                <div class="app" id="points-register-modal">
-                    <div class="modal-sheet-card points-auth-modal-card">
-                        <div class="modal-header">
-                            <span class="title">
-                                <svg viewBox="0 0 24 24" class="modal-title-icon">
-                                    <path
-                                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                                </svg>
-                                <span>تسجيل الدخول لنظام النقاط</span>
-                            </span>
-                            <button class="app-logout modal-close-btn" type="button">✕ إغلاق</button>
-                        </div>
 
-                        <div class="points-modal-body">
-                            <!-- LOGIN VIEW -->
-                            <div class="points-tab-content active" id="pointsLoginFormView">
-                                <div class="points-instruction-box">
-                                    <div class="instruction-icon-wrap">
-                                        <svg viewBox="0 0 24 24">
-                                            <path
-                                                d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
-                                        </svg>
-                                    </div>
-                                    <div class="instruction-text">
-                                        <strong>تسجيل الدخول لنظام النقاط</strong>
-                                        <p>أدخل رقم هاتفك المسجل وكلمة المرور لمتابعة رصيد نقاطك والمكافآت.</p>
-                                    </div>
-                                </div>
-
-                                <form id="pointsLoginForm" onsubmit="return false;">
-                                    <!-- Login: Phone Number -->
-                                    <div class="input-group-modern">
-                                        <span class="input-label-text">رقم الهاتف (موبايل)</span>
-                                        <div class="input-wrapper-glass">
-                                            <span class="input-icon-badge" title="رقم الهاتف">
-                                                <svg viewBox="0 0 24 24">
-                                                    <path
-                                                        d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
-                                                </svg>
-                                            </span>
-                                            <input type="tel" id="pointsLoginPhone" class="login-input"
-                                                placeholder="أدخل رقم الهاتف (مثل 77xxxxxxx)" inputmode="numeric" autocomplete="tel" dir="rtl">
-                                        </div>
-                                    </div>
-
-                                    <!-- Login: Password -->
-                                    <div class="input-group-modern">
-                                        <span class="input-label-text">كلمة المرور</span>
-                                        <div class="input-wrapper-glass">
-                                            <span class="input-icon-badge" title="كلمة المرور">
-                                                <svg viewBox="0 0 24 24">
-                                                    <path
-                                                        d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
-                                                </svg>
-                                            </span>
-                                            <input type="password" id="pointsLoginPassword" class="login-input"
-                                                placeholder="أدخل كلمة المرور" autocomplete="current-password">
-                                            <button type="button" class="password-toggle-btn" id="togglePointsLoginPw"
-                                                aria-label="إظهار/إخفاء كلمة المرور">
-                                                <svg viewBox="0 0 24 24">
-                                                    <path
-                                                        d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <div id="pointsLoginAlert" class="points-success-badge" style="display: none;">
-                                        <svg viewBox="0 0 24 24">
-                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                                        </svg>
-                                        <span id="pointsLoginMsg">تم تسجيل الدخول بنجاح!</span>
-                                    </div>
-
-                                    <!-- Login Actions -->
-                                    <div class="modal-actions-row" style="margin-top: 12px; display: flex; gap: 8px;">
-                                        <button type="button" class="button app-submit points-auth-submit-btn"
-                                            id="submitPointsLoginBtn" style="flex: 1; margin: 0;">
-                                            <svg viewBox="0 0 24 24"
-                                                style="width: 16px; height: 16px; fill: currentColor; margin-left: 5px;">
-                                                <path
-                                                    d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z" />
-                                            </svg>
-                                            <span>تسجيل الدخول</span>
-                                        </button>
-                                        <button type="button" class="button modal-cancel-btn"
-                                            style="margin: 0; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; padding: 0 14px; min-height: 40px; height: 40px; border-radius: 10px; font-size: 0.84rem;">
-                                            إلغاء
-                                        </button>
-                                    </div>
-
-                                    <div class="points-switch-prompt" style="margin-top: 18px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                                        <span style="color: #cbd5e1; font-size: 0.85rem;">ليس لديك حساب في نظام النقاط؟</span>
-                                        <a href="https://bh.shabakaty.site/auth/register" class="points-signup-glow-btn" id="goToSignupTabBtn">
-                                            <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: #ffd700;">
-                                                <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                            </svg>
-                                            <span>إنشاء حساب جديد الآن</span>
-                                            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: #38bdf8; transform: rotate(180deg);">
-                                                <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- 2026 MODAL BOTTOM SHEET: PRICING (#price) -->
                 <div class="app" id="price">
@@ -1218,101 +963,7 @@
                             </div>
                         </section>
 
-                        <!-- Unregistered Loyalty Section in Status Screen -->
-                        <div id="loyalty-unregistered-section-status">
-                            <!-- Notice / Points System Alert Box -->
-                            <div class="points-notice-alert" role="alert">
-                                <div class="notice-icon-wrap">
-                                    <svg viewBox="0 0 24 24" class="notice-icon">
-                                        <path
-                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
-                                    </svg>
-                                </div>
-                                <div class="notice-content">
-                                    <strong class="notice-tag">تنبيه:</strong>
-                                    <span class="notice-text">أنت غير مسجل حالياً في نظام النقاط لذلك لن يتم احتساب أي نقاط عند
-                                        تسجيل الدخول..</span>
-                                </div>
-                            </div>
 
-                            <!-- Points Registration Trigger Button -->
-                            <button type="button" class="button points-register-btn loyalty-register-btn" id="openPointsRegisterBtnStatus"
-                                parent-id="points-register-modal" aria-label="انقر للتسجيل في نظام النقاط">
-                                <svg viewBox="0 0 24 24" class="points-btn-icon">
-                                    <path
-                                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                                </svg>
-                                <span class="button-text">انقر للتسجيل في نظام النقاط</span>
-                            </button>
-                        </div>
-
-                        <!-- Registered Loyalty Section (User Dashboard Card) in Status Screen -->
-                        <div id="loyalty-registered-section-status" style="display: none;">
-                            <div class="loyalty-user-card">
-                                <!-- User Header -->
-                                <div class="loyalty-user-header">
-                                    <div class="loyalty-user-profile-info">
-                                        <div class="loyalty-user-avatar">
-                                            <svg viewBox="0 0 24 24">
-                                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                            </svg>
-                                        </div>
-                                        <div class="loyalty-user-details">
-                                            <span class="loyalty-user-title">حساب نظام النقاط</span>
-                                            <span class="loyalty-user-phone-number loyalty-user-phone-display" id="loyalty-user-phone-status">77XXXXXXX</span>
-                                        </div>
-                                    </div>
-                                    <button type="button" id="loyalty-logout-btn-status" class="loyalty-logout-pill-btn" title="تسجيل الخروج من نظام النقاط">
-                                        <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: currentColor;">
-                                            <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
-                                        </svg>
-                                        <span>خروج</span>
-                                    </button>
-                                </div>
-
-                                <!-- Points Display Banner -->
-                                <div class="loyalty-points-display-banner">
-                                    <div class="loyalty-points-label">
-                                        <svg viewBox="0 0 24 24">
-                                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                                        </svg>
-                                        <span>رصيد نقاطك الحالي:</span>
-                                    </div>
-                                    <div class="loyalty-points-count-badge">
-                                        <span class="loyalty-points-value">0</span>
-                                        <span class="loyalty-points-unit">نقطة</span>
-                                    </div>
-                                </div>
-
-                                <!-- Loyalty Action Buttons Grid -->
-                                <div class="loyalty-actions-grid">
-                                    <button type="button" class="loyalty-action-card-btn" id="loyalty-loan-btn-status">
-                                        <svg viewBox="0 0 24 24">
-                                            <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
-                                        </svg>
-                                        <span>طلب سلفة</span>
-                                    </button>
-                                    <button type="button" class="loyalty-action-card-btn" id="loyalty-buy-card-btn-status">
-                                        <svg viewBox="0 0 24 24">
-                                            <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
-                                        </svg>
-                                        <span>استبدال كرت</span>
-                                    </button>
-                                    <button type="button" class="loyalty-action-card-btn" id="loyalty-saved-cards-btn-status">
-                                        <svg viewBox="0 0 24 24">
-                                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-                                        </svg>
-                                        <span>الكروت المحفوظة</span>
-                                    </button>
-                                    <button type="button" class="loyalty-action-card-btn" id="loyalty-account-btn-status">
-                                        <svg viewBox="0 0 24 24">
-                                            <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
-                                        </svg>
-                                        <span>الدخول الى حسابي</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- Entertainment Direct Links -->
                         <div class="entertainment-links">
@@ -1360,35 +1011,7 @@
                             </select>
                         </div>
 
-                        <!-- Updates & App Store Blocker Toggle (Identical to Login Screen) -->
-                        <div class="toggle-container-modern" style="margin: 12px 0;">
-                            <div class="toggle-info">
-                                <span class="toggle-title">
-                                    <svg viewBox="0 0 24 24" class="section-icon">
-                                        <path
-                                            d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
-                                    </svg>
-                                    <span>إيقاف التحديثات والمتجر</span>
-                                </span>
-                                <span class="toggle-desc">التحديثات والمتجر تستهلك الرصيد بسرعة</span>
-                            </div>
-                            <div class="toggle-action-side">
-                                <span class="toggle-status-label" id="statusUpdateStatusText">متوقف</span>
-                                <label class="switch-wrap">
-                                    <input type="checkbox" id="statusChupdate">
-                                    <span class="slider-pill"></span>
-                                </label>
-                            </div>
-                        </div>
 
-                        <!-- Hidden native select & status span for MikroTik script communication -->
-                        <select id="updatechange" class="tcs" style="display: none;">
-                            <option value="ns" disabled hidden selected>أضغط هنا للتغيير</option>
-                            <option value="_Uon">تفعيل التحديثات</option>
-                            <option value="_Uoff">أيقاف التحديثات</option>
-                            <option value="cancel">إلغاء</option>
-                        </select>
-                        <span id="update" style="display: none;"></span>
 
                         <!-- Live Metrics Dashboard -->
                         <div style="margin-top: 14px;">
@@ -1860,10 +1483,8 @@
 
                 isAnyModalOpen: function () {
                     var appModal = document.querySelector('.app.active:not(#status)');
-                    var loyaltyModal = document.querySelector('.loyalty-modal.active');
                     var ntModal = document.querySelector('.nt-modal-overlay:not(.nt-modal-hide), .nt-card-overlay:not(.nt-card-hide)');
-                    var pointsModal = document.querySelector('#points-register-modal.active');
-                    return !!(appModal || loyaltyModal || ntModal || pointsModal);
+                    return !!(appModal || ntModal);
                 },
 
                 lock: function () {
@@ -1903,7 +1524,7 @@
                     // Prevent background scrolling on touch gestures outside scrollable modal containers
                     document.addEventListener('touchmove', function (e) {
                         if (document.body.classList.contains('modal-scroll-locked')) {
-                            var scrollable = e.target.closest('.modal-sheet-card, .loyalty-modal-content, .nt-modal, .nt-card, .price-div, .sell-point-div, .points-modal-body, .loyalty-modal-body, .loan-body');
+                            var scrollable = e.target.closest('.modal-sheet-card, .nt-modal, .nt-card, .price-div, .sell-point-div, .loan-body');
                             if (!scrollable) {
                                 e.preventDefault();
                             }
@@ -1913,7 +1534,7 @@
                     // Prevent wheel scroll bleed-through to underlying background
                     document.addEventListener('wheel', function (e) {
                         if (document.body.classList.contains('modal-scroll-locked')) {
-                            var scrollable = e.target.closest('.modal-sheet-card, .loyalty-modal-content, .nt-modal, .nt-card, .price-div, .sell-point-div, .points-modal-body, .loyalty-modal-body, .loan-body');
+                            var scrollable = e.target.closest('.modal-sheet-card, .nt-modal, .nt-card, .price-div, .sell-point-div, .loan-body');
                             if (!scrollable) {
                                 e.preventDefault();
                             }
@@ -2244,23 +1865,6 @@
                 });
             }
 
-            // 4. UPDATES BLOCKER TOGGLE STATUS TEXT (LOGIN SCREEN)
-            const chUpdate = document.getElementById('chupdate');
-            const updateStatusText = document.getElementById('updateStatusText');
-            if (chUpdate && updateStatusText) {
-                const updateToggleState = () => {
-                    if (chUpdate.checked) {
-                        updateStatusText.textContent = 'مفعل';
-                        updateStatusText.classList.add('active');
-                    } else {
-                        updateStatusText.textContent = 'متوقف';
-                        updateStatusText.classList.remove('active');
-                    }
-                };
-                chUpdate.addEventListener('change', updateToggleState);
-                updateToggleState();
-            }
-
             // 5. STATUS SCREEN: SPEED MODAL HANDLER (LIVE CONNECTION SPEED CHANGE)
             const statusSpeedCards = document.querySelectorAll('#status-speed-modal .speed-card-option');
             const statusSpeedTriggerText = document.getElementById('statusSpeedTriggerText');
@@ -2314,303 +1918,6 @@
                     speedObserver.observe(sspeedSpan, { childList: true, characterData: true, subtree: true });
                     syncSpeedFromMikrotik();
                 }
-            }
-
-            // 6. STATUS SCREEN: UPDATES BLOCKER TOGGLE (Identical to Login Screen)
-            const statusChupdate = document.getElementById('statusChupdate');
-            const statusUpdateStatusText = document.getElementById('statusUpdateStatusText');
-            const updatechange = document.getElementById('updatechange');
-            const updateSpan = document.getElementById('update');
-
-            if (statusChupdate && statusUpdateStatusText) {
-                let isSyncing = false;
-                const updateStatusToggleState = (triggerChange = false) => {
-                    if (isSyncing) return;
-                    if (statusChupdate.checked) {
-                        statusUpdateStatusText.textContent = 'مفعل';
-                        statusUpdateStatusText.classList.add('active');
-                        if (triggerChange && updatechange) {
-                            updatechange.value = '_Uoff';
-                            const ev = new Event('change', { bubbles: true });
-                            updatechange.dispatchEvent(ev);
-                        }
-                    } else {
-                        statusUpdateStatusText.textContent = 'متوقف';
-                        statusUpdateStatusText.classList.remove('active');
-                        if (triggerChange && updatechange) {
-                            updatechange.value = '_Uon';
-                            const ev = new Event('change', { bubbles: true });
-                            updatechange.dispatchEvent(ev);
-                        }
-                    }
-                };
-
-                statusChupdate.addEventListener('change', () => updateStatusToggleState(true));
-
-                // Live Sync with MikroTik status query updates
-                if (updateSpan) {
-                    const syncFromMikrotik = () => {
-                        const text = (updateSpan.innerText || updateSpan.textContent || '').trim();
-                        isSyncing = true;
-                        if (text.includes('أيقاف') || text.includes('ايقاف') || text.includes('Uoff')) {
-                            statusChupdate.checked = true;
-                            statusUpdateStatusText.textContent = 'مفعل';
-                            statusUpdateStatusText.classList.add('active');
-                        } else if (text.includes('تفعيل') || text.includes('Uon')) {
-                            statusChupdate.checked = false;
-                            statusUpdateStatusText.textContent = 'متوقف';
-                            statusUpdateStatusText.classList.remove('active');
-                        }
-                        isSyncing = false;
-                    };
-
-                    const observer = new MutationObserver(syncFromMikrotik);
-                    observer.observe(updateSpan, { childList: true, characterData: true, subtree: true });
-                    syncFromMikrotik();
-                }
-            }
-
-            // 6. POINTS SYSTEM AUTH & REGISTRATION HANDLER
-            const pointsModal = document.getElementById('points-register-modal');
-            const openPointsRegisterBtn = document.getElementById('openPointsRegisterBtn');
-            const pointsLoginFormView = document.getElementById('pointsLoginFormView');
-            const goToSignupTabBtn = document.getElementById('goToSignupTabBtn');
-
-            const pointsLoginPhone = document.getElementById('pointsLoginPhone');
-            const pointsLoginPassword = document.getElementById('pointsLoginPassword');
-            const togglePointsLoginPw = document.getElementById('togglePointsLoginPw');
-            const submitPointsLoginBtn = document.getElementById('submitPointsLoginBtn');
-            const pointsLoginAlert = document.getElementById('pointsLoginAlert');
-            const pointsLoginMsg = document.getElementById('pointsLoginMsg');
-
-            // Global modern redirect loader function
-            window.showRedirectLoader = function (options = {}) {
-                const url = options.url || 'https://bh.shabakaty.site/auth/register';
-                const title = options.title || 'جاري الانتقال لصفحة إنشاء الحساب...';
-                const subtitle = options.subtitle || 'يتم تحويلك إلى بوابة التسجيل في شبكتي لنظام النقاط والمكافآت';
-                const delay = options.delay || 950;
-
-                let overlay = document.getElementById('redirectLoadingOverlay');
-                if (!overlay) {
-                    overlay = document.createElement('div');
-                    overlay.id = 'redirectLoadingOverlay';
-                    overlay.className = 'redirect-loading-overlay';
-                    overlay.innerHTML = `
-                        <div class="redirect-ambient-glow-burgundy"></div>
-                        <div class="redirect-ambient-glow-cyan"></div>
-                        <div class="redirect-loading-card">
-                            <div class="redirect-brand-connector">
-                                <span class="redirect-brand-tag burgundy">BH-NET</span>
-                                <div class="redirect-connector-line">
-                                    <div class="redirect-connector-dot"></div>
-                                    <div class="redirect-connector-dot"></div>
-                                    <div class="redirect-connector-dot"></div>
-                                </div>
-                                <span class="redirect-brand-tag cyan">بوابة شبكتي</span>
-                            </div>
-                            <div class="redirect-icon-container">
-                                <div class="redirect-pulse-ring"></div>
-                                <div class="redirect-spinner-outer"></div>
-                                <div class="redirect-spinner-inner"></div>
-                                <div class="redirect-center-icon">
-                                    <svg viewBox="0 0 24 24">
-                                        <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="redirect-loading-title" id="redirectLoadingTitle"></div>
-                            <div class="redirect-loading-subtitle" id="redirectLoadingSubtitle"></div>
-                            <div class="redirect-progress-track">
-                                <div class="redirect-progress-bar" id="redirectProgressBar"></div>
-                            </div>
-                            <div class="redirect-loading-footer">
-                                <span class="redirect-badge-secure">
-                                    <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
-                                    بوابة رسمية موثقة وآمنة
-                                </span>
-                            </div>
-                        </div>
-                    `;
-                    document.body.appendChild(overlay);
-                }
-
-                const titleEl = document.getElementById('redirectLoadingTitle');
-                const subtitleEl = document.getElementById('redirectLoadingSubtitle');
-                const barEl = document.getElementById('redirectProgressBar');
-
-                if (titleEl) titleEl.innerText = title;
-                if (subtitleEl) subtitleEl.innerText = subtitle;
-                if (barEl) barEl.style.width = '0%';
-
-                // Activate overlay
-                overlay.classList.add('active');
-
-                // Trigger smooth progress bar animation
-                setTimeout(() => {
-                    if (barEl) barEl.style.width = '100%';
-                }, 60);
-
-                // Execute navigation after satisfying smooth animation
-                setTimeout(() => {
-                    window.location.href = url;
-                }, delay);
-            };
-
-            if (goToSignupTabBtn) {
-                goToSignupTabBtn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    goToSignupTabBtn.style.opacity = '0.75';
-                    goToSignupTabBtn.innerHTML = `
-                        <span style="display:inline-flex;align-items:center;gap:7px;">
-                            <span style="width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#ffd700;border-radius:50%;animation:redirectSpin 0.6s linear infinite;display:inline-block;"></span>
-                            <span>جاري التوجيه...</span>
-                        </span>
-                    `;
-                    window.showRedirectLoader({
-                        url: 'https://bh.shabakaty.site/auth/register',
-                        title: 'جاري الانتقال لصفحة إنشاء الحساب...',
-                        subtitle: 'يتم تحويلك إلى بوابة التسجيل في شبكتي لنظام النقاط والمكافآت',
-                        delay: 950
-                    });
-                });
-            }
-
-            // Password Visibility Toggles
-            function setupPasswordToggle(toggleBtn, inputField) {
-                if (!toggleBtn || !inputField) return;
-                toggleBtn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const isPass = inputField.type === 'password';
-                    inputField.type = isPass ? 'text' : 'password';
-                    toggleBtn.classList.toggle('active', isPass);
-                    toggleBtn.innerHTML = isPass
-                        ? `<svg viewBox="0 0 24 24"><path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.44-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/></svg>`
-                        : `<svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>`;
-                });
-            }
-
-            setupPasswordToggle(togglePointsLoginPw, pointsLoginPassword);
-
-            // Load saved user phone if exists
-            try {
-                const savedPhone = localStorage.getItem('points_user_phone');
-                if (savedPhone) {
-                    if (pointsLoginPhone) pointsLoginPhone.value = savedPhone;
-                }
-            } catch (e) { }
-
-            // Open Points Modal Handler
-            if (openPointsRegisterBtn && pointsModal) {
-                openPointsRegisterBtn.addEventListener('click', function () {
-                    pointsModal.classList.add('active');
-                    pointsModal.style.display = 'block';
-                    const loginEl = document.getElementById('login');
-                    if (loginEl) loginEl.classList.add('inactive');
-                    if (pointsLoginAlert) pointsLoginAlert.style.display = 'none';
-                });
-            }
-
-            // Close Points Modal Handler
-            if (pointsModal) {
-                const closeBtns = pointsModal.querySelectorAll('.app-logout, .modal-close-btn, .modal-cancel-btn');
-                closeBtns.forEach(btn => {
-                    btn.addEventListener('click', function (e) {
-                        pointsModal.classList.remove('active');
-                        pointsModal.style.display = 'none';
-                        const loginEl = document.getElementById('login');
-                        if (loginEl && !document.querySelector('.app.active')) {
-                            loginEl.classList.remove('inactive');
-                        }
-                    });
-                });
-            }
-
-            // Handle Login Form Submission
-            if (submitPointsLoginBtn) {
-                submitPointsLoginBtn.addEventListener('click', async function () {
-                    const phone = pointsLoginPhone ? pointsLoginPhone.value.trim() : '';
-                    const password = pointsLoginPassword ? pointsLoginPassword.value.trim() : '';
-                    const errElem = document.getElementById('error');
-
-                    if (!phone || phone.length < 6) {
-                        if (errElem) {
-                            errElem.innerText = 'يرجى إدخال رقم هاتف صحيح';
-                            if (typeof showErrorPopup === 'function') showErrorPopup();
-                        }
-                        return;
-                    }
-
-                    if (!password || password.length < 4) {
-                        if (errElem) {
-                            errElem.innerText = 'يرجى إدخال كلمة المرور (4 أحرف/أرقام على الأقل)';
-                            if (typeof showErrorPopup === 'function') showErrorPopup();
-                        }
-                        return;
-                    }
-
-                    const originalBtnText = submitPointsLoginBtn.innerHTML;
-                    submitPointsLoginBtn.innerHTML = '<span>جاري التحقق...</span>';
-                    submitPointsLoginBtn.disabled = true;
-
-                    let loginSuccess = false;
-                    let resultMsg = "";
-
-                    if (window.LoyaltyManager && typeof window.LoyaltyManager.login === 'function') {
-                        const res = await window.LoyaltyManager.login(phone, password);
-                        if (res && res.success) {
-                            loginSuccess = true;
-                            resultMsg = res.message || "تم تسجيل الدخول لنظام النقاط بنجاح!";
-                        } else {
-                            loginSuccess = false;
-                            resultMsg = (res && (res.error || res.message)) || "رقم الهاتف أو كلمة المرور غير صحيحة";
-                        }
-                    } else {
-                        try {
-                            localStorage.setItem('points_user_phone', phone);
-                            localStorage.setItem('points_user_logged_in', 'true');
-                            loginSuccess = true;
-                            resultMsg = "تم تسجيل الدخول بنجاح";
-                        } catch (e) { }
-                    }
-
-                    if (typeof window.updateInlinePointsElements === 'function') {
-                        window.updateInlinePointsElements();
-                    }
-
-                    submitPointsLoginBtn.innerHTML = originalBtnText;
-                    submitPointsLoginBtn.disabled = false;
-
-                    if (loginSuccess) {
-                        if (pointsLoginAlert) {
-                            pointsLoginAlert.style.display = 'flex';
-                        }
-
-                        if (errElem) {
-                            errElem.innerText = resultMsg;
-                            if (typeof showErrorPopup === 'function') showErrorPopup();
-                        }
-
-                        setTimeout(() => {
-                            if (pointsModal) {
-                                pointsModal.classList.remove('active');
-                                pointsModal.style.display = 'none';
-                                const loginEl = document.getElementById('login');
-                                if (loginEl && !document.querySelector('.app.active')) {
-                                    loginEl.classList.remove('inactive');
-                                }
-                                if (pointsLoginAlert) pointsLoginAlert.style.display = 'none';
-                            }
-                            if (window.LoyaltyManager && typeof window.LoyaltyManager.updateUI === 'function') {
-                                window.LoyaltyManager.updateUI();
-                            }
-                        }, 800);
-                    } else {
-                        if (errElem) {
-                            errElem.innerText = resultMsg;
-                            if (typeof showErrorPopup === 'function') showErrorPopup();
-                        }
-                    }
-                });
             }
 
             // 7. BOTTOM NAV - TAB SWITCHING & HOME BUTTON & CENTER WIFI
@@ -3065,7 +2372,7 @@
             }
         })();
     </script>
-    <script src="js/loyalty-system/loyalty-integration.js"></script>
+
 
     <script src="js/notifications-system/notifications-integration.js"></script>
 </body>

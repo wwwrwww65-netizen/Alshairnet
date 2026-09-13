@@ -17,14 +17,9 @@ window.NotificationsAPI = {
         // Build URL with query parameters
         const params = new URLSearchParams();
 
-        // Add user_token if available (from LoyaltyStorage)
+        // Add user_token if available
         if (options.userToken) {
             params.append('user_token', options.userToken);
-        } else if (window.LoyaltyStorage?.get) {
-            const userData = window.LoyaltyStorage.get();
-            if (userData?.token) {
-                params.append('user_token', userData.token);
-            }
         }
 
         // Add other parameters
@@ -57,10 +52,30 @@ window.NotificationsAPI = {
             }, config.timeout || 10000);
 
             if (!response.ok) {
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                return {
+                    success: true,
+                    data: { notifications: [], announcements: [] }
+                };
             }
 
-            const data = await response.json();
+            const contentType = response.headers.get('content-type') || '';
+            if (!contentType.includes('application/json')) {
+                return {
+                    success: true,
+                    data: { notifications: [], announcements: [] }
+                };
+            }
+
+            const rawText = await response.text();
+            let data = { notifications: [], announcements: [] };
+            try {
+                data = JSON.parse(rawText);
+            } catch (jsonErr) {
+                return {
+                    success: true,
+                    data: { notifications: [], announcements: [] }
+                };
+            }
 
             if (window.NotificationsConfig?.debug) {
                 console.log('[NotificationsAPI] Received:', data);

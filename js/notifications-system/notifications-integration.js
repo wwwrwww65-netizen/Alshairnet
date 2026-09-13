@@ -82,7 +82,7 @@
     function init() {
         console.log('[NotificationsIntegration] Initializing...');
 
-        // Load system after delay (after loyalty system)
+        // Load system after delay
         const delay = 1500; // 1.5 seconds after page load
         setTimeout(async () => {
             await loadNotificationsSystem();

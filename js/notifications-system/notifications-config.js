@@ -6,9 +6,9 @@
 window.NotificationsConfig = {
     // API Settings
     api: {
-        // Get base URL from LoyaltyConfig if available, otherwise use current origin
+        // Base URL for API
         get baseURL() {
-            return window.LoyaltyConfig?.api?.baseURL || window.location.origin;
+            return window.location.origin;
         },
 
         // Main endpoint for fetching notifications and announcements

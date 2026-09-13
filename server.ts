@@ -148,6 +148,14 @@ app.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
+// Notifications & Announcements System public content API
+app.get('/api/v1/public/content', (req, res) => {
+  res.json({
+    notifications: [],
+    announcements: [],
+  });
+});
+
 // Serve static assets from project root and specific subfolders
 app.use('/fonts', express.static(path.join(__dirname, 'fonts')));
 app.use('/adimg', express.static(path.join(__dirname, 'adimg')));
