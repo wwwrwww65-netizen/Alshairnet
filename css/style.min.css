@@ -2325,13 +2325,7 @@ body.keyboard-open .bottom-nav-bar,
 #login.inactive {
   display: block !important;
   visibility: visible !important;
-  filter: blur(8px) brightness(0.72);
-  -webkit-filter: blur(8px) brightness(0.72);
   pointer-events: none;
-  transform: scale(0.985);
-  transition:
-    filter 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   user-select: none;
 }
 
@@ -2341,9 +2335,7 @@ body.keyboard-open .bottom-nav-bar,
 html.modal-scroll-locked,
 body.modal-scroll-locked {
   overflow: hidden !important;
-  height: 100% !important;
   touch-action: none;
-  -webkit-overflow-scrolling: auto;
 }
 
 .app {
@@ -2354,29 +2346,33 @@ body.modal-scroll-locked {
   /* أعلى دائماً من الشريط السفلي */
   width: 100vw;
   height: 100vh;
-  background: rgba(18,
-      2,
-      6,
-      0.45);
-  /* غطاء شفاف يظهر محتوى الصفحة الأصلي بوضوح مع التغبيش العصري */
-  backdrop-filter: blur(6px);
-  /* تأثير تمويه وتغبيش إضافي على كامل الشاشة */
-  -webkit-backdrop-filter: blur(6px);
+  height: 100dvh;
   overflow-y: auto;
   overscroll-behavior: contain !important;
   touch-action: pan-y;
   padding: 14px 14px 85px 14px;
   /* مساحة أمان مريحة تمنع أي تداخل مع الشريط السفلي */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .app.active {
   display: flex !important;
   align-items: center !important;
-  /* تظهر في منتصف الصفحة عمودياً */
   justify-content: center !important;
-  /* تظهر في منتصف الصفحة أفقياً */
-  animation: fadeInBackdrop 0.25s ease forwards;
+  opacity: 1 !important;
+  pointer-events: auto !important;
   overscroll-behavior: contain !important;
+}
+
+.app.closing {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .loyalty-modal.active,

@@ -13,13 +13,11 @@
     <meta name="MobileOptimized" content="width">
     <meta name="theme-color" content="#F4F7FB">
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="preload" href="fonts/almarai-400-ar.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/almarai-700-ar.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="fonts/Almarai.css">
     <link rel="stylesheet" href="css/fontello.min.css">
     <link rel="stylesheet" href="css/style.min.css">
-
-    <link rel="stylesheet" href="css/notifications-system.css">
-    <!-- Announcements System CSS -->
-    <link rel="stylesheet" href="css/announcements-style.css">
     <!-- ملف الألوان الرئيسي — يحتوي على جميع الألوان في مكان واحد بشرح عربي -->
     <link rel="stylesheet" href="css/theme-colors.css">
     
@@ -54,42 +52,9 @@
         }
     </style>
 
-    <!-- درع الحماية من وميض المتغيرات (FOUC Shield) وتثبيت مساحة الحاوية لمنع خروج الشعار -->
-    <style id="fouc-shield">
-        [data-network-name]:not(title), [data-news-line] {
-            opacity: 0 !important;
-            transition: opacity 0.3s ease-in-out;
-        }
-    </style>
     <script>
-        (function() {
-            var origTitle = "شبكة{{network-name}} اللاسلكيه";
-            document.title = "جاري التحميل..."; // إخفاء الكود من عنوان الصفحة مبدئياً
-            
-            window.addEventListener("DOMContentLoaded", function() {
-                var titleEl = document.querySelector('title[data-network-name]');
-                if (titleEl) {
-                    titleEl.innerHTML = origTitle; // إرجاع النص الأساسي لكي يتمكن السكريبت من العمل
-                }
-                
-                var t = setInterval(function() {
-                    var el = document.querySelector('.network-hero-title');
-                    // إذا اختفت الأقواس، فهذا يعني أن البيانات تم تحميلها ووضعها
-                    if (el && el.innerHTML.indexOf("{{") === -1) {
-                        var shield = document.getElementById("fouc-shield");
-                        if (shield) shield.remove();
-                        clearInterval(t);
-                    }
-                }, 40);
-                
-                // حماية احتياطية لإظهار العناصر في حال تأخر السكريبت
-                setTimeout(function() { 
-                    var shield = document.getElementById("fouc-shield");
-                    if (shield) shield.remove(); 
-                    clearInterval(t);
-                }, 2500);
-            });
-        })();
+        // مزامنة فورية فائقة السرعة للعنوان
+        document.title = "شبكة الشعار نت";
     </script>
 
     <style>
@@ -502,7 +467,6 @@
                         <button class="sellpoint" parent-id="sell-point" data-sell-point-button>نقاط البيع</button>
                     </div>
                 </div>
-                <div id="announcements-container"></div>
                 <div class="banner-container" style="background: rgb(184, 24, 24);border-radius: 10px;"> </div>
                 <!-- 2026 MODAL BOTTOM SHEET: SPEED SELECTOR POPUP (#speed-modal) -->
                 <div class="app" id="speed-modal">
@@ -835,35 +799,34 @@
                             <span class="title">
                                 <svg viewBox="0 0 24 24" class="modal-title-icon">
                                     <path
-                                        d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.1 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.1 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z" />
+                                        d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 14H3V5h18v12zm-11-2l6-4-6-4v8z" />
                                 </svg>
-                                <span>جديدنا والعروض</span>
+                                <span>البث المباشر</span>
                             </span>
                             <button class="modal-close-btn" type="button">✕ إغلاق</button>
                         </div>
                         <div class="price-div">
                             <div class="wrapper">
                                 <!-- ========================================================================= -->
-                                <!-- هنا يتم كتابة العروض والخدمات الجديدة والنصائح للزبائن (تُقرأ تلقائياً من config.js) -->
+                                <!-- نافذة البث المباشر (تُقرأ تلقائياً من config.js) -->
                                 <!-- ========================================================================= -->
-                                <div class="loan-body" id="loan-news-container">
-                                    <p id="loan-news-title" data-news-title="true"
-                                        style="font-weight: 800; font-size: 1.1rem; color: #fde047; margin-bottom: 8px;">
-                                        🔥 {{news-title}} 🔥</p>
-                                    <p id="loan-news-content" data-news-content="true"><b>الميزة الأساسية:</b> استمتع بتصفح تطبيقي الواتساب (WhatsApp) و الإنستقرام (Instagram) مجاناً بالكامل!<br><br><b>سهولة الوصول:</b> العرض متاح لك مباشرة بدون الحاجة لتسجيل الدخول إلى الشبكة.<br><br><b>وقت العرض:</b> تبدأ المتعة يومياً من الساعة 5 فجراً وحتى الساعة 8 صباحاً.</p>
-                                    <div id="loan-news-code" data-news-code="true" class="loan-highlight-badge">{{news-code}}</div>
-                                    <br id="loan-news-break"><br id="loan-news-break-2">
+                                <div class="loan-body" id="loan-news-container" style="text-align: center; padding: 18px 12px; background: #FFFFFF; border-radius: 14px;">
                                     <div id="loan-news-extra-header"
-                                        style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+                                        style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px;">
                                         <svg viewBox="0 0 24 24"
-                                            style="width: 18px; height: 18px; fill: var(--accent-cyan);">
+                                            style="width: 24px; height: 24px; fill: var(--color-blue);">
                                             <path
-                                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
+                                                d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 14H3V5h18v12zm-11-2l6-4-6-4v8z" />
                                         </svg>
-                                        <strong id="loan-news-extra-title" data-news-extra-title="true">📺 {{news-extra-title}}</strong>
+                                        <strong id="loan-news-extra-title" data-news-extra-title="true" style="font-size: 1.15rem; color: var(--color-text-main); font-weight: 800;">📺 {{news-extra-title}}</strong>
                                     </div>
-                                    <p id="loan-news-extra-content" data-news-extra-content="true">{{news-extra-content}}</p>
-                                    <a href="https://kor.fntvs.net/channel.php" target="_blank" data-news-extra-badge="true" id="loan-news-extra-badge" class="loan-highlight-badge" style="display:inline-block; text-decoration:none;">{{news-extra-badge}}</a>
+                                    <p id="loan-news-extra-content" data-news-extra-content="true" style="font-size: 0.95rem; color: var(--color-text-sub); line-height: 1.6; margin-bottom: 18px; font-weight: 600;">{{news-extra-content}}</p>
+                                    <a href="fiberlive/live.html" target="_blank" data-news-extra-badge="true" id="loan-news-extra-badge" class="loan-highlight-badge" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; padding: 12px 24px; font-size: 1rem; font-weight: 800; border-radius: 12px; background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary-dark) 100%) !important; color: #ffffff !important; box-shadow: 0 4px 14px rgba(0, 119, 254, 0.35);">
+                                        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: #ffffff;">
+                                            <path d="M8 5v14l11-7z" />
+                                        </svg>
+                                        <span style="color: #ffffff !important;">مشاهدة البث المباشر</span>
+                                    </a>
                                 </div>
                                 <!-- ========================================================================= -->
 
@@ -1468,19 +1431,21 @@
 
             window.ModalScrollLock = {
                 lockCount: 0,
+                savedScrollY: 0,
 
                 isAnyModalOpen: function () {
-                    var appModal = document.querySelector('.app.active:not(#status)');
+                    var appModal = document.querySelector('.app.active:not(#status), .app.closing:not(#status)');
                     var ntModal = document.querySelector('.nt-modal-overlay:not(.nt-modal-hide), .nt-card-overlay:not(.nt-card-hide)');
                     return !!(appModal || ntModal);
                 },
 
                 lock: function () {
+                    if (this.lockCount === 0) {
+                        this.savedScrollY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+                        document.documentElement.classList.add('modal-scroll-locked');
+                        document.body.classList.add('modal-scroll-locked');
+                    }
                     this.lockCount++;
-                    document.documentElement.classList.add('modal-scroll-locked');
-                    document.body.classList.add('modal-scroll-locked');
-                    document.body.style.overflow = 'hidden';
-                    document.documentElement.style.overflow = 'hidden';
                 },
 
                 unlock: function (force) {
@@ -1490,12 +1455,16 @@
                         this.lockCount = Math.max(0, this.lockCount - 1);
                     }
 
-                    if (this.lockCount === 0 || !this.isAnyModalOpen()) {
-                        this.lockCount = 0;
+                    if (this.lockCount === 0) {
                         document.documentElement.classList.remove('modal-scroll-locked');
                         document.body.classList.remove('modal-scroll-locked');
-                        document.body.style.overflow = '';
-                        document.documentElement.style.overflow = '';
+                        var restoreY = this.savedScrollY;
+                        requestAnimationFrame(function () {
+                            var currentY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+                            if (Math.abs(currentY - restoreY) > 2) {
+                                window.scrollTo(0, restoreY);
+                            }
+                        });
                     }
                 },
 
@@ -1512,7 +1481,7 @@
                     // Prevent background scrolling on touch gestures outside scrollable modal containers
                     document.addEventListener('touchmove', function (e) {
                         if (document.body.classList.contains('modal-scroll-locked')) {
-                            var scrollable = e.target.closest('.modal-sheet-card, .nt-modal, .nt-card, .price-div, .sell-point-div, .loan-body');
+                            var scrollable = e.target.closest('.modal-sheet-card, .nt-modal, .nt-card, .price-div, .sell-point-div, .loan-body, .status-speed-body');
                             if (!scrollable) {
                                 e.preventDefault();
                             }
@@ -1522,35 +1491,67 @@
                     // Prevent wheel scroll bleed-through to underlying background
                     document.addEventListener('wheel', function (e) {
                         if (document.body.classList.contains('modal-scroll-locked')) {
-                            var scrollable = e.target.closest('.modal-sheet-card, .nt-modal, .nt-card, .price-div, .sell-point-div, .loan-body');
+                            var scrollable = e.target.closest('.modal-sheet-card, .nt-modal, .nt-card, .price-div, .sell-point-div, .loan-body, .status-speed-body');
                             if (!scrollable) {
                                 e.preventDefault();
                             }
                         }
                     }, { passive: false });
-
-                    // Auto-sync observer to maintain accurate state
-                    try {
-                        var observer = new MutationObserver(function () {
-                            var anyOpen = self.isAnyModalOpen();
-                            if (anyOpen && !document.body.classList.contains('modal-scroll-locked')) {
-                                self.lock();
-                            } else if (!anyOpen && document.body.classList.contains('modal-scroll-locked')) {
-                                self.unlock(true);
-                            }
-                        });
-                        if (document.body) {
-                            observer.observe(document.body, { attributes: true, subtree: true, attributeFilter: ['class', 'style'], childList: true });
-                        }
-                    } catch (err) {}
                 }
             };
             window.ModalScrollLock.init();
 
-            function openAppModal(modalId) {
+            // =========================================================================
+            // PHONE SYSTEM BACK BUTTON & MODAL CONTROLLER
+            // =========================================================================
+            let isModalHistoryPushed = false;
+            let isClosingProgrammatically = false;
+            let currentActiveModalId = null;
+
+            // Clear any stale hash / modal state on initial page load
+            if (window.location.hash && (
+                window.location.hash === '#price' || 
+                window.location.hash === '#sell-point' || 
+                window.location.hash === '#loan' || 
+                window.location.hash === '#speed-modal' || 
+                window.location.hash === '#status-speed-modal' || 
+                window.location.hash === '#app-store' || 
+                window.location.hash === '#block'
+            )) {
+                try {
+                    window.history.replaceState(null, '', window.location.pathname + window.location.search);
+                } catch (e) {}
+            }
+
+            function syncBottomNavWithModal(modalId) {
+                const allNavBtns = document.querySelectorAll('.nav-item-btn');
+                const navHomeEl = document.getElementById('navHome');
+                if (!modalId) {
+                    allNavBtns.forEach(b => b.classList.remove('active'));
+                    if (navHomeEl) navHomeEl.classList.add('active');
+                    return;
+                }
+                let matched = false;
+                allNavBtns.forEach(b => {
+                    const pid = b.getAttribute('parent-id');
+                    if (pid === modalId) {
+                        b.classList.add('active');
+                        matched = true;
+                    } else {
+                        b.classList.remove('active');
+                    }
+                });
+                if (!matched && navHomeEl) {
+                    navHomeEl.classList.add('active');
+                }
+            }
+
+            function openAppModal(modalId, options) {
                 window.animating = false;
                 const modal = typeof modalId === 'string' ? document.getElementById(modalId) : modalId;
-                if (!modal) return;
+                if (!modal || modal.id === 'status') return;
+
+                const isFromPopState = options && options.fromPopState;
 
                 // Sync active speed in status-speed-modal if opening it
                 if (modal.id === 'status-speed-modal') {
@@ -1568,10 +1569,14 @@
                     } catch (e) {}
                 }
 
+                // Check if another modal was previously open
+                const previouslyOpenModal = document.querySelector('.app.active:not(#status)');
+                const hadAnotherModalOpen = previouslyOpenModal && previouslyOpenModal !== modal;
+
                 // Close any other open modals
-                document.querySelectorAll('.app.active').forEach(m => {
+                document.querySelectorAll('.app.active, .app.closing').forEach(m => {
                     if (m !== modal && m.id !== 'status') {
-                        m.classList.remove('active');
+                        m.classList.remove('active', 'closing');
                         m.style.display = 'none';
                     }
                 });
@@ -1582,47 +1587,66 @@
                     loginEl.classList.add('inactive');
                 }
 
-                modal.style.display = 'block';
+                modal.classList.remove('closing');
+                modal.style.display = 'flex';
                 // Trigger reflow for CSS transition
                 void modal.offsetWidth;
                 modal.classList.add('active');
 
+                currentActiveModalId = modal.id;
+
+                // Update bottom nav highlighting
+                syncBottomNavWithModal(modal.id);
+
+                // History Stack Management for Mobile System Back Button
+                if (!isFromPopState) {
+                    const stateObj = { modalOpen: true, modalId: modal.id };
+                    const modalHash = '#' + modal.id;
+                    try {
+                        if (hadAnotherModalOpen || isModalHistoryPushed) {
+                            // If user switched directly between tabs/modals, replace current state so back returns directly to home
+                            window.history.replaceState(stateObj, '', modalHash);
+                        } else {
+                            // First modal opened -> Push new state to history
+                            window.history.pushState(stateObj, '', modalHash);
+                            isModalHistoryPushed = true;
+                        }
+                    } catch (err) {
+                        try { window.location.hash = modal.id; } catch (e) {}
+                    }
+                }
+
                 // Lock background scroll
                 if (window.ModalScrollLock) {
                     window.ModalScrollLock.lock();
-                } else {
-                    document.body.style.overflow = 'hidden';
                 }
             }
 
-            function closeAppModal(modalOrId) {
+            function closeAppModal(modalOrId, options) {
                 window.animating = false;
-                let target = null;
+                const isFromPopState = options && options.fromPopState;
+                let targets = [];
                 if (typeof modalOrId === 'string') {
-                    target = document.getElementById(modalOrId);
+                    const el = document.getElementById(modalOrId);
+                    if (el) targets.push(el);
                 } else if (modalOrId instanceof HTMLElement) {
-                    target = modalOrId;
-                }
-
-                if (target) {
-                    target.classList.remove('active');
-                    setTimeout(() => {
-                        if (!target.classList.contains('active')) {
-                            target.style.display = 'none';
-                        }
-                    }, 180);
+                    targets.push(modalOrId);
                 } else {
                     document.querySelectorAll('.app.active').forEach(m => {
-                        if (m.id !== 'status') {
-                            m.classList.remove('active');
-                            setTimeout(() => {
-                                if (!m.classList.contains('active')) {
-                                    m.style.display = 'none';
-                                }
-                            }, 180);
-                        }
+                        if (m.id !== 'status') targets.push(m);
                     });
                 }
+
+                targets.forEach(target => {
+                    target.classList.remove('active');
+                    target.classList.add('closing');
+                    setTimeout(() => {
+                        if (target.classList.contains('closing')) {
+                            target.classList.remove('closing');
+                            target.style.display = 'none';
+                        }
+                    }, 200);
+                });
 
                 const isStatusActive = document.getElementById('status')?.classList.contains('active');
                 const loginEl = document.getElementById('login');
@@ -1632,17 +1656,71 @@
                     loginEl.classList.remove('inactive');
                 }
 
+                currentActiveModalId = null;
+
+                // Reset bottom navigation active state to Home
+                syncBottomNavWithModal(null);
+
+                // Revert history state if closed via UI (close button, backdrop, cancel, speed option)
+                if (!isFromPopState && isModalHistoryPushed) {
+                    isModalHistoryPushed = false;
+                    isClosingProgrammatically = true;
+                    try {
+                        window.history.back();
+                    } catch (e) {}
+                    setTimeout(() => {
+                        isClosingProgrammatically = false;
+                    }, 350);
+                } else if (!isFromPopState && window.location.hash) {
+                    try {
+                        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+                    } catch (e) {}
+                }
+
                 // Unlock background scroll
                 if (window.ModalScrollLock) {
                     window.ModalScrollLock.unlock();
-                } else {
-                    document.body.style.overflow = '';
                 }
             }
 
             // Expose globally for legacy/inline scripts
             window.openAppModal = openAppModal;
             window.closeAppModal = closeAppModal;
+
+            // PHONE SYSTEM BACK BUTTON (HARDWARE / GESTURE / BROWSER BACK) LISTENER
+            window.addEventListener('popstate', function (e) {
+                if (isClosingProgrammatically) {
+                    isClosingProgrammatically = false;
+                    return;
+                }
+
+                // Check if any modal is active
+                const activeModals = document.querySelectorAll('.app.active:not(#status)');
+                if (activeModals.length > 0) {
+                    // System back button pressed while a modal window is open -> Close modal immediately
+                    closeAppModal(null, { fromPopState: true });
+                    isModalHistoryPushed = false;
+                    return;
+                }
+
+                // Also dismiss toast error if active
+                const toastEl = document.querySelector('.error-container.active');
+                if (toastEl && typeof hideErrorPopup === 'function') {
+                    hideErrorPopup();
+                }
+            });
+
+            // Fallback for hash navigation
+            window.addEventListener('hashchange', function (e) {
+                if (isClosingProgrammatically) return;
+                const currentHash = (window.location.hash || '').replace('#', '');
+                const activeModals = document.querySelectorAll('.app.active:not(#status)');
+                
+                if (!currentHash && activeModals.length > 0) {
+                    closeAppModal(null, { fromPopState: true });
+                    isModalHistoryPushed = false;
+                }
+            });
 
             // Universal Click Handler for All Modal Close & Cancel Buttons
             document.addEventListener('click', function (e) {
@@ -2218,20 +2296,18 @@
             }
             window.resetWindowScrollToTop = resetWindowScrollToTop;
 
-            // Watch status section for activation
+            // Watch status section for one-time activation transition
             const statusSection = document.getElementById('status');
             if (statusSection) {
+                let statusWasActive = statusSection.classList.contains('active') || statusSection.style.display === 'block';
                 const statusObserver = new MutationObserver(mutations => {
-                    mutations.forEach(m => {
-                        if (m.type === 'attributes' && (m.attributeName === 'class' || m.attributeName === 'style')) {
-                            if (statusSection.classList.contains('active') || statusSection.style.display === 'block') {
-                                resetWindowScrollToTop();
-                                setTimeout(resetWindowScrollToTop, 50);
-                                setTimeout(resetWindowScrollToTop, 200);
-                                setTimeout(resetWindowScrollToTop, 400);
-                            }
-                        }
-                    });
+                    const isNowActive = statusSection.classList.contains('active') || statusSection.style.display === 'block';
+                    if (isNowActive && !statusWasActive) {
+                        statusWasActive = true;
+                        resetWindowScrollToTop();
+                    } else if (!isNowActive) {
+                        statusWasActive = false;
+                    }
                 });
                 statusObserver.observe(statusSection, { attributes: true, attributeFilter: ['class', 'style'] });
             }
@@ -2373,14 +2449,6 @@
             }
         })();
     </script>
-
-
-    <script src="js/notifications-system/notifications-config.js"></script>
-    <script src="js/notifications-system/notifications-storage.js"></script>
-    <script src="js/notifications-system/notifications-api.js"></script>
-    <script src="js/notifications-system/notifications-renderer.js"></script>
-    <script src="js/notifications-system/notifications-manager.js"></script>
-    <script src="js/notifications-system/notifications-integration.js"></script>
 </body>
 
 </html>

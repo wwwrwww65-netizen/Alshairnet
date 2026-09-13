@@ -62,13 +62,38 @@ body,
 .screen-content,
 .screen__content,
 .login,
-.app,
 #login,
 #status,
 .screen-background {
   background:       var(--color-bg-page) !important;
   background-color: var(--color-bg-page) !important;
   color:            var(--color-text-main) !important;
+}
+
+/* خلفية التعتيم الحديثة للنوافذ المنبثقة (Modern Dimmed Backdrop Overlay with Frosted Glass Blur) */
+.app:not(#status) {
+  background:              rgba(15, 23, 42, 0.65) !important;
+  background-color:        rgba(15, 23, 42, 0.65) !important;
+  backdrop-filter:         blur(8px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(140%) !important;
+  opacity:                 0;
+  pointer-events:          none;
+  transform:               translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility:     hidden;
+  will-change:             opacity;
+  transition:              opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.app:not(#status).active {
+  opacity:                 1 !important;
+  pointer-events:          auto !important;
+}
+
+.app:not(#status).closing {
+  opacity:                 0 !important;
+  pointer-events:          none !important;
+  transition:              opacity 0.18s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* إخفاء الكرات المضيئة القديمة والأيقونات العائمة لضمان خلفية نقية ونظيفة */
@@ -1290,10 +1315,26 @@ input[name="username"] {
 
 .modal-sheet-card {
   background:              #FFFFFF !important;
-  border:                  1px solid var(--color-border) !important;
-  box-shadow:              0 20px 50px rgba(10, 56, 184, 0.12) !important;
+  border:                  1px solid #E2E8F0 !important;
+  border-radius:           20px !important;
+  box-shadow:              0 25px 60px -15px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
   backdrop-filter:         none !important;
   -webkit-backdrop-filter: none !important;
+  transform:               scale(0.93) translateY(22px);
+  opacity:                 0;
+  transition:              transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.24s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  will-change:             transform, opacity;
+}
+
+.app.active .modal-sheet-card {
+  transform:               scale(1) translateY(0) !important;
+  opacity:                 1 !important;
+}
+
+.app.closing .modal-sheet-card {
+  transform:               scale(0.93) translateY(22px) !important;
+  opacity:                 0 !important;
+  transition:              transform 0.2s cubic-bezier(0.4, 0, 1, 1), opacity 0.18s cubic-bezier(0.4, 0, 1, 1) !important;
 }
 .modal-header { border-bottom: 1px solid var(--color-border) !important; }
 .modal-header .title { color: var(--color-text-main) !important; text-shadow: none !important; }
