@@ -227,11 +227,20 @@ Config({
                 btn.setAttribute("data-speed-title", sp.name);
 
                 var numMatch = sp.name.match(/\d+/);
-                var num = numMatch ? numMatch[0] : sp.value;
-                btn.innerHTML =
-                    '<span class="pill-dot"></span>' +
-                    '<span class="pill-num">' + num + '</span>' +
-                    '<span class="pill-unit">ميجا</span>';
+                var pillContent = "";
+                if (numMatch) {
+                    var num = numMatch[0];
+                    var unit = /كيلو|K|k/i.test(sp.name) || (!/ميجا|M|m/i.test(sp.name) && parseInt(num, 10) >= 100) ? "كيلو" : (/ميجا|M|m/i.test(sp.name) || parseInt(num, 10) < 100 ? "ميجا" : "");
+                    pillContent =
+                        '<span class="pill-dot"></span>' +
+                        '<span class="pill-num">' + num + '</span>' +
+                        (unit ? '<span class="pill-unit">' + unit + '</span>' : '');
+                } else {
+                    pillContent =
+                        '<span class="pill-dot"></span>' +
+                        '<span class="pill-num pill-text-only">' + sp.name + '</span>';
+                }
+                btn.innerHTML = pillContent;
 
                 if (sp.isDefault) {
                     btn.classList.add("active");

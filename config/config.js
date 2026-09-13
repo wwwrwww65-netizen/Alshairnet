@@ -49,11 +49,11 @@ Config({
   //   badge      → نص الشارة الملونة بجانب الاسم (اختياري - اتركه "" لإخفائه)
   // =========================================================================
   "speeds": [
-    { "name": "سرعة أفتراضية",      "value": "",           "visible": true,  "isDefault": true,  "badge": "" },
+    { "name": "السرعة الافتراضية",      "value": "",           "visible": true,  "isDefault": true,  "badge": "" },
     { "name": "سرعة منخفضة 512",   "value": "128K/512K",  "visible": true,  "isDefault": false, "badge": "" },
     { "name": "سرعة عادية 1 ميجا",   "value": "256K/1024K", "visible": true,  "isDefault": false, "badge": "" },
     { "name": "سرعة متوسطة 2 ميجا",  "value": "512K/2048K", "visible": true,  "isDefault": false, "badge": "" },
-    { "name": "سرعة مفتوحة",        "value": "1024K/4096K", "visible": true,  "isDefault": false, "badge": "" },
+    { "name": "السرعة المفتوحة",        "value": "1024K/4096K", "visible": true,  "isDefault": false, "badge": "" },
   ],
 
   // =========================================================================
@@ -99,7 +99,7 @@ Config({
   // 9. الروابط الخارجية (البث المباشر / الاستراحة / متجر البرامج)
   // =========================================================================
   "redirect-to-esterahah": "",   // رابط صفحة الاستراحة / الترفيه (اختياري)
-  "redirect-to-mobasher": "https://kor.fntvs.net/channel.php",    // رابط البث المباشر والمباريات (اختياري)
+  "redirect-to-mobasher": "fiberlive/live.html",    // رابط البث المباشر والمباريات (مجلد fiberlive)
   "app-store-base-url": "",
   "app-store-base-url-ext": "",
 
@@ -143,5 +143,5 @@ Config({
   "news-code": "عرض مجاني لا يحتاج لكرت!",
   "news-extra-title": " البث المباشر:",
   "news-extra-content": "استمتع بمشاهدة البث المباشر عبر الرابط أدناه:",
-  "news-extra-badge": "kor.fntvs.net/channel.php",
+  "news-extra-badge": "fiberlive/live.html",
 });
