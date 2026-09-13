@@ -87,126 +87,116 @@ body,
 
 
 /* ══════════════════════════════════════════════════════════════════
-   3. بطاقة الهيدر الفاخرة للشبكة وبطاقة المميزات (Hero Card & Features Strip)
+   3. بطاقة الهيدر الفاخرة للشبكة (أيقونة واي فاي زرقاء موسطة بدون شعار أو أزرار إضافية)
    ══════════════════════════════════════════════════════════════════ */
 
 .network-hero-card {
   position:      relative !important;
-  background:    #FFFFFF !important;
-  border:        1px solid var(--color-border) !important;
-  border-radius: 18px !important;
-  padding:       12px 14px !important;
-  margin-bottom: 10px !important;
-  box-shadow:    var(--shadow-card) !important;
+  background:    transparent !important;
+  border:        none !important;
+  border-radius: 0 !important;
+  padding:       6px 4px 10px 4px !important;
+  margin-bottom: 6px !important;
+  box-shadow:    none !important;
   width:         100% !important;
   box-sizing:    border-box !important;
-}
-
-.network-hero-content {
-  display:         flex !important;
-  align-items:     center !important;
-  justify-content: space-between !important;
-  gap:             12px !important;
-  width:           100% !important;
-  direction:       rtl !important;
-  padding-top:     4px !important;
-}
-
-/* إطار شعار الشبكة بتأثير زوايا مستديرة فاخر */
-.network-logo-frame {
-  width:         90px !important;
-  height:        90px !important;
-  min-width:     90px !important;
-  border-radius: 14px !important;
-  overflow:      hidden !important;
-  border:        none !important;
-  box-shadow:    none !important;
-  background:    transparent !important;
   display:       flex !important;
+  flex-direction: column !important;
   align-items:   center !important;
   justify-content: center !important;
-  flex-shrink:   0 !important;
+  text-align:    center !important;
 }
 
-.network-logo-img {
-  width:       100% !important;
-  height:      100% !important;
-  object-fit:  contain !important;
-  display:     block !important;
-  transform:   scale(0.9) !important;
-}
-
-/* عنوان الشبكة وأيقونة الواي فاي */
-.network-hero-title-wrap {
+/* أيقونة الواي فاي الزرقاء الموسطة */
+.header-center-wifi {
   display:         flex !important;
   align-items:     center !important;
   justify-content: center !important;
-  gap:             8px !important;
-  flex:            1 !important;
+  width:           100% !important;
+  margin:          0 auto 6px auto !important;
+  text-align:      center !important;
 }
 
-.network-hero-wifi-icon {
-  width:       22px !important;
-  height:      22px !important;
-  min-width:   22px !important;
-  flex-shrink: 0 !important;
+.header-wifi-svg {
+  width:   54px !important;
+  height:  44px !important;
+  display: block !important;
+  margin:  0 auto !important;
+  filter:  drop-shadow(0 4px 12px rgba(0, 119, 254, 0.45)) !important;
 }
 
-.network-hero-wifi-icon .wifi-sig {
-  fill:             var(--color-blue-light) !important;
+.header-wifi-svg .wifi-sig {
+  fill:             #0077FE !important;
   animation:        wifiHeroWave 1.8s infinite ease-in-out !important;
   transform-origin: 12px 19.5px !important;
 }
 
-.network-hero-wifi-icon .wifi-sig-dot { animation-delay: 0s !important; }
-.network-hero-wifi-icon .wifi-sig-1   { animation-delay: 0.25s !important; }
-.network-hero-wifi-icon .wifi-sig-2   { animation-delay: 0.5s !important; }
-.network-hero-wifi-icon .wifi-sig-3   { animation-delay: 0.75s !important; }
+.header-wifi-svg .wifi-sig-dot { animation-delay: 0s !important; }
+.header-wifi-svg .wifi-sig-1   { animation-delay: 0.25s !important; }
+.header-wifi-svg .wifi-sig-2   { animation-delay: 0.5s !important; }
+.header-wifi-svg .wifi-sig-3   { animation-delay: 0.75s !important; }
 
 @keyframes wifiHeroWave {
   0% {
-    opacity: 0.25;
+    opacity: 0.35;
     transform: scale(0.92);
   }
   25%, 55% {
     opacity: 1;
     transform: scale(1);
-    filter: drop-shadow(0 0 4px rgba(0, 145, 255, 0.6));
+    filter: drop-shadow(0 0 6px rgba(0, 140, 255, 0.8));
   }
   80%, 100% {
-    opacity: 0.25;
+    opacity: 0.35;
     transform: scale(0.92);
   }
 }
 
-.network-hero-title {
-  font-size:   21px !important;
-  font-weight: 900 !important;
-  color:       var(--color-text-main) !important;
-  line-height: 1.3 !important;
-  margin:      0 !important;
-  letter-spacing: -0.3px !important;
-  white-space: nowrap !important;
+/* قسم اسم الشبكة والشعارات النصية */
+.network-brand-section {
+  display:         flex !important;
+  flex-direction:  column !important;
+  align-items:     center !important;
+  justify-content: center !important;
+  text-align:      center !important;
+  width:           100% !important;
 }
 
-/* شارة حالة الاتصال (متصل) - مصغرة في الزاوية العلوية اليمنى */
-.network-status-badge {
-  position:        absolute !important;
-  top:             9px !important;
-  right:           12px !important;
-  display:         inline-flex !important;
+.network-hero-title {
+  font-size:      2.35rem !important;
+  font-weight:    900 !important;
+  color:          #0A38B8 !important;
+  line-height:    1.15 !important;
+  margin:         2px 0 2px 0 !important;
+  letter-spacing: -0.5px !important;
+  text-shadow:    0 1px 2px rgba(10, 56, 184, 0.08) !important;
+  text-align:     center !important;
+}
+
+.network-hero-subtitle {
+  font-size:       1.05rem !important;
+  font-weight:     800 !important;
+  color:           #0088FE !important;
+  display:         flex !important;
   align-items:     center !important;
-  gap:             4px !important;
-  background:      #E0F2FE !important;
-  border:          1px solid #BAE6FD !important;
-  border-radius:   9999px !important;
-  padding:         2px 8px !important;
-  color:           #0369A1 !important;
-  font-size:       10.5px !important;
-  font-weight:     700 !important;
-  flex-shrink:     0 !important;
-  box-shadow:      0 1px 3px rgba(3, 105, 161, 0.08) !important;
-  z-index:         2 !important;
+  justify-content: center !important;
+  gap:             6px !important;
+  margin:          2px 0 3px 0 !important;
+}
+
+.network-hero-subtitle .sub-dot {
+  color:       #0088FE !important;
+  font-size:   1.2rem !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+}
+
+.network-hero-tagline {
+  font-size:   0.95rem !important;
+  font-weight: 800 !important;
+  color:       #0A38B8 !important;
+  margin:      0 !important;
+  text-align:  center !important;
 }
 
 .status-pulse-dot {
