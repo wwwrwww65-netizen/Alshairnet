@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ar">
+<meta charset="UTF-8">
+<title data-network-name> الشعار نت</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#8277d1">
+<link rel="stylesheet" href="css/fontello.min.css">
+<link rel="stylesheet" href="css/style.min.css">
+<link rel="stylesheet" href="css/clock.min.css">
+<script src="js/hotCookie.min.js"></script>
+<script></script>
+<script>
+    function rem() {
+        var uname = document.getElementById('uname').value;
+        var speed = document.getElementById('speed').value;
+        var date = new Date();
+        date.setTime(date.getTime() + (5 * 1000));
+        var expires = date.toGMTString();
+        date.setTime(date.getTime() + (259200 * 1000));
+        var expire = date.toGMTString();
+        document.cookie = 'uname=' + uname + ';expires=' + expire + '';
+        document.cookie = 'speed=' + speed + ';expires=' + expire + '';
+        document.cookie = 'error=1;expires=' + expires + '';
+    }
+    function gco() {
+        var uname = "";
+        var speed = "";
+        var date = new Date();
+        date.setTime(date.getTime() + (5 * 1000));
+        var expires = date.toGMTString();
+        var SP = document.cookie.split(';');
+        for (i = 0; i < SP.length; i++) {
+            name_value = SP[i];
+            str = name_value.substring(0, 6);
+            if (str.indexOf("uname") !== -1) {
+                uname = name_value.split('=');
+                uname = uname[1];
+            }
+            if (str.indexOf("speed") !== -1) {
+                speed = name_value.split('=');
+                speed = speed[1];
+            }
+
+            if (str.indexOf("error") !== -1) {
+                return;
+            }
+
+        }
+
+        if (uname != "") {
+            document.cookie = 'error=1;expires=' + expires + '';
+            window.location.href = 'login?username=' + uname + "&domain=" + speed;
+        }
+    }
+    gco();
+</script>
+
+<body translate="no">
+    <!-- $(if chap-id) -->
+    <form name="sendin" action="$(link-login-only)" method="post" style="display:none">
+        <input type="hidden" name="username" />
+        <input type="hidden" name="password" />
+        <input type="hidden" name="dst" value="$(link-orig)" />
+        <input type="hidden" name="popup" value="true" />
+        <input type="hidden" name="domain" />
+    </form>
+    <script src="js/md5.js"></script>
+    <script>
+        function doLogin() {
+            document.sendin.username.value = document.login.username.value;
+            document.sendin.password.value = hexMD5('$(chap-id)' + document.login.password.value + '$(chap-challenge)');
+            document.sendin.domain.value = document.login.domain.value;
+            document.sendin.submit();
+            return false;
+        }
+    </script>
+    <!-- $(endif) -->
+    <div class="container">
+        <!-- $(if error) -->
+        <div class="error-container active zoom" id="errorcontainer">
+            <div class="error">
+                <div class="fade-in"> <span>حصل خطأ !</span>
+                    <p id="error">
+                        <script>
+                            document.write(toArabicError("$(error)"));
+                            function clearCookies() { ["uname", "password"].forEach(function (a) { document.cookie = a + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT" }) }
+                            clearCookies();
+                            function checkCookie() {
+        var user = getCookie("falestry");
+        if (user >= 5) {
+            window.location = "block.html";
+        } else {
+            var counts;
+            counts = Number(user);
+            setCookie("falestry", counts + 1, 15);
+            var creationTime = new Date().getTime() + (15 * 10 * 1000);
+            setCookie("creationTime", creationTime, 30);
+        }
+    }
+    checkCookie();
+                        </script>
+                    </p>
+                </div><button style="border-radius: 0 0 15px 15px;" class="button app-submit">أغلاق
+            </div>
+        </div>
+        <!-- $(endif) -->
+        <div class="screen">
+            <div class="screen-background"><span class="screen-background-shape screen-background-shape8"></span><span
+                    class="screen-background-shape screen-background-shape7"></span><span
+                    class="screen-background-shape screen-background-shape6"></span><span
+                    class="screen-background-shape screen-background-shape4"></span><span
+                    class="screen-background-shape screen-background-shape3"></span><span
+                    class="screen-background-shape screen-background-shape2"></span><span
+                    class="screen-background-shape screen-background-shape1">
+                    <svg  viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <path d="M 0 70 Q 0 60 5 60 H 15 V 50  L 20 45 V 38 L 22 35 Q 20 25 50 0 L 0 0  Z" ></path>
+                        <path d="M 100 70 Q 100 60 95 60 H 85 V 50  L 80 45 V 38 L 78 35 Q 80 25 50 0 L 100 0  Z" ></path> 
+                    </svg>
+                </span></div>
+            <div class="screen-content">
+                <div class="logo">
+                    <img src="img/1.jpg" alt="">
+                </div>
+                <div class="login" id="login">
+                    <section class="section">
+                    </section>
+                    <div id="shape1">
+                        <div class="network-prefix">
+                            <h2 class="hi">شبكة </h2>
+                    
+                        <div class="hi" style="height: 50px;"><span style="font-size: 40px;"> الشعار نت
+                            </div>
+                        </span></div> 
+                        تهنئكم بذكرى المولد النبوي
+                    </div>
+                    <form class="login-form" name="login" action="$(link-login-only)"
+                        method="post" $(if chap-id) onSubmit="return doLogin()" $(endif)>
+                        <input type="hidden" name="dst" value="$(link-orig)" />
+                        <input type="hidden" name="popup" value="true" />
+                        <p>قم بتسجيل الدخول</p>
+                        <div class="login-field"><i class="login-icon icon-user"></i>
+                            <input type="tel" name="username" id="uname" class="login-input" placeholder="أسم المستخدم"
+                                value="$(username)" username-field improve-input to-arabic-numbers rm-white-spaces
+                                autocomplete="off">
+                        </div>
+                        <div style="display: none;" class="login-field "><i class="login-icon fas icon-lock"></i><input
+                                type="password" name="password" class="login-input" password-field
+                                placeholder="كلمة السر"></div>
+                        <select class="login-input speed" name="domain" id="speed">
+                            <option value="" selected>اختر السرعة المناسبة لك</option>  
+                            <option value="" selected>سرعة أفتراضية </option>
+                            <option value="128K/512K">سرعة منخفضة 512 </option>
+                            <option value="256K/1024K">سرعة عادية 1 ميجا</option>
+                            <option value="512K/2048K">سرعة متوسطة 2 ميجا</option>
+                            <option value="1024K/4096K">سرعة مفتوحة</option>     
+                        </select>
+                        <br><br>
+                        <div class="bordersubmit">
+                        
+                        <button onclick='return rem();' class="button login-submit" parent-id="status"
+                            enable-hot-cookie>
+                            <div class="button-text"></div>تسجيل الدخول
+                        </button>
+                    </div>
+                    </form>
+                    <h2>7777777777<br></h2>
+                    <div
+                        style="justify-content: space-between; align-items: center; padding:40px 60px; display: flex;height: 80px; margin: 10px;">
+                        <button class="price-icon" parent-id="price" data-price-button><i
+                                class="icon-price"></i><span style="font-size: 9px;color: #02733b;">الاسعار</span></button><button class="sell-point-icon" parent-id="sell-point"
+                            data-sell-point-button><i class="icon-sell"></i><span style="color: #02733b;font-size: 9px;"><br>نقاط البيع</span></button>
+                    </div>
+                </div>
+                </div>
+                <div class="app " id="price">
+                    <div class="price-div">
+                        <div class="wrapper">
+                            <p class="title" data-i18n="subandresub">اسعار الكروت </p>
+                            <div class="table">
+                            <table>
+                                <tr>
+                                    <th>الفئة
+                                    </th>
+                                    <th>الوقت
+                                    </th>
+                                    <th>الرصيد
+                                    </th>
+                                    <th>الصلاحية
+                                    </th>
+                                </tr>
+                                <tbody id="profiles">
+                                    <tr>
+                                        <td>100 ريال</td>
+                                        <td>3 ساعات</td>
+                                        <td>180 ميجا</td>
+                                        <td>2 ايام</td> 
+                                    </tr>
+                                    <tr>
+                                        <td>150 ريال</td>
+                                        <td>5 ساعات </td>
+                                        <td>250 ميجا</td>
+                                        <td>4 ايام</td>
+                                    </tr>
+                                    <tr>
+                                        <td>250 ريال</td>
+                                        <td>10 ساعات</td>
+                                        <td>650 ميجا</td>
+                                        <td>7 ايام</td>
+                                    </tr>
+                                    <tr>
+                                        <td>500 ريال</td>
+                                        <td>25 ساعة</td>
+                                        <td>1400 ميجا</td>
+                                        <td>20 يوم</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1000 ريال</td>
+                                        <td>60 ساعة </td>
+                                        <td>3 جيجا</td>
+                                        <td>شهر</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5000 ريال</td>
+                                        <td>شهر </td>
+                                        <td>15 جيجا</td>
+                                        <td>شهر</td>
+                                    </tr>
+                                </tbody>
+                            </table></div>
+                        </div>
+                    </div>
+                    <button class="app-logout app-submit ">رجوع</button>
+                </div>
+                <div class="app" id="status"></div>
+                <div class="app" id="sell-point">
+                    <div class="sell-point-div">
+                        <div class="wrapper">
+                            <p class="title" data-i18n="subandresub">نقاط البيع </p>
+                            <table>
+                                <tbody class="sell-point" id="sell-points">
+                                    <tr>
+                                        <td>
+                                            جميع البقالات المجاوره للشبكه
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <button class="app-logout app-submit " style="margin: 0 auto;">رجوع</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- $(if error) -->
+    <!-- $(else) -->
+    <div id="errorcontainer"></div>
+    <!-- $(endif) -->
+    </div>
+    <script src="js/main.min.js"></script>
+    <script src="js/c.min.js"></script>
+    <script src="js/hotInImprover.min.js"></script>

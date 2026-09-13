@@ -49,11 +49,11 @@ Config({
   //   badge      → نص الشارة الملونة بجانب الاسم (اختياري - اتركه "" لإخفائه)
   // =========================================================================
   "speeds": [
-    { "name": "اقتصادية 🌟 4 ميجا",   "value": "2M/4M",    "visible": true,  "isDefault": false, "badge": "" },
-    { "name": "قياسية 🥇 8 ميجا",     "value": "4M/8M",    "visible": true,  "isDefault": true,  "badge": "الأكثر طلباً" },
-    { "name": "متوسطة ⚡ 16 ميجا",    "value": "8M/16M",   "visible": true,  "isDefault": false, "badge": "" },
-    { "name": "عالية 🚀 32 ميجا",     "value": "16M/32M",  "visible": true,  "isDefault": false, "badge": "" },
-    { "name": "كروت المسابقات 🏆",    "value": "",         "visible": true,  "isDefault": false, "badge": "مفتوح" },
+    { "name": "سرعة أفتراضية",      "value": "",           "visible": true,  "isDefault": true,  "badge": "" },
+    { "name": "سرعة منخفضة 512",   "value": "128K/512K",  "visible": true,  "isDefault": false, "badge": "" },
+    { "name": "سرعة عادية 1 ميجا",   "value": "256K/1024K", "visible": true,  "isDefault": false, "badge": "" },
+    { "name": "سرعة متوسطة 2 ميجا",  "value": "512K/2048K", "visible": true,  "isDefault": false, "badge": "" },
+    { "name": "سرعة مفتوحة",        "value": "1024K/4096K", "visible": true,  "isDefault": false, "badge": "" },
   ],
 
   // =========================================================================

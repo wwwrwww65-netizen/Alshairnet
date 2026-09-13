@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="expires" content="-1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>صفحة تسجيل الدخول</title>
+    <link rel="stylesheet" href="css/style.min.css">
+    <style>
+        body{
+            background: #fff;
+        }
+        .container {
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .title {
+            font-size: 60;
+            text-align: center;
+            align-items: center;
+            background: #fff;
+            color:#c6ae86;
+            display: block;
+            top: 10%;
+            left: 0;
+            right: 0;
+            margin: 5px auto;
+
+        }
+    </style>
+
+    <script>
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function checkCookie() {
+            var user = getCookie("falestry");
+            if (user == "") {
+                window.location = "login.html";
+            }
+        }
+
+        function formatTime(seconds) {
+            var hours = Math.floor(seconds / 3600);
+            var minutes = Math.floor((seconds % 3600) / 60);
+            var remainingSeconds = seconds % 60;
+            if (minutes) {
+                var formattedTime = minutes.toFixed(0) + ' دقيقة و ' + remainingSeconds.toFixed(0) + ' ثانية';
+            } else {
+                formattedTime = remainingSeconds.toFixed(0) + ' ثانية';
+            }
+            return formattedTime;
+        }
+    </script>
+
+</head>
+
+<body onload="checkCookie()" dir="rtl">
+    <div>
+        <div>
+            <div>
+
+
+                <h1 style="margin-top: 30%;" class=''>أنت محضور !</h1>
+                <h3 class='' style="top: 20%;"> تم حضرك بسبب الكثير من محاولات الدخول الفاشلة </h3>
+                <h3 class='' style="top: 30%;"> الوقت المتبقي لإنتهاء الحضر </h3>
+                <br><br><br>
+                <h3 id="counter" class=''>
+00:00
+                    <script>
+                        setInterval(function () {
+                            var user = getCookie("falestry");
+                            var timer = getCookie("creationTime");
+                            var count = document.getElementById('counter');
+                            var currentTime = new Date().getTime() / 1000;
+                            var remainingTime = (timer / 1000) - currentTime;
+                            if (remainingTime > 1) {
+                                count.innerHTML = formatTime(remainingTime);
+                            }
+                            else{
+                                window.location = "login.html";
+                            }
+                        }, 1000);
+                    </script>
+                </h3>
+
+            </div>
+
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>
