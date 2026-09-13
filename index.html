@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title data-network-name>شبكة{{network-name}} اللاسلكيه</title>
+    <title data-network-name>شبكة الشعار نت اللاسلكية</title>
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, shrink-to-fit=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -21,17 +21,61 @@
     <!-- ملف الألوان الرئيسي — يحتوي على جميع الألوان في مكان واحد بشرح عربي -->
     <link rel="stylesheet" href="css/theme-colors.css">
     
-    <!-- فحص حالة تسجيل الدخول المباشرة من سيرفر المايكروتك لمنع أي وميض أو انتقال خاطئ -->
+    <!-- تهيئة وتحميل إعدادات الشبكة فورياً لمنع أي وميض للأسماء أو النصوص -->
+    <script>
+        window.hotspotConfig = window.hotspotConfig || {};
+        function Config(cfg) {
+            window.hotspotConfig = cfg;
+            if (typeof hotspotConfig !== 'undefined') {
+                hotspotConfig = cfg;
+            }
+            if (typeof onConfigLoaded === 'function') {
+                try { onConfigLoaded(); } catch(e) {}
+            }
+        }
+    </script>
+    <script src="config/config.js"></script>
+
+    <!-- فحص حالة تسجيل الدخول المباشرة والتخزين المؤقت لمنع أي وميض أو تأخير عند تحديث الصفحة -->
     <script>
         var __mTikLoggedIn = "$(logged-in)";
-        if (__mTikLoggedIn === "yes") {
+        var __isCachedLoggedIn = false;
+        try {
+            __isCachedLoggedIn = localStorage.getItem("hotspot_logged_in") === "yes";
+        } catch (e) {}
+
+        var __isUserLoggedIn = (__mTikLoggedIn === "yes") || (__mTikLoggedIn === "$(logged-in)" && __isCachedLoggedIn);
+
+        if (__isUserLoggedIn) {
             document.documentElement.classList.add("is-mTik-logged-in");
-        } else if (__mTikLoggedIn === "no") {
+            document.documentElement.classList.remove("is-mTik-logged-out");
+            
+            function __applyCachedStatusInstant() {
+                try {
+                    var cachedStr = localStorage.getItem("hotspot_status_cache");
+                    if (!cachedStr) return;
+                    var c = JSON.parse(cachedStr);
+                    if (typeof updateStatusDOM === "function") {
+                        updateStatusDOM(c);
+                    } else {
+                        // Direct DOM injection fallback for zero-millisecond render
+                        for (var k in c) {
+                            var el = document.getElementById(k);
+                            if (el && typeof c[k] === "string" && !el.innerText) {
+                                el.innerText = c[k];
+                            }
+                        }
+                    }
+                } catch(e) {}
+            }
+            document.addEventListener("DOMContentLoaded", __applyCachedStatusInstant, { once: true, passive: true });
+        } else {
             document.documentElement.classList.add("is-mTik-logged-out");
+            document.documentElement.classList.remove("is-mTik-logged-in");
         }
     </script>
     <style id="mTik-screen-shield">
-        /* منع وميض الشاشة عند إعادة تحميل الصفحة للمسجلين أو غير المسجلين */
+        /* منع وميض الشاشة والظهور التدريجي عند إعادة تحميل الصفحة للمسجلين أو غير المسجلين */
         html.is-mTik-logged-in #login {
             display: none !important;
             visibility: hidden !important;
@@ -40,6 +84,7 @@
             display: block !important;
             opacity: 1 !important;
             visibility: visible !important;
+            animation: none !important;
         }
         html.is-mTik-logged-out #status {
             display: none !important;
@@ -54,7 +99,11 @@
 
     <script>
         // مزامنة فورية فائقة السرعة للعنوان
-        document.title = "شبكة الشعار نت";
+        (function() {
+            var cfg = window.hotspotConfig || {};
+            var netName = cfg["network-name"] || "شبكة الشعار نت";
+            document.title = netName.includes("شبكة") ? (netName + " اللاسلكية") : ("شبكة " + netName + " اللاسلكية");
+        })();
     </script>
 
     <style>
@@ -269,7 +318,7 @@
 
                         <!-- Main Network Brand Title & Slogans -->
                         <div class="network-brand-section">
-                            <h1 class="network-hero-title" data-network-name="true">{{network-name}}</h1>
+                            <h1 class="network-hero-title" data-network-name="true">شبكة الشعار نت</h1>
                             <div class="network-hero-subtitle">
                                 <span class="sub-dot">•</span>
                                 <span>شبكة الإنترنت اللاسلكي</span>
@@ -341,7 +390,7 @@
                     <section class="section">
                         <div class="ticker-container">
                             <div class="ticker-content-track">
-                                <p class="marquee" data-news-line>{{news-line}}</p>
+                                <p class="marquee" data-news-line>بسم الله الرحمن الرحيم { قل للمؤمنين يغضوا من أبصارهم ويحفظوا فروجهم ذلك أزكى لهم إن الله خبير بما يصنعون } (النور:30)</p>
                             </div>
                         </div>
                     </section>
@@ -463,6 +512,8 @@
 
                     <!-- Hidden legacy social-login wrapper for compatibility -->
                     <div class="social-login" style="display: none;">
+
+
                         <button class="price-icon" parent-id="price" data-price-button><span>أسعارالكروت</span></button>
                         <button class="sellpoint" parent-id="sell-point" data-sell-point-button>نقاط البيع</button>
                     </div>
@@ -641,26 +692,30 @@
                             }
                             if (statusModal) {
                                 statusModal.innerHTML = "";
-                                var currentSpeedVal = null;
+                                var activeSpeedVal = "";
                                 try {
-                                    if (typeof getLoginCardCookie === "function") {
+                                    if (typeof un !== "undefined" && un && typeof un.sspeed !== "undefined") {
+                                        if (typeof dsplit === "function") activeSpeedVal = dsplit(un.sspeed, 0);
+                                    } else if (typeof getLoginCardCookie === "function") {
                                         var cookieData = getLoginCardCookie();
-                                        if (cookieData && cookieData.speed) currentSpeedVal = cookieData.speed;
+                                        if (cookieData && typeof cookieData.speed !== "undefined") activeSpeedVal = cookieData.speed;
+                                    } else {
+                                        activeSpeedVal = localStorage.getItem("hotspot_speed") || "";
                                     }
                                 } catch (e) {}
 
                                 var matchedCurrent = false;
-                                if (currentSpeedVal) {
-                                    matchedCurrent = speeds.some(function (s) { return s.visible && s.value === currentSpeedVal; });
+                                if (activeSpeedVal !== "") {
+                                    matchedCurrent = speeds.some(function (s) { return s.visible && s.value.toLowerCase() === activeSpeedVal.toLowerCase(); });
                                 }
 
                                 speeds.forEach(function (sp) {
                                     if (!sp.visible) return;
                                     var isActive = false;
                                     if (matchedCurrent) {
-                                        isActive = (sp.value === currentSpeedVal);
+                                        isActive = (sp.value.toLowerCase() === activeSpeedVal.toLowerCase());
                                     } else {
-                                        isActive = !!sp.isDefault;
+                                        isActive = (sp.value === "" || !!sp.isDefault);
                                     }
                                     var div = document.createElement("div");
                                     div.className = "speed-card-option" + (isActive ? " active" : "");
@@ -749,7 +804,7 @@
                                         <path
                                             d="M20 15.5c-1.25 0-2.45-.2-3.57-.57a1.02 1.02 0 00-1.02.24l-2.2 2.2a15.045 15.045 0 01-6.59-6.59l2.2-2.21a.96.96 0 00.25-1A11.36 11.36 0 018.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z" />
                                     </svg>
-                                    <span class="contact" data-service-number>خدمة العملاء: {{service-number}}</span>
+                                    <span class="contact" data-service-number>خدمة العملاء: 738348945</span>
                                 </a>
                             </div>
                         </div>
@@ -785,7 +840,7 @@
                                         <path
                                             d="M20 15.5c-1.25 0-2.45-.2-3.57-.57a1.02 1.02 0 00-1.02.24l-2.2 2.2a15.045 15.045 0 01-6.59-6.59l2.2-2.21a.96.96 0 00.25-1A11.36 11.36 0 018.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z" />
                                     </svg>
-                                    <span class="contact" data-service-number>خدمة العملاء: {{service-number}}</span>
+                                    <span class="contact" data-service-number>خدمة العملاء: 738348945</span>
                                 </a>
                             </div>
                         </div>
@@ -818,9 +873,9 @@
                                             <path
                                                 d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 14H3V5h18v12zm-11-2l6-4-6-4v8z" />
                                         </svg>
-                                        <strong id="loan-news-extra-title" data-news-extra-title="true" style="font-size: 1.15rem; color: var(--color-text-main); font-weight: 800;">📺 {{news-extra-title}}</strong>
+                                        <strong id="loan-news-extra-title" data-news-extra-title="true" style="font-size: 1.15rem; color: var(--color-text-main); font-weight: 800;">📺 البث المباشر:</strong>
                                     </div>
-                                    <p id="loan-news-extra-content" data-news-extra-content="true" style="font-size: 0.95rem; color: var(--color-text-sub); line-height: 1.6; margin-bottom: 18px; font-weight: 600;">{{news-extra-content}}</p>
+                                    <p id="loan-news-extra-content" data-news-extra-content="true" style="font-size: 0.95rem; color: var(--color-text-sub); line-height: 1.6; margin-bottom: 18px; font-weight: 600;">استمتع بمشاهدة البث المباشر والمباريات عبر الرابط التالي:</p>
                                     <a href="fiberlive/live.html" target="_blank" data-news-extra-badge="true" id="loan-news-extra-badge" class="loan-highlight-badge" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; padding: 12px 24px; font-size: 1rem; font-weight: 800; border-radius: 12px; background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary-dark) 100%) !important; color: #ffffff !important; box-shadow: 0 4px 14px rgba(0, 119, 254, 0.35);">
                                         <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: #ffffff;">
                                             <path d="M8 5v14l11-7z" />
@@ -841,7 +896,7 @@
                                         <path
                                             d="M20 15.5c-1.25 0-2.45-.2-3.57-.57a1.02 1.02 0 00-1.02.24l-2.2 2.2a15.045 15.045 0 01-6.59-6.59l2.2-2.21a.96.96 0 00.25-1A11.36 11.36 0 018.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z" />
                                     </svg>
-                                    <span class="contact" data-service-number>خدمة العملاء: {{service-number}}</span>
+                                    <span class="contact" data-service-number>خدمة العملاء: 738348945</span>
                                 </a>
                             </div>
                         </div>
@@ -909,7 +964,7 @@
                         <section class="section" style="margin-top: 10px; margin-bottom: 10px;">
                             <div class="ticker-container">
                                 <div class="ticker-content-track">
-                                    <p class="marquee" data-news-line>{{news-line}}</p>
+                                    <p class="marquee" data-news-line>بسم الله الرحمن الرحيم { قل للمؤمنين يغضوا من أبصارهم ويحفظوا فروجهم ذلك أزكى لهم إن الله خبير بما يصنعون } (النور:30)</p>
                                 </div>
                             </div>
                         </section>
@@ -1082,6 +1137,8 @@
                     </div>
                 </div>
 
+
+
                 <!-- 2026 MODAL: BLOCKED USER SCREEN (#block) -->
                 <div class="app" id="block">
                     <div class="modal-sheet-card">
@@ -1156,7 +1213,7 @@
                                 <path
                                     d="M20 15.5c-1.25 0-2.45-.2-3.57-.57a1.02 1.02 0 00-1.02.24l-2.2 2.2a15.045 15.045 0 01-6.59-6.59l2.2-2.21a.96.96 0 00.25-1A11.36 11.36 0 018.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z" />
                             </svg>
-                            <span class="contact back" data-service-number>خدمة العملاء: {{service-number}}</span>
+                            <span class="contact back" data-service-number>خدمة العملاء: 738348945</span>
                         </a>
                     </div>
                 </div>
@@ -1221,7 +1278,9 @@
     <span style="display: none;" id="winmsg"></span>
 
     <!-- Hotspot System Scripts -->
+    <script src="js/mus.min.js"></script>
     <script src="js/init.min.js"></script>
+    <script src="js/templates.min.js"></script>
     <script src="js/hotInImprover.min.js"></script>
     <script src="js/hotCookie.min.js"></script>
     <script src="js/hotOptions.min.js"></script>
@@ -1232,7 +1291,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
-            // 1. CAROUSEL SEAMLESS INFINITE LOOP & AUTOPLAY
+            // 1. CAROUSEL SEAMLESS INFINITE LOOP & AUTOPLAY (Strict 1.jpg to 7.jpg)
             const track = document.getElementById('carouselTrack');
             const dotsContainer = document.getElementById('carouselDots');
             const prevBtn = document.getElementById('carouselPrev');
@@ -1240,190 +1299,207 @@
             const carouselContainer = document.getElementById('adCarousel');
 
             if (track) {
-                const imgElements = Array.from(track.querySelectorAll('img'));
+                const isUserInStatus = document.documentElement.classList.contains('is-mTik-logged-in');
 
-                // Verify which images actually exist before initializing carousel using a fresh Image object
-                function checkImageValid(src) {
-                    return new Promise(resolve => {
-                        const tempImg = new Image();
-                        tempImg.onload = () => resolve(true);
-                        tempImg.onerror = () => resolve(false);
-                        tempImg.src = src;
-                    });
-                }
+                const checkAndInitCarousel = () => {
+                    const imgElements = Array.from(track.querySelectorAll('img'));
 
-                Promise.all(imgElements.map(async img => {
-                    const isValid = await checkImageValid(img.src);
-                    return { img: img, ok: isValid };
-                })).then(results => {
-                    let validSlidesCount = 0;
-                    results.forEach(res => {
-                        if (!res.ok) {
+                    function checkImageValid(img) {
+                        return new Promise(resolve => {
+                            if (img.complete && img.naturalWidth !== 0) {
+                                resolve(true);
+                                return;
+                            }
+                            const tempImg = new Image();
+                            tempImg.onload = () => resolve(true);
+                            tempImg.onerror = () => resolve(false);
+                            tempImg.src = img.src;
+                        });
+                    }
+
+                    Promise.all(imgElements.map(async img => {
+                        const isValid = await checkImageValid(img);
+                        return { img: img, ok: isValid };
+                    })).then(results => {
+                        let validSlidesCount = 0;
+                        results.forEach(res => {
                             let slide = res.img.closest('.carousel-slide');
-                            if (slide) slide.remove();
-                        } else {
-                            validSlidesCount++;
-                        }
-                    });
-
-                    if (dotsContainer) {
-                        dotsContainer.innerHTML = '';
-                        for (let i = 0; i < validSlidesCount; i++) {
-                            const d = document.createElement('span');
-                            d.className = i === 0 ? 'carousel-dot active' : 'carousel-dot';
-                            dotsContainer.appendChild(d);
-                        }
-                    }
-
-                    const originalSlides = Array.from(track.querySelectorAll('.carousel-slide'));
-                    const totalSlides = originalSlides.length;
-                    
-                    if (totalSlides === 0) {
-                        const wrapper = document.querySelector('.ads-carousel-wrapper');
-                        if (wrapper) wrapper.style.display = 'none';
-                        return;
-                    }
-
-                    const dots = document.querySelectorAll('.carousel-dot');
-                    let currentIndex = 1;
-                    let isTransitioning = false;
-                    let autoplayInterval = null;
-                    let transitionSafetyTimeout = null;
-
-                    if (totalSlides === 1) {
-                        track.style.transition = 'none';
-                        track.style.transform = `translateX(0%)`;
-                        if (dotsContainer) dotsContainer.style.display = 'none';
-                        if (prevBtn) prevBtn.style.display = 'none';
-                        if (nextBtn) nextBtn.style.display = 'none';
-                        return;
-                    }
-
-                    if (totalSlides > 1) {
-                        // Clone first and last slides for seamless circular transition
-                        const firstClone = originalSlides[0].cloneNode(true);
-                        const lastClone = originalSlides[totalSlides - 1].cloneNode(true);
-                        firstClone.classList.add('carousel-clone');
-                        lastClone.classList.add('carousel-clone');
-
-                        track.insertBefore(lastClone, track.firstElementChild);
-                        track.appendChild(firstClone);
-
-                        // Initialize starting position at first real slide
-                        track.style.transition = 'none';
-                        track.style.transform = `translateX(-${currentIndex * 100}%)`;
-                        track.offsetHeight; // Force reflow
-                        track.style.transition = 'transform 0.45s cubic-bezier(0.25, 1, 0.5, 1)';
-                    }
-
-                    function updateDots() {
-                    const realIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-                    dots.forEach((dot, idx) => {
-                        dot.classList.toggle('active', idx === realIndex);
-                    });
-                }
-
-                function goToSlide(index, animated = true) {
-                    currentIndex = index;
-                    if (animated) {
-                        track.style.transition = 'transform 0.45s cubic-bezier(0.25, 1, 0.5, 1)';
-                    } else {
-                        track.style.transition = 'none';
-                    }
-                    track.style.transform = `translateX(-${currentIndex * 100}%)`;
-                    updateDots();
-
-                    clearTimeout(transitionSafetyTimeout);
-                    if (animated) {
-                        isTransitioning = true;
-                        transitionSafetyTimeout = setTimeout(() => {
-                            checkCloneReset();
-                            isTransitioning = false;
-                        }, 500);
-                    }
-                }
-
-                function checkCloneReset() {
-                    if (currentIndex === totalSlides + 1) {
-                        // We moved forward past the last slide into clone 1 -> silently reset to real slide 1
-                        track.style.transition = 'none';
-                        currentIndex = 1;
-                        track.style.transform = `translateX(-${currentIndex * 100}%)`;
-                        track.offsetHeight; // Force reflow
-                    } else if (currentIndex === 0) {
-                        // We moved backward past first slide into clone last -> silently reset to real last slide
-                        track.style.transition = 'none';
-                        currentIndex = totalSlides;
-                        track.style.transform = `translateX(-${currentIndex * 100}%)`;
-                        track.offsetHeight; // Force reflow
-                    }
-                    isTransitioning = false;
-                }
-
-                track.addEventListener('transitionend', (e) => {
-                    if (e.target === track && e.propertyName === 'transform') {
-                        checkCloneReset();
-                    }
-                });
-
-                function nextSlide() {
-                    if (isTransitioning) return;
-                    goToSlide(currentIndex + 1);
-                }
-
-                function prevSlide() {
-                    if (isTransitioning) return;
-                    goToSlide(currentIndex - 1);
-                }
-
-                function startAutoplay() {
-                    stopAutoplay();
-                    autoplayInterval = setInterval(() => {
-                        nextSlide();
-                    }, 4000);
-                }
-
-                function stopAutoplay() {
-                    if (autoplayInterval) clearInterval(autoplayInterval);
-                }
-
-                if (prevBtn) prevBtn.addEventListener('click', () => { prevSlide(); startAutoplay(); });
-                if (nextBtn) nextBtn.addEventListener('click', () => { nextSlide(); startAutoplay(); });
-
-                dots.forEach((dot, idx) => {
-                    dot.addEventListener('click', () => {
-                        if (isTransitioning) return;
-                        goToSlide(idx + 1);
-                        startAutoplay();
-                    });
-                });
-
-                // Touch Swipe Gestures for Mobile
-                let touchStartX = 0;
-                let touchEndX = 0;
-
-                if (carouselContainer) {
-                    carouselContainer.addEventListener('touchstart', (e) => {
-                        touchStartX = e.changedTouches[0].screenX;
-                        stopAutoplay();
-                    }, { passive: true });
-
-                    carouselContainer.addEventListener('touchend', (e) => {
-                        touchEndX = e.changedTouches[0].screenX;
-                        const diff = touchEndX - touchStartX;
-                        if (Math.abs(diff) > 40) {
-                            if (diff > 0) {
-                                prevSlide(); // Swipe right
+                            if (!res.ok) {
+                                if (slide) slide.remove();
                             } else {
-                                nextSlide(); // Swipe left
+                                validSlidesCount++;
+                            }
+                        });
+
+                        if (dotsContainer) {
+                            dotsContainer.innerHTML = '';
+                            for (let i = 0; i < validSlidesCount; i++) {
+                                const d = document.createElement('span');
+                                d.className = i === 0 ? 'carousel-dot active' : 'carousel-dot';
+                                dotsContainer.appendChild(d);
                             }
                         }
-                        startAutoplay();
-                    }, { passive: true });
-                }
 
-                startAutoplay();
-                });
+                        const originalSlides = Array.from(track.querySelectorAll('.carousel-slide'));
+                        const totalSlides = originalSlides.length;
+                        
+                        if (totalSlides === 0) {
+                            const wrapper = document.querySelector('.ads-carousel-wrapper');
+                            if (wrapper) wrapper.style.display = 'none';
+                            return;
+                        }
+
+                        const dots = document.querySelectorAll('.carousel-dot');
+                        let currentIndex = 1;
+                        let isTransitioning = false;
+                        let autoplayInterval = null;
+                        let transitionSafetyTimeout = null;
+
+                        if (totalSlides === 1) {
+                            track.style.transition = 'none';
+                            track.style.transform = `translateX(0%)`;
+                            if (dotsContainer) dotsContainer.style.display = 'none';
+                            if (prevBtn) prevBtn.style.display = 'none';
+                            if (nextBtn) nextBtn.style.display = 'none';
+                            return;
+                        }
+
+                        if (totalSlides > 1 && !track.querySelector('.carousel-clone')) {
+                            // Clone first and last slides for seamless circular transition
+                            const firstClone = originalSlides[0].cloneNode(true);
+                            const lastClone = originalSlides[totalSlides - 1].cloneNode(true);
+                            firstClone.classList.add('carousel-clone');
+                            lastClone.classList.add('carousel-clone');
+
+                            track.insertBefore(lastClone, track.firstElementChild);
+                            track.appendChild(firstClone);
+
+                            // Initialize starting position at first real slide
+                            track.style.transition = 'none';
+                            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                            track.offsetHeight; // Force reflow
+                            track.style.transition = 'transform 0.45s cubic-bezier(0.25, 1, 0.5, 1)';
+                        }
+
+                        function updateDots() {
+                            const realIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+                            dots.forEach((dot, idx) => {
+                                dot.classList.toggle('active', idx === realIndex);
+                            });
+                        }
+
+                        function goToSlide(index, animated = true) {
+                            currentIndex = index;
+                            if (animated) {
+                                track.style.transition = 'transform 0.45s cubic-bezier(0.25, 1, 0.5, 1)';
+                            } else {
+                                track.style.transition = 'none';
+                            }
+                            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                            updateDots();
+
+                            clearTimeout(transitionSafetyTimeout);
+                            if (animated) {
+                                isTransitioning = true;
+                                transitionSafetyTimeout = setTimeout(() => {
+                                    checkCloneReset();
+                                    isTransitioning = false;
+                                }, 500);
+                            }
+                        }
+
+                        function checkCloneReset() {
+                            if (currentIndex === totalSlides + 1) {
+                                track.style.transition = 'none';
+                                currentIndex = 1;
+                                track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                                track.offsetHeight;
+                            } else if (currentIndex === 0) {
+                                track.style.transition = 'none';
+                                currentIndex = totalSlides;
+                                track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                                track.offsetHeight;
+                            }
+                            isTransitioning = false;
+                        }
+
+                        track.addEventListener('transitionend', (e) => {
+                            if (e.target === track && e.propertyName === 'transform') {
+                                checkCloneReset();
+                            }
+                        });
+
+                        function nextSlide() {
+                            if (isTransitioning) return;
+                            goToSlide(currentIndex + 1);
+                        }
+
+                        function prevSlide() {
+                            if (isTransitioning) return;
+                            goToSlide(currentIndex - 1);
+                        }
+
+                        function startAutoplay() {
+                            stopAutoplay();
+                            autoplayInterval = setInterval(() => {
+                                nextSlide();
+                            }, 4000);
+                        }
+
+                        function stopAutoplay() {
+                            if (autoplayInterval) clearInterval(autoplayInterval);
+                        }
+
+                        if (prevBtn) prevBtn.addEventListener('click', () => { prevSlide(); startAutoplay(); });
+                        if (nextBtn) nextBtn.addEventListener('click', () => { nextSlide(); startAutoplay(); });
+
+                        dots.forEach((dot, idx) => {
+                            dot.addEventListener('click', () => {
+                                if (isTransitioning) return;
+                                goToSlide(idx + 1);
+                                startAutoplay();
+                            });
+                        });
+
+                        // Touch Swipe Gestures for Mobile
+                        let touchStartX = 0;
+                        let touchEndX = 0;
+
+                        if (carouselContainer) {
+                            carouselContainer.addEventListener('touchstart', (e) => {
+                                touchStartX = e.changedTouches[0].screenX;
+                                stopAutoplay();
+                            }, { passive: true });
+
+                            carouselContainer.addEventListener('touchend', (e) => {
+                                touchEndX = e.changedTouches[0].screenX;
+                                const diff = touchEndX - touchStartX;
+                                if (Math.abs(diff) > 40) {
+                                    if (diff > 0) {
+                                        prevSlide();
+                                    } else {
+                                        nextSlide();
+                                    }
+                                }
+                                startAutoplay();
+                            }, { passive: true });
+                        }
+
+                        if (!isUserInStatus) {
+                            startAutoplay();
+                        }
+                    });
+                };
+
+                if (isUserInStatus) {
+                    if ('requestIdleCallback' in window) {
+                        window.requestIdleCallback(checkAndInitCarousel, { timeout: 2000 });
+                    } else {
+                        setTimeout(checkAndInitCarousel, 600);
+                    }
+                } else {
+                    checkAndInitCarousel();
+                }
             }
 
             // 2. UNIVERSAL MODAL CONTROLLER & POPUP SCROLL LOCK MANAGER
@@ -1557,11 +1633,13 @@
                 if (modal.id === 'status-speed-modal') {
                     try {
                         let activeVal = "";
-                        if (typeof un !== "undefined" && un && un.sspeed) {
+                        if (typeof un !== "undefined" && un && typeof un.sspeed !== "undefined") {
                             if (typeof dsplit === "function") activeVal = dsplit(un.sspeed, 0);
                         } else if (typeof getLoginCardCookie === 'function') {
                             const ck = getLoginCardCookie();
-                            if (ck && ck.speed) activeVal = ck.speed;
+                            if (ck && typeof ck.speed !== "undefined") activeVal = ck.speed;
+                        } else {
+                            activeVal = localStorage.getItem("hotspot_speed") || "";
                         }
                         if (typeof syncCurrentSpeedUI === 'function') {
                             syncCurrentSpeedUI(activeVal);
@@ -1648,7 +1726,10 @@
                     }, 200);
                 });
 
-                const isStatusActive = document.getElementById('status')?.classList.contains('active');
+                const isStatusActive = document.getElementById('status')?.classList.contains('active') ||
+                                       document.documentElement.classList.contains('is-mTik-logged-in') ||
+                                       window.isChangingSpeed ||
+                                       (typeof loggedIn !== 'undefined' && loggedIn);
                 const loginEl = document.getElementById('login');
                 if (!isStatusActive && loginEl) {
                     loginEl.style.display = 'block';
@@ -1983,14 +2064,27 @@
                             if (statusSpeedTriggerText) {
                                 statusSpeedTriggerText.textContent = txt;
                             }
-                            statusSpeedCards.forEach(card => {
-                                const cardTitle = card.getAttribute('data-speed-title') || '';
-                                if (cardTitle && (txt.includes(cardTitle) || cardTitle.includes(txt))) {
+                            const allCards = document.querySelectorAll('#status-speed-modal .speed-card-option');
+                            let found = false;
+                            allCards.forEach(card => {
+                                const cardTitle = (card.getAttribute('data-speed-title') || '').trim();
+                                if (cardTitle && (txt === cardTitle || txt.includes(cardTitle) || cardTitle.includes(txt))) {
                                     card.classList.add('active');
+                                    found = true;
                                 } else {
                                     card.classList.remove('active');
                                 }
                             });
+                            if (!found) {
+                                allCards.forEach(card => {
+                                    const cardSpeed = (card.getAttribute('data-status-speed') || '').trim();
+                                    if (cardSpeed === '') {
+                                        card.classList.add('active');
+                                    } else {
+                                        card.classList.remove('active');
+                                    }
+                                });
+                            }
                         }
                     };
                     const speedObserver = new MutationObserver(syncSpeedFromMikrotik);
