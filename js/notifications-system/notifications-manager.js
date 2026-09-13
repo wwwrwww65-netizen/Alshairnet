@@ -19,11 +19,18 @@ window.NotificationsManager = {
         try {
             console.log('[NotificationsManager] Initializing...');
 
+            if (!window.NotificationsAPI || typeof window.NotificationsAPI.fetchContent !== 'function') {
+                this.initialized = true;
+                return;
+            }
+
             // Fetch content from API
             const result = await window.NotificationsAPI.fetchContent();
 
-            if (!result.success) {
-                console.error('[NotificationsManager] Failed to fetch content:', result.error);
+            if (!result || !result.success) {
+                if (window.NotificationsConfig?.debug) {
+                    console.log('[NotificationsManager] Failed to fetch content:', result?.error);
+                }
                 return;
             }
 

@@ -18,6 +18,17 @@
             return true;
         }
 
+        if (window.NotificationsManager && typeof window.NotificationsManager.init === 'function') {
+            try {
+                await window.NotificationsManager.init();
+                systemLoaded = true;
+                return true;
+            } catch (err) {
+                console.warn('[NotificationsIntegration] Manager init warning:', err);
+                return false;
+            }
+        }
+
         if (loadingPromise) {
             return loadingPromise;
         }
@@ -27,11 +38,11 @@
                 console.log('[NotificationsIntegration] Loading system...');
 
                 const scripts = [
-                    'js/notifications-system/notifications-config.js',
-                    'js/notifications-system/notifications-storage.js',
-                    'js/notifications-system/notifications-api.js',
-                    'js/notifications-system/notifications-renderer.js',
-                    'js/notifications-system/notifications-manager.js'
+                    './js/notifications-system/notifications-config.js',
+                    './js/notifications-system/notifications-storage.js',
+                    './js/notifications-system/notifications-api.js',
+                    './js/notifications-system/notifications-renderer.js',
+                    './js/notifications-system/notifications-manager.js'
                 ];
 
                 // Load scripts in order
@@ -40,7 +51,9 @@
                 }
 
                 // Initialize manager
-                await window.NotificationsManager.init();
+                if (window.NotificationsManager && typeof window.NotificationsManager.init === 'function') {
+                    await window.NotificationsManager.init();
+                }
 
                 systemLoaded = true;
                 console.log('[NotificationsIntegration] System loaded successfully');
@@ -48,7 +61,7 @@
                 return true;
 
             } catch (error) {
-                console.error('[NotificationsIntegration] Failed to load system:', error);
+                console.warn('[NotificationsIntegration] Failed to load system:', error);
                 return false;
             }
         })();
