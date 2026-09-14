@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -47,6 +48,30 @@ function getUptimeString(startTime: number): string {
   if (hours > 0) return `${hours}h${minutes}m${seconds}s`;
   if (minutes > 0) return `${minutes}m${seconds}s`;
   return `${seconds}s`;
+}
+
+// Render index.html with simulated MikroTik router template substitution
+function serveMikrotikHtml(res: express.Response) {
+  try {
+    const rawHtml = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+    const loggedInVal = sessionState.isLoggedIn ? 'yes' : 'no';
+    const outputHtml = rawHtml
+      .replace(/\$\(logged-in\)/g, loggedInVal)
+      .replace(/\$\(username\)/g, sessionState.isLoggedIn ? sessionState.username : '')
+      .replace(/\$\(ip\)/g, sessionState.ip)
+      .replace(/\$\(mac\)/g, sessionState.mac)
+      .replace(/\$\(mac-esc\)/g, sessionState.mac)
+      .replace(/\$\(uptime\)/g, getUptimeString(sessionState.startTime))
+      .replace(/\$\(bytes-in\)/g, String(sessionState.bytesIn))
+      .replace(/\$\(bytes-out\)/g, String(sessionState.bytesOut))
+      .replace(/\$\(remain-bytes-total\)/g, String(sessionState.remainBytes))
+      .replace(/\$\(domain\)/g, sessionState.speed);
+
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(outputHtml);
+  } catch (err) {
+    res.sendFile(path.join(__dirname, 'index.html'));
+  }
 }
 
 // MikroTik Hotspot /login endpoint
@@ -101,7 +126,7 @@ app.get('/login', (req, res) => {
   }
 
   // Regular direct request
-  res.sendFile(path.join(__dirname, 'index.html'));
+  serveMikrotikHtml(res);
 });
 
 // MikroTik Hotspot /status endpoint
@@ -130,7 +155,7 @@ app.get('/status', (req, res) => {
   }
 
   // Direct page request
-  res.sendFile(path.join(__dirname, 'index.html'));
+  serveMikrotikHtml(res);
 });
 
 // MikroTik Hotspot /logout endpoint
@@ -156,15 +181,39 @@ app.get('/api/v1/public/content', (req, res) => {
   });
 });
 
-// Serve static assets from project root and specific subfolders
-app.use('/fonts', express.static(path.join(__dirname, 'fonts')));
-app.use('/adimg', express.static(path.join(__dirname, 'adimg')));
-app.use('/img', express.static(path.join(__dirname, 'img')));
-app.use('/css', express.static(path.join(__dirname, 'css')));
-app.use('/js', express.static(path.join(__dirname, 'js')));
-app.use('/config', express.static(path.join(__dirname, 'config')));
-app.use('/2024', express.static(path.join(__dirname, '2024')));
-app.use(express.static(__dirname));
+// Serve static assets with high-performance caching (fonts, css, js, images, etc.)
+const staticCacheOptions = {
+  maxAge: '7d',
+  immutable: true,
+  setHeaders: (res: express.Response, filePath: string) => {
+    if (filePath.endsWith('.html')) {
+      // HTML files check for updates but allow caching
+      res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+    } else if (filePath.match(/\.(woff2|woff|ttf|otf|eot|svg|png|jpg|jpeg|gif|webp|ico|css|js)$/i)) {
+      // Static assets are cached aggressively for instant reloads
+      res.setHeader('Cache-Control', 'public, max-age=604800, immutable');
+    }
+  }
+};
+
+// Special zero-cache options for dynamic ad banner images to ensure immediate updates upon add/delete
+const adimgCacheOptions = {
+  maxAge: 0,
+  setHeaders: (res: express.Response) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+  }
+};
+
+app.use('/fonts', express.static(path.join(__dirname, 'fonts'), staticCacheOptions));
+app.use('/adimg', express.static(path.join(__dirname, 'adimg'), adimgCacheOptions), (req, res) => res.status(404).end());
+app.use('/img', express.static(path.join(__dirname, 'img'), staticCacheOptions), (req, res) => res.status(404).end());
+app.use('/css', express.static(path.join(__dirname, 'css'), staticCacheOptions), (req, res) => res.status(404).end());
+app.use('/js', express.static(path.join(__dirname, 'js'), staticCacheOptions), (req, res) => res.status(404).end());
+app.use('/config', express.static(path.join(__dirname, 'config'), staticCacheOptions), (req, res) => res.status(404).end());
+app.use('/2024', express.static(path.join(__dirname, '2024'), staticCacheOptions), (req, res) => res.status(404).end());
+app.use(express.static(__dirname, staticCacheOptions));
 
 // Fallback route to index.html
 app.get('*', (req, res) => {

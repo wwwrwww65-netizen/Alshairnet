@@ -3,6 +3,46 @@
 
 <head>
     <meta charset="UTF-8">
+    <!-- منع اختفاء أو وميض الصفحة نهائياً عند التحديث للمسجلين وغير المسجلين وبدء العرض الفوري -->
+    <script>
+        (function() {
+            var m = "$(logged-in)";
+            var c = false;
+            try { c = localStorage.getItem("hotspot_logged_in") === "yes"; } catch (e) {}
+            var isLog = (m === "yes") || (m === "$(logged-in)" && c);
+            var root = document.documentElement;
+            if (isLog) {
+                root.className = (root.className + " is-mTik-logged-in").trim();
+            } else {
+                root.className = (root.className + " is-mTik-logged-out").trim();
+            }
+        })();
+    </script>
+    <style id="mTik-screen-shield">
+        /* تثبيت ظهور الشاشة كاملة فوراً مثل الشريط السفلي تماماً بدون أي اختفاء أو وميض */
+        html.is-mTik-logged-in #login {
+            display: none !important;
+            visibility: hidden !important;
+        }
+        html.is-mTik-logged-in #status {
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            animation: none !important;
+            transition: none !important;
+        }
+        html.is-mTik-logged-out #status {
+            display: none !important;
+            visibility: hidden !important;
+        }
+        html.is-mTik-logged-out #login {
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            animation: none !important;
+            transition: none !important;
+        }
+    </style>
     <title data-network-name>شبكة الشعار نت اللاسلكية</title>
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, shrink-to-fit=no">
@@ -15,6 +55,8 @@
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
     <link rel="preload" href="fonts/almarai-400-ar.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fonts/almarai-700-ar.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="adimg/2.jpg" as="image" fetchpriority="high">
+    <link rel="preload" href="adimg/4.jpg" as="image">
     <link rel="stylesheet" href="fonts/Almarai.css">
     <link rel="stylesheet" href="css/fontello.min.css">
     <link rel="stylesheet" href="css/style.min.css">
@@ -36,7 +78,6 @@
     </script>
     <script src="config/config.js"></script>
 
-    <!-- فحص حالة تسجيل الدخول المباشرة والتخزين المؤقت لمنع أي وميض أو تأخير عند تحديث الصفحة -->
     <script>
         var __mTikLoggedIn = "$(logged-in)";
         var __isCachedLoggedIn = false;
@@ -47,9 +88,6 @@
         var __isUserLoggedIn = (__mTikLoggedIn === "yes") || (__mTikLoggedIn === "$(logged-in)" && __isCachedLoggedIn);
 
         if (__isUserLoggedIn) {
-            document.documentElement.classList.add("is-mTik-logged-in");
-            document.documentElement.classList.remove("is-mTik-logged-out");
-            
             function __applyCachedStatusInstant() {
                 try {
                     var cachedStr = localStorage.getItem("hotspot_status_cache");
@@ -58,7 +96,6 @@
                     if (typeof updateStatusDOM === "function") {
                         updateStatusDOM(c);
                     } else {
-                        // Direct DOM injection fallback for zero-millisecond render
                         for (var k in c) {
                             var el = document.getElementById(k);
                             if (el && typeof c[k] === "string" && !el.innerText) {
@@ -69,33 +106,8 @@
                 } catch(e) {}
             }
             document.addEventListener("DOMContentLoaded", __applyCachedStatusInstant, { once: true, passive: true });
-        } else {
-            document.documentElement.classList.add("is-mTik-logged-out");
-            document.documentElement.classList.remove("is-mTik-logged-in");
         }
     </script>
-    <style id="mTik-screen-shield">
-        /* منع وميض الشاشة والظهور التدريجي عند إعادة تحميل الصفحة للمسجلين أو غير المسجلين */
-        html.is-mTik-logged-in #login {
-            display: none !important;
-            visibility: hidden !important;
-        }
-        html.is-mTik-logged-in #status {
-            display: block !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-            animation: none !important;
-        }
-        html.is-mTik-logged-out #status {
-            display: none !important;
-            visibility: hidden !important;
-        }
-        html.is-mTik-logged-out #login {
-            display: block !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-        }
-    </style>
 
     <script>
         // مزامنة فورية فائقة السرعة للعنوان
@@ -330,59 +342,25 @@
 
 
 
-                    <!-- 2026 Swipeable Touch Carousel (With 3D Legacy compatibility) -->
+                    <!-- 2026 Swipeable Touch Carousel (Instant zero-delay rendering) -->
                     <div class="ads-carousel-wrapper">
-                        <div class="carousel-container" id="adCarousel">
-                            <div class="carousel-track" id="carouselTrack">
-                                <div class="carousel-slide">
-                                    <img class="im1" src="./adimg/1.jpg" alt="إعلان 1" fetchpriority="high"
-                                        decoding="async">
-                                </div>
-                                <div class="carousel-slide">
-                                    <img class="im2" src="./adimg/2.jpg" alt="إعلان 2" loading="lazy" decoding="async">
-                                </div>
-                                <div class="carousel-slide">
-                                    <img class="im3" src="./adimg/3.jpg" alt="إعلان 3" loading="lazy" decoding="async">
-                                </div>
-                                <div class="carousel-slide">
-                                    <img class="im4" src="./adimg/4.jpg" alt="إعلان 4" loading="lazy" decoding="async">
-                                </div>
-                                <div class="carousel-slide">
-                                    <img class="im5" src="./adimg/5.jpg" alt="إعلان 5" loading="lazy" decoding="async">
-                                </div>
-                                <div class="carousel-slide">
-                                    <img class="im6" src="./adimg/6.jpg" alt="إعلان 6" loading="lazy" decoding="async">
-                                </div>
-                                <div class="carousel-slide">
-                                    <img class="im7" src="./adimg/7.jpg" alt="إعلان 7" loading="lazy" decoding="async">
-                                </div>
-                            </div>
-                            <button class="carousel-nav-btn prev" id="carouselPrev" aria-label="السابق">❮</button>
-                            <button class="carousel-nav-btn next" id="carouselNext" aria-label="التالي">❯</button>
-                        </div>
-                        <div class="carousel-dots" id="carouselDots">
-                            <span class="carousel-dot active"></span>
-                            <span class="carousel-dot"></span>
-                            <span class="carousel-dot"></span>
-                            <span class="carousel-dot"></span>
-                            <span class="carousel-dot"></span>
-                            <span class="carousel-dot"></span>
-                            <span class="carousel-dot"></span>
-                        </div>
-
-                        <!-- Preserving legacy .ads .box for any legacy script checks -->
-                        <div class="ads" style="display: none;">
-                            <div class="box">
-                                <span style="--i:1"><img class="im1" src="./adimg/1.jpg"></span>
-                                <span style="--i:2"><img class="im2" src="./adimg/2.jpg"></span>
-                                <span style="--i:3"><img class="im3" src="./adimg/3.jpg"></span>
-                                <span style="--i:4"><img class="im4" src="./adimg/4.jpg"></span>
-                                <span style="--i:5"><img class="im5" src="./adimg/5.jpg"></span>
-                                <span style="--i:6"><img class="im6" src="./adimg/6.jpg"></span>
-                                <span style="--i:7"><img class="im7" src="./adimg/7.jpg"></span>
-                            </div>
-                        </div>
-                    </div>
+                         <div class="carousel-container" id="adCarousel">
+                             <div class="carousel-track" id="carouselTrack">
+                                 <div class="carousel-slide">
+                                     <img class="im2" src="./adimg/2.jpg" alt="إعلان 1" fetchpriority="high" loading="eager" decoding="sync">
+                                 </div>
+                                 <div class="carousel-slide">
+                                     <img class="im4" src="./adimg/4.jpg" alt="إعلان 2" loading="eager" decoding="async">
+                                 </div>
+                             </div>
+                             <button class="carousel-nav-btn prev" id="carouselPrev" aria-label="السابق">❮</button>
+                             <button class="carousel-nav-btn next" id="carouselNext" aria-label="التالي">❯</button>
+                         </div>
+                         <div class="carousel-dots" id="carouselDots">
+                             <span class="carousel-dot active"></span>
+                             <span class="carousel-dot"></span>
+                         </div>
+                     </div>
 
                     <!-- ========================================================================= -->
                     <!-- الشريط الإخباري المتحرك (تحت البنر) -->
@@ -518,7 +496,6 @@
                         <button class="sellpoint" parent-id="sell-point" data-sell-point-button>نقاط البيع</button>
                     </div>
                 </div>
-                <div class="banner-container" style="background: rgb(184, 24, 24);border-radius: 10px;"> </div>
                 <!-- 2026 MODAL BOTTOM SHEET: SPEED SELECTOR POPUP (#speed-modal) -->
                 <div class="app" id="speed-modal">
                     <div class="modal-sheet-card compact-speed-card">
@@ -1134,6 +1111,38 @@
                                 </a>
                             </div>
                         </div>
+
+                        <!-- التعبئة الفورية المتزامنة لبيانات شاشة الحالة لحظة فتح الصفحة لمنع أي تأخير أو وميض -->
+                        <script>
+                            (function() {
+                                try {
+                                    var m = "$(logged-in)";
+                                    var c = localStorage.getItem("hotspot_logged_in") === "yes";
+                                    if (m === "yes" || (m !== "no" && c)) {
+                                        var cachedStr = localStorage.getItem("hotspot_status_cache");
+                                        if (cachedStr) {
+                                            var d = JSON.parse(cachedStr);
+                                            function fb(b, rm) {
+                                                var num = parseFloat(b);
+                                                if (isNaN(num) || num <= 0) return rm ? "مفتوح" : "0 ميجابايت";
+                                                var gb = num / 1073741824;
+                                                if (gb >= 1) return gb.toFixed(2) + " جيجابايت";
+                                                var mb = num / 1048576;
+                                                if (mb >= 1) return mb.toFixed(1) + " ميجابايت";
+                                                var kb = num / 1024;
+                                                return kb.toFixed(0) + " كيلوبايت";
+                                            }
+                                            if (d.bytes_out) { var el = document.getElementById("bytes_out"); if (el) el.innerText = fb(d.bytes_out, false); }
+                                            if (d.bytes_in) { var el = document.getElementById("bytes_in"); if (el) el.innerText = fb(d.bytes_in, false); }
+                                            if (d.remain_bytes_total) { var el = document.getElementById("remain_bytes_total"); if (el) el.innerText = fb(d.remain_bytes_total, true); }
+                                            if (d.uptime) { var el = document.getElementById("uptime"); if (el) el.innerText = d.uptime; }
+                                            if (d.session_time_left) { var el = document.getElementById("session_time_left"); if (el) el.innerText = d.session_time_left; }
+                                            if (d.sspeed) { var el = document.getElementById("sspeed"); if (el) el.innerText = d.sspeed.split("_")[0]; }
+                                        }
+                                    }
+                                } catch (e) {}
+                            })();
+                        </script>
                     </div>
                 </div>
 
@@ -1291,95 +1300,142 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
-            // 1. CAROUSEL SEAMLESS INFINITE LOOP & AUTOPLAY (Strict 1.jpg to 7.jpg)
+            // 1. CAROUSEL SEAMLESS INFINITE LOOP & AUTOPLAY (Fully Automatic Detection 1 to 7 images)
             const track = document.getElementById('carouselTrack');
             const dotsContainer = document.getElementById('carouselDots');
             const prevBtn = document.getElementById('carouselPrev');
             const nextBtn = document.getElementById('carouselNext');
             const carouselContainer = document.getElementById('adCarousel');
+            const wrapper = document.querySelector('.ads-carousel-wrapper');
 
             if (track) {
-                const isUserInStatus = document.documentElement.classList.contains('is-mTik-logged-in');
+                let autoplayInterval = null;
+                let transitionSafetyTimeout = null;
+                let isTransitioning = false;
+                let currentIndex = 1;
 
-                const checkAndInitCarousel = () => {
-                    const imgElements = Array.from(track.querySelectorAll('img'));
+                const initCarousel = () => {
+                    if (autoplayInterval) {
+                        clearInterval(autoplayInterval);
+                        autoplayInterval = null;
+                    }
+                    if (transitionSafetyTimeout) {
+                        clearTimeout(transitionSafetyTimeout);
+                        transitionSafetyTimeout = null;
+                    }
+                    isTransitioning = false;
+                    currentIndex = 1;
 
-                    function checkImageValid(img) {
-                        return new Promise(resolve => {
-                            if (img.complete && img.naturalWidth !== 0) {
-                                resolve(true);
-                                return;
-                            }
-                            const tempImg = new Image();
-                            tempImg.onload = () => resolve(true);
-                            tempImg.onerror = () => resolve(false);
-                            tempImg.src = img.src;
-                        });
+                    // 1. تشغيل الشرائح الحالية في الصفحة فوراً بدون أي تأخير (0ms)
+                    const initialSlides = Array.from(track.querySelectorAll('.carousel-slide:not(.carousel-clone)'));
+                    if (initialSlides.length === 0) {
+                        if (wrapper) wrapper.style.display = 'none';
+                    } else {
+                        if (wrapper) wrapper.style.display = '';
+                        setupCarouselBehavior(initialSlides.length);
                     }
 
-                    Promise.all(imgElements.map(async img => {
-                        const isValid = await checkImageValid(img);
-                        return { img: img, ok: isValid };
-                    })).then(results => {
-                        let validSlidesCount = 0;
-                        results.forEach(res => {
-                            let slide = res.img.closest('.carousel-slide');
-                            if (!res.ok) {
-                                if (slide) slide.remove();
-                            } else {
-                                validSlidesCount++;
-                            }
-                        });
+                    // 2. فحص ذكي في الخلفية لاكتشاف أي صور جديدة مضافة (1 إلى 7) أو محذوفة ومزامنتها تلقائياً
+                    const candidates = (window.hotspotConfig && Array.isArray(window.hotspotConfig['ad-images']) && window.hotspotConfig['ad-images'].length > 0)
+                        ? window.hotspotConfig['ad-images']
+                        : ['./adimg/1.jpg', './adimg/2.jpg', './adimg/3.jpg', './adimg/4.jpg', './adimg/5.jpg', './adimg/6.jpg', './adimg/7.jpg'];
 
-                        if (dotsContainer) {
-                            dotsContainer.innerHTML = '';
-                            for (let i = 0; i < validSlidesCount; i++) {
+                    Promise.all(candidates.map((src, index) => {
+                        return new Promise((resolve) => {
+                            const probe = new Image();
+                            let settled = false;
+                            const done = (ok) => {
+                                if (settled) return;
+                                settled = true;
+                                resolve(ok ? { index, src } : null);
+                            };
+                            probe.onload = () => done(true);
+                            probe.onerror = () => done(false);
+                            setTimeout(() => done(false), 2000);
+                            probe.src = src;
+                        });
+                    })).then(results => {
+                        const valid = results.filter(Boolean).sort((a, b) => a.index - b.index).map(r => r.src);
+                        const currentSrcs = Array.from(track.querySelectorAll('.carousel-slide:not(.carousel-clone) img')).map(img => img.getAttribute('src'));
+                        
+                        const isSame = valid.length === currentSrcs.length && valid.every((src, i) => src === currentSrcs[i]);
+                        if (!isSame) {
+                            buildDynamicSlides(valid);
+                        }
+                    });
+
+                    function buildDynamicSlides(sources) {
+                        if (sources.length === 0) {
+                            track.innerHTML = '';
+                            if (wrapper) wrapper.style.display = 'none';
+                            return;
+                        }
+                        if (wrapper) wrapper.style.display = '';
+                        track.innerHTML = '';
+                        sources.forEach((src, idx) => {
+                            const slide = document.createElement('div');
+                            slide.className = 'carousel-slide';
+                            const img = document.createElement('img');
+                            img.className = 'im' + (idx + 1);
+                            img.src = src;
+                            img.alt = 'إعلان ' + (idx + 1);
+                            img.loading = 'eager';
+                            img.decoding = idx === 0 ? 'sync' : 'async';
+                            slide.appendChild(img);
+                            track.appendChild(slide);
+                        });
+                        setupCarouselBehavior(sources.length);
+                    }
+                };
+
+                function setupCarouselBehavior(totalSlides) {
+                    track.querySelectorAll('.carousel-clone').forEach(el => el.remove());
+
+                    if (dotsContainer) {
+                        dotsContainer.innerHTML = '';
+                        if (totalSlides > 1) {
+                            dotsContainer.style.display = '';
+                            for (let i = 0; i < totalSlides; i++) {
                                 const d = document.createElement('span');
                                 d.className = i === 0 ? 'carousel-dot active' : 'carousel-dot';
                                 dotsContainer.appendChild(d);
                             }
+                        } else {
+                            dotsContainer.style.display = 'none';
                         }
+                    }
 
-                        const originalSlides = Array.from(track.querySelectorAll('.carousel-slide'));
-                        const totalSlides = originalSlides.length;
-                        
-                        if (totalSlides === 0) {
-                            const wrapper = document.querySelector('.ads-carousel-wrapper');
-                            if (wrapper) wrapper.style.display = 'none';
-                            return;
-                        }
+                    if (totalSlides <= 1) {
+                        track.style.transition = 'none';
+                        track.style.transform = 'translateX(0%)';
+                        if (prevBtn) prevBtn.style.display = 'none';
+                        if (nextBtn) nextBtn.style.display = 'none';
+                        return;
+                    }
 
-                        const dots = document.querySelectorAll('.carousel-dot');
-                        let currentIndex = 1;
-                        let isTransitioning = false;
-                        let autoplayInterval = null;
-                        let transitionSafetyTimeout = null;
+                    if (prevBtn) prevBtn.style.display = '';
+                    if (nextBtn) nextBtn.style.display = '';
 
-                        if (totalSlides === 1) {
-                            track.style.transition = 'none';
-                            track.style.transform = `translateX(0%)`;
-                            if (dotsContainer) dotsContainer.style.display = 'none';
-                            if (prevBtn) prevBtn.style.display = 'none';
-                            if (nextBtn) nextBtn.style.display = 'none';
-                            return;
-                        }
+                    const originalSlides = Array.from(track.querySelectorAll('.carousel-slide:not(.carousel-clone)'));
+                    if (originalSlides.length !== totalSlides || totalSlides <= 0) return;
 
-                        if (totalSlides > 1 && !track.querySelector('.carousel-clone')) {
-                            // Clone first and last slides for seamless circular transition
-                            const firstClone = originalSlides[0].cloneNode(true);
-                            const lastClone = originalSlides[totalSlides - 1].cloneNode(true);
-                            firstClone.classList.add('carousel-clone');
-                            lastClone.classList.add('carousel-clone');
+                    const firstClone = originalSlides[0].cloneNode(true);
+                    const lastClone = originalSlides[totalSlides - 1].cloneNode(true);
+                    firstClone.classList.add('carousel-clone');
+                    lastClone.classList.add('carousel-clone');
 
-                            track.insertBefore(lastClone, track.firstElementChild);
-                            track.appendChild(firstClone);
+                    track.insertBefore(lastClone, track.firstElementChild);
+                    track.appendChild(firstClone);
 
-                            // Initialize starting position at first real slide
-                            track.style.transition = 'none';
-                            track.style.transform = `translateX(-${currentIndex * 100}%)`;
-                            track.offsetHeight; // Force reflow
-                            track.style.transition = 'transform 0.45s cubic-bezier(0.25, 1, 0.5, 1)';
-                        }
+                    track.style.transition = 'none';
+                    track.style.transform = `translateX(-100%)`;
+                    void track.offsetHeight;
+
+                    bindEvents(totalSlides);
+                }
+
+                    function bindEvents(totalSlides) {
+                        const dots = dotsContainer ? dotsContainer.querySelectorAll('.carousel-dot') : [];
 
                         function updateDots() {
                             const realIndex = (currentIndex - 1 + totalSlides) % totalSlides;
@@ -1413,21 +1469,21 @@
                                 track.style.transition = 'none';
                                 currentIndex = 1;
                                 track.style.transform = `translateX(-${currentIndex * 100}%)`;
-                                track.offsetHeight;
+                                void track.offsetHeight;
                             } else if (currentIndex === 0) {
                                 track.style.transition = 'none';
                                 currentIndex = totalSlides;
                                 track.style.transform = `translateX(-${currentIndex * 100}%)`;
-                                track.offsetHeight;
+                                void track.offsetHeight;
                             }
                             isTransitioning = false;
                         }
 
-                        track.addEventListener('transitionend', (e) => {
+                        track.ontransitionend = (e) => {
                             if (e.target === track && e.propertyName === 'transform') {
                                 checkCloneReset();
                             }
-                        });
+                        };
 
                         function nextSlide() {
                             if (isTransitioning) return;
@@ -1450,15 +1506,15 @@
                             if (autoplayInterval) clearInterval(autoplayInterval);
                         }
 
-                        if (prevBtn) prevBtn.addEventListener('click', () => { prevSlide(); startAutoplay(); });
-                        if (nextBtn) nextBtn.addEventListener('click', () => { nextSlide(); startAutoplay(); });
+                        if (prevBtn) prevBtn.onclick = () => { prevSlide(); startAutoplay(); };
+                        if (nextBtn) nextBtn.onclick = () => { nextSlide(); startAutoplay(); };
 
                         dots.forEach((dot, idx) => {
-                            dot.addEventListener('click', () => {
+                            dot.onclick = () => {
                                 if (isTransitioning) return;
                                 goToSlide(idx + 1);
                                 startAutoplay();
-                            });
+                            };
                         });
 
                         // Touch Swipe Gestures for Mobile
@@ -1466,12 +1522,12 @@
                         let touchEndX = 0;
 
                         if (carouselContainer) {
-                            carouselContainer.addEventListener('touchstart', (e) => {
+                            carouselContainer.ontouchstart = (e) => {
                                 touchStartX = e.changedTouches[0].screenX;
                                 stopAutoplay();
-                            }, { passive: true });
+                            };
 
-                            carouselContainer.addEventListener('touchend', (e) => {
+                            carouselContainer.ontouchend = (e) => {
                                 touchEndX = e.changedTouches[0].screenX;
                                 const diff = touchEndX - touchStartX;
                                 if (Math.abs(diff) > 40) {
@@ -1482,24 +1538,13 @@
                                     }
                                 }
                                 startAutoplay();
-                            }, { passive: true });
+                            };
                         }
 
-                        if (!isUserInStatus) {
-                            startAutoplay();
-                        }
-                    });
-                };
-
-                if (isUserInStatus) {
-                    if ('requestIdleCallback' in window) {
-                        window.requestIdleCallback(checkAndInitCarousel, { timeout: 2000 });
-                    } else {
-                        setTimeout(checkAndInitCarousel, 600);
+                        startAutoplay();
                     }
-                } else {
-                    checkAndInitCarousel();
-                }
+
+                initCarousel();
             }
 
             // 2. UNIVERSAL MODAL CONTROLLER & POPUP SCROLL LOCK MANAGER
