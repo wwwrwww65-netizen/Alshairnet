@@ -50,11 +50,93 @@ function getUptimeString(startTime: number): string {
   return `${seconds}s`;
 }
 
+// Helper to get actual banner images existing in adimg/ (1 to 7 images)
+function getAdImages(): string[] {
+  try {
+    const adDir = path.join(__dirname, 'adimg');
+    if (!fs.existsSync(adDir)) return [];
+    const files = fs.readdirSync(adDir);
+    const validExtensions = new Set(['.jpg', '.jpeg', '.png', '.webp', '.svg', '.gif']);
+    const images = files.filter(file => {
+      const ext = path.extname(file).toLowerCase();
+      return validExtensions.has(ext) && !file.startsWith('.');
+    });
+
+    // Natural sort by numeric value in filename if present (1.jpg, 2.jpg, ...)
+    images.sort((a, b) => {
+      const numA = parseInt(a.replace(/\D/g, ''), 10);
+      const numB = parseInt(b.replace(/\D/g, ''), 10);
+      if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+      return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+    });
+
+    // Limit to 7 images max as requested
+    return images.slice(0, 7).map(img => `./adimg/${img}`);
+  } catch (err) {
+    return [];
+  }
+}
+
+// Helper to render Carousel HTML based on images in adimg/
+function renderAdsCarouselHtml(images: string[]): string {
+  if (!images || images.length === 0) {
+    return `<!-- ADS_CAROUSEL_START -->
+                    <div class="ads-carousel-wrapper" style="display: none;"></div>
+                    <!-- ADS_CAROUSEL_END -->`;
+  }
+
+  if (images.length === 1) {
+    return `<!-- ADS_CAROUSEL_START -->
+                    <div class="ads-carousel-wrapper">
+                         <div class="carousel-container" id="adCarousel">
+                             <div class="carousel-track" id="carouselTrack">
+                                 <div class="carousel-slide">
+                                     <img class="im1" src="${images[0]}" alt="إعلان" fetchpriority="high" loading="eager" decoding="sync">
+                                 </div>
+                             </div>
+                             <button class="carousel-nav-btn prev" id="carouselPrev" aria-label="السابق" style="display: none;">❮</button>
+                             <button class="carousel-nav-btn next" id="carouselNext" aria-label="التالي" style="display: none;">❯</button>
+                         </div>
+                         <div class="carousel-dots" id="carouselDots" style="display: none;">
+                         </div>
+                     </div>
+                    <!-- ADS_CAROUSEL_END -->`;
+  }
+
+  // 2 to 7 images
+  const slidesHtml = images.map((src, idx) => `
+                                 <div class="carousel-slide">
+                                     <img class="im${idx + 1}" src="${src}" alt="إعلان ${idx + 1}" ${idx === 0 ? 'fetchpriority="high" loading="eager" decoding="sync"' : 'loading="eager" decoding="async"'}>
+                                 </div>`).join('');
+
+  const dotsHtml = images.map((_, idx) => `
+                             <span class="carousel-dot${idx === 0 ? ' active' : ''}"></span>`).join('');
+
+  return `<!-- ADS_CAROUSEL_START -->
+                    <div class="ads-carousel-wrapper">
+                         <div class="carousel-container" id="adCarousel">
+                             <div class="carousel-track" id="carouselTrack">${slidesHtml}
+                             </div>
+                             <button class="carousel-nav-btn prev" id="carouselPrev" aria-label="السابق">❮</button>
+                             <button class="carousel-nav-btn next" id="carouselNext" aria-label="التالي">❯</button>
+                         </div>
+                         <div class="carousel-dots" id="carouselDots">${dotsHtml}
+                         </div>
+                     </div>
+                    <!-- ADS_CAROUSEL_END -->`;
+}
+
 // Render index.html with simulated MikroTik router template substitution
 function serveMikrotikHtml(res: express.Response) {
   try {
-    const rawHtml = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+    let rawHtml = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
     const loggedInVal = sessionState.isLoggedIn ? 'yes' : 'no';
+    
+    // Dynamic Carousel Injection based on actual adimg folder contents
+    const adImages = getAdImages();
+    const carouselHtml = renderAdsCarouselHtml(adImages);
+    rawHtml = rawHtml.replace(/<!-- ADS_CAROUSEL_START -->[\s\S]*?<!-- ADS_CAROUSEL_END -->/, carouselHtml);
+
     const outputHtml = rawHtml
       .replace(/\$\(logged-in\)/g, loggedInVal)
       .replace(/\$\(username\)/g, sessionState.isLoggedIn ? sessionState.username : '')
@@ -116,7 +198,7 @@ app.get('/login', (req, res) => {
       link_login_only: '/login',
       link_logout: '/logout',
       link_status: '/status',
-      nas_id: 'BH-NET-MikroTik',
+      nas_id: 'AlShiar-Net-MikroTik',
       ip: sessionState.ip,
       mac: sessionState.mac,
       trial: 'no',
@@ -181,6 +263,13 @@ app.get('/api/v1/public/content', (req, res) => {
   });
 });
 
+// Dynamic Banner Ads API (returns array of relative paths up to 7 images)
+app.get('/api/ad-images', (req, res) => {
+  const images = getAdImages();
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.json({ images });
+});
+
 // Serve static assets with high-performance caching (fonts, css, js, images, etc.)
 const staticCacheOptions = {
   maxAge: '7d',
@@ -196,8 +285,8 @@ const staticCacheOptions = {
   }
 };
 
-// Special zero-cache options for dynamic ad banner images to ensure immediate updates upon add/delete
-const adimgCacheOptions = {
+// Special zero-cache options for dynamic ad banner images and config to ensure immediate updates upon add/delete/edits
+const zeroCacheOptions = {
   maxAge: 0,
   setHeaders: (res: express.Response) => {
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
@@ -207,11 +296,11 @@ const adimgCacheOptions = {
 };
 
 app.use('/fonts', express.static(path.join(__dirname, 'fonts'), staticCacheOptions));
-app.use('/adimg', express.static(path.join(__dirname, 'adimg'), adimgCacheOptions), (req, res) => res.status(404).end());
+app.use('/adimg', express.static(path.join(__dirname, 'adimg'), zeroCacheOptions), (req, res) => res.status(404).end());
 app.use('/img', express.static(path.join(__dirname, 'img'), staticCacheOptions), (req, res) => res.status(404).end());
 app.use('/css', express.static(path.join(__dirname, 'css'), staticCacheOptions), (req, res) => res.status(404).end());
 app.use('/js', express.static(path.join(__dirname, 'js'), staticCacheOptions), (req, res) => res.status(404).end());
-app.use('/config', express.static(path.join(__dirname, 'config'), staticCacheOptions), (req, res) => res.status(404).end());
+app.use('/config', express.static(path.join(__dirname, 'config'), zeroCacheOptions), (req, res) => res.status(404).end());
 app.use('/2024', express.static(path.join(__dirname, '2024'), staticCacheOptions), (req, res) => res.status(404).end());
 app.use(express.static(__dirname, staticCacheOptions));
 

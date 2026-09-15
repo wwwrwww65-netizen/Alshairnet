@@ -1021,8 +1021,8 @@
                     <i class="fas fa-images"></i>
                 </div>
                 <div class="stat-info">
-                    <div class="stat-num" id="statImagesCount">0</div>
-                    <div class="stat-label">الصور الإعلانية</div>
+                    <div class="stat-num" id="statBannerStatus">مفعل</div>
+                    <div class="stat-label">شريط البنرات (adimg)</div>
                 </div>
             </div>
         </div>
@@ -1049,21 +1049,12 @@
                             <div class="form-hint"><i class="fas fa-info-circle"></i> يتغير تلقائياً في شريط العنوان والشعار وكافة النوافذ</div>
                         </div>
 
-                        <!-- Subtitle / Decoration Text -->
-                        <div class="form-group" style="margin-top: 16px;">
-                            <label class="form-label" for="subDecTextInput">
-                                <i class="fas fa-wifi"></i> النص الفرعي تحت اسم الشبكة (Subtitle)
-                            </label>
-                            <input type="text" class="form-control" id="subDecTextInput" placeholder="مثال: للإنترنت اللاسلكي" oninput="updateConfigField('subDecText', this.value)">
-                            <div class="form-hint"><i class="fas fa-info-circle"></i> النص الذي يظهر أسفل اسم الشبكة بين الخطوط الذهبية</div>
-                        </div>
-
                         <!-- Customer Support Phone -->
                         <div class="form-group" style="margin-top: 16px;">
                             <label class="form-label" for="supportPhoneInput">
                                 <i class="fas fa-phone-alt"></i> رقم هاتف خدمة العملاء (الاتصال المباشر)
                             </label>
-                            <input type="text" class="form-control" id="supportPhoneInput" placeholder="مثال: 738348945" oninput="updateConfigField('supportPhone', this.value)">
+                            <input type="text" class="form-control" id="supportPhoneInput" placeholder="مثال: 714587786" oninput="updateConfigField('supportPhone', this.value)">
                             <div class="form-hint"><i class="fas fa-info-circle"></i> يظهر في أزرار الاتصال الهاتفي السريع والنوافذ المنبثقة</div>
                         </div>
 
@@ -1072,7 +1063,7 @@
                             <label class="form-label" for="whatsappPhoneInput">
                                 <i class="fab fa-whatsapp" style="color: #25D366;"></i> رقم واتساب (مع رمز الدولة)
                             </label>
-                            <input type="text" class="form-control" id="whatsappPhoneInput" placeholder="مثال: 967738348945" oninput="updateConfigField('whatsappPhone', this.value)">
+                            <input type="text" class="form-control" id="whatsappPhoneInput" placeholder="مثال: 967714587786" oninput="updateConfigField('whatsappPhone', this.value)">
                         </div>
 
                         <div class="form-group" style="margin-top: 16px;">
@@ -1083,52 +1074,13 @@
                             <div class="form-hint"><i class="fas fa-magic" style="color: #38bdf8;"></i> اكتب <code>{network-name}</code> وسيتم استبداله باسم شبكتك تلقائياً عند فتح واتساب</div>
                         </div>
 
-                        <!-- Welcome Message Card with Toggle -->
-                        <div class="feature-toggle-card" style="margin-top: 20px;">
-                            <div class="feature-toggle-info">
-                                <div class="feature-toggle-icon"><i class="fas fa-bell"></i></div>
-                                <div>
-                                    <div class="feature-toggle-title">الرسالة الترحيبية (Welcome Popup)</div>
-                                    <div class="feature-toggle-desc">تنبيه منبثق يظهر للمستخدم عند فتح الصفحة</div>
-                                </div>
-                            </div>
-                            <div class="switch-container">
-                                <span class="status-badge" id="badgeWelcome">مفعل</span>
-                                <label class="switch">
-                                    <input type="checkbox" id="welcomeMessageVToggle" onchange="updateToggleField('welcomeMessageV', this.checked, 'badgeWelcome')">
-                                    <span class="slider"></span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <textarea class="form-control" id="welcomeMessageInput" placeholder="نص الرسالة الترحيبية..." oninput="updateConfigField('welcomeMessage', this.value)"></textarea>
-                        </div>
-
                         <!-- Marquee Text Slider -->
                         <div class="form-group" style="margin-top: 18px;">
                             <label class="form-label" for="textSlider1Input">
                                 <i class="fas fa-bullhorn"></i> شريط الأخبار المتحرك (Marquee Ticker)
                             </label>
                             <textarea class="form-control" id="textSlider1Input" placeholder="النص المتحرك أو الآية القرآنية..." oninput="updateConfigField('textSlider1', this.value)"></textarea>
-                        </div>
-
-                        <!-- Error Report Button Toggle -->
-                        <div class="feature-toggle-card" style="margin-top: 18px;">
-                            <div class="feature-toggle-info">
-                                <div class="feature-toggle-icon" style="color: #f59e0b; background: rgba(245, 158, 11, 0.12);"><i class="fas fa-sms"></i></div>
-                                <div>
-                                    <div class="feature-toggle-title">زر إرسال الخطأ عبر SMS</div>
-                                    <div class="feature-toggle-desc">إظهار زر عند حدوث خطأ لإرسال رسالة SMS للمشرف</div>
-                                </div>
-                            </div>
-                            <div class="switch-container">
-                                <span class="status-badge" id="badgeErb">مفعل</span>
-                                <label class="switch">
-                                    <input type="checkbox" id="erbVToggle" onchange="updateToggleField('erbV', this.checked, 'badgeErb')">
-                                    <span class="slider"></span>
-                                </label>
-                            </div>
+                            <div class="form-hint"><i class="fas fa-info-circle"></i> يظهر كنص متحرك أسفل الهيدر في كل صفحات الشبكة</div>
                         </div>
                     </div>
                 </div>
@@ -1165,7 +1117,7 @@
                         <div class="form-group">
                             <label class="form-label" for="mobaInput"><i class="fas fa-link"></i> رابط البث المباشر</label>
                             <div style="display: flex; gap: 8px;">
-                                <input type="url" class="form-control" id="mobaInput" placeholder="https://..." oninput="updateConfigField('moba', this.value)">
+                                <input type="url" class="form-control" id="mobaInput" placeholder="fiberlive/live.html أو رابط خارجي" oninput="updateConfigField('moba', this.value)">
                                 <button class="btn btn-outline btn-icon" onclick="testLink('mobaInput')" title="تجربة الرابط"><i class="fas fa-external-link-alt"></i></button>
                             </div>
                         </div>
@@ -1194,15 +1146,15 @@
                                 <input type="url" class="form-control" id="estrInput" placeholder="مثال: http://10.0.0.1/lounge أو رابط خارجي" oninput="updateConfigField('estr', this.value)">
                                 <button class="btn btn-outline btn-icon" onclick="testLink('estrInput')" title="تجربة الرابط"><i class="fas fa-external-link-alt"></i></button>
                             </div>
-                            <div class="form-hint"><i class="fas fa-lightbulb" style="color: #f59e0b;"></i> يمكنك تفعيل أو تعطيل الزر في أي وقت بالمفتاح بالأعلى</div>
+                            <div class="form-hint"><i class="fas fa-lightbulb" style="color: #f59e0b;"></i> يتم تفعيل أو إخفاء الزر تلقائياً في صفحة تم تسجيل دخولك بنجاح</div>
                         </div>
 
                         <!-- Ads & Image Slider Settings -->
                         <div class="feature-toggle-card" style="margin-top: 24px;">
                             <div class="feature-toggle-info">
-                                <div class="feature-toggle-icon" style="color: #10b981; background: rgba(16, 185, 129, 0.15);"><i class="fas fa-images"></i></div>
+                                <div class="feature-toggle-icon" style="color: #10b981; background: rgba(168, 185, 129, 0.15);"><i class="fas fa-images"></i></div>
                                 <div>
-                                    <div class="feature-toggle-title">شريط الإعلانات والبنرات المتحرك (Banner Carousel)</div>
+                                    <div class="feature-toggle-title">شريط الإعلانات والبنرات (Banner Carousel)</div>
                                     <div class="feature-toggle-desc">تفعيل أو إيقاف ظهور سلايدر البنرات الإعلانية في الصفحة الرئيسية</div>
                                 </div>
                             </div>
@@ -1215,20 +1167,13 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label class="form-label" for="imageCountInput"><i class="fas fa-layer-group"></i> عدد صور البنر المعروضة</label>
-                            <input type="number" class="form-control" id="imageCountInput" min="1" max="10" oninput="updateConfigField('imageCount', this.value); updateStats();">
-                            
-                            <div class="banner-guide-box" style="margin-top: 12px; background: rgba(16, 185, 129, 0.08); border: 1px dashed rgba(16, 185, 129, 0.35); border-radius: 10px; padding: 14px 16px;">
-                                <div style="display: flex; align-items: center; gap: 8px; color: #10b981; font-weight: 700; font-size: 0.92rem; margin-bottom: 8px;">
-                                    <i class="fas fa-folder-open"></i> أين تضع صور البنرات؟ وكيف تسميها؟
-                                </div>
-                                <ul style="margin: 0; padding-right: 18px; color: var(--text-muted); font-size: 0.85rem; line-height: 1.7;">
-                                    <li>المجلد المخصص للبنرات هو: <code style="color: #60a5fa; background: rgba(59, 130, 246, 0.15); padding: 2px 6px; border-radius: 4px; font-weight: 600;">adimg/</code></li>
-                                    <li>قم بتسمية الصور بأرقام تسلسلية بصيغة JPG: <code style="color: #f59e0b;">1.jpg</code> و <code style="color: #f59e0b;">2.jpg</code> و <code style="color: #f59e0b;">3.jpg</code> ... حتى الرقم المحدد.</li>
-                                    <li>المقاس الموصى به لأفضل وضوح وسرعة: <strong>1200 × 500 بكسل</strong> (أو أي نسبة عرض 2.4:1 تقريباً).</li>
-                                </ul>
+                        <div class="banner-guide-box" style="margin-top: 12px; background: rgba(16, 185, 129, 0.08); border: 1px dashed rgba(16, 185, 129, 0.35); border-radius: 10px; padding: 14px 16px;">
+                            <div style="display: flex; align-items: center; gap: 8px; color: #10b981; font-weight: 700; font-size: 0.92rem; margin-bottom: 8px;">
+                                <i class="fas fa-folder-open"></i> ملاحظة حول صور البانر (الاكتشاف التلقائي)
                             </div>
+                            <p style="margin: 0; color: var(--text-muted); font-size: 0.85rem; line-height: 1.7;">
+                                يتم اكتشاف وعرض جميع الصور الموجودة في مجلد <code style="color: #60a5fa; background: rgba(59, 130, 246, 0.15); padding: 2px 6px; border-radius: 4px; font-weight: 600;">adimg/</code> تلقائياً وبشكل ديناميكي (من 1 إلى 7 صور مثل 1.jpg و 2.jpg وغيرها) دون الحاجة لتحديد عدد الصور يدوياً.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -1484,37 +1429,107 @@
     <!-- TOAST CONTAINER -->
     <div class="toast-container" id="toastContainer"></div>
 
+    <!-- DEFINE CONFIG INTERCEPTOR BEFORE LOADING config/config.js -->
+    <script>
+        let rawHotspotConfig = {};
+        let appConfig = {
+            siteName: "شبكة الشعار نت",
+            supportPhone: "714587786",
+            whatsappPhone: "967714587786",
+            whatsappMsg: "مرحبا خدمة عملاء شبكة {network-name} اللاسلكية",
+            textSlider1: "بسم الله الرحمن الرحيم { قل للمؤمنين يغضوا من أبصارهم ويحفظوا فروجهم ذلك أزكى لهم إن الله خبير بما يصنعون } (النور:30)",
+            moba: "fiberlive/live.html",
+            mobaV: true,
+            estr: "fiberlive/live.html",
+            estrV: true,
+            imageV: true,
+            speedOptions: [
+                { label: "السرعة الافتراضية", value: "", selected: true, visible: true, badge: "" },
+                { label: "سرعة منخفضة 512", value: "128K/512K", selected: false, visible: true, badge: "" },
+                { label: "سرعة عادية 1 ميجا", value: "256K/1024K", selected: false, visible: true, badge: "" },
+                { label: "سرعة متوسطة 2 ميجا", value: "512K/2048K", selected: false, visible: true, badge: "" },
+                { label: "السرعة المفتوحة", value: "1024K/4096K", selected: false, visible: true, badge: "" }
+            ],
+            offersTitle: "البث المباشر:",
+            offers: "استمتع بمشاهدة البث المباشر والمباريات عبر الرابط التالي:",
+            offersBtnText: "📺 مشاهدة البث المباشر والمباريات",
+            offersBtnUrl: "fiberlive/live.html",
+            offersBtnV: true,
+            packages: [
+                { price: "100 ريال", vl: "2 ايام", time: "3 ساعات", size: "180 ميجا" },
+                { price: "150 ريال", vl: "4 ايام", time: "5 ساعات", size: "250 ميجا" },
+                { price: "250 ريال", vl: "7 ايام", time: "10 ساعات", size: "650 ميجا" },
+                { price: "500 ريال", vl: "20 يوم", time: "25 ساعة", size: "1400 ميجا" },
+                { price: "1000 ريال", vl: "شهر", time: "60 ساعة", size: "3 جيجا" },
+                { price: "5000 ريال", vl: "شهر", time: "شهر", size: "15 جيجا" }
+            ],
+            salesPoints: ["جميع البقالات المجاوره للشبكه"]
+        };
+
+        function mapHotspotConfigToApp(cfg) {
+            if (!cfg || typeof cfg !== 'object') return;
+            if (cfg['network-name'] !== undefined) appConfig.siteName = cfg['network-name'];
+            if (cfg['service-number'] !== undefined) {
+                appConfig.supportPhone = cfg['service-number'];
+                const rawNum = cfg['service-number'].toString().replace(/\D/g, '');
+                appConfig.whatsappPhone = rawNum.startsWith('967') ? rawNum : ('967' + rawNum);
+            }
+            if (cfg['news-line'] !== undefined) appConfig.textSlider1 = cfg['news-line'];
+            if (cfg['redirect-to-mobasher'] !== undefined) {
+                appConfig.moba = cfg['redirect-to-mobasher'];
+                appConfig.mobaV = Boolean(cfg['redirect-to-mobasher'] && cfg['redirect-to-mobasher'].trim().length > 0);
+            }
+            if (cfg['redirect-to-esterahah'] !== undefined) {
+                appConfig.estr = cfg['redirect-to-esterahah'];
+                appConfig.estrV = Boolean(cfg['redirect-to-esterahah'] && cfg['redirect-to-esterahah'].trim().length > 0);
+            }
+            if (cfg['popup-adv-img-type'] !== undefined) {
+                appConfig.imageV = Boolean(cfg['popup-adv-img-type']);
+            }
+            if (cfg['news-extra-title'] !== undefined) appConfig.offersTitle = cfg['news-extra-title'];
+            if (cfg['news-extra-content'] !== undefined) appConfig.offers = cfg['news-extra-content'];
+            if (cfg['news-extra-badge'] !== undefined) appConfig.offersBtnUrl = cfg['news-extra-badge'];
+            
+            // Speeds
+            if (Array.isArray(cfg['speeds'])) {
+                appConfig.speedOptions = cfg['speeds'].map(s => ({
+                    label: s.name || '',
+                    value: s.value !== undefined ? s.value : '',
+                    selected: Boolean(s.isDefault),
+                    visible: s.visible !== undefined ? Boolean(s.visible) : true,
+                    badge: s.badge || ''
+                }));
+            }
+
+            // Profiles (Packages)
+            if (Array.isArray(cfg.profiles)) {
+                appConfig.packages = cfg.profiles.map(p => ({
+                    price: p.price || '',
+                    vl: p.validity || '',
+                    time: p.time || '',
+                    size: p.transfer || ''
+                }));
+            }
+
+            // Sales points
+            if (Array.isArray(cfg['sell-points'])) {
+                appConfig.salesPoints = cfg['sell-points'].map(sp => typeof sp === 'object' ? (sp.name || '') : sp);
+            }
+        }
+
+        // INTERCEPT Config(...) CALL FROM config/config.js
+        window.Config = function(cfg) {
+            window.hotspotConfig = cfg;
+            rawHotspotConfig = Object.assign({}, cfg);
+            mapHotspotConfigToApp(cfg);
+        };
+    </script>
+
     <!-- INCLUDE DEFAULT CONFIG -->
-    <script src="config.js"></script>
+    <script src="config/config.js"></script>
 
     <!-- MAIN DASHBOARD SCRIPT -->
     <script>
-        // GLOBAL CONFIG STATE
-        let appConfig = {
-            siteName: "BH-NET",
-            welcomeMessage: "مرحبا بكم في شبكة BH-NET اللاسلكية",
-            welcomeMessageV: true,
-            erbV: true,
-            textSlider1: "",
-            supportPhone: "738348945",
-            whatsappPhone: "967738348945",
-            whatsappMsg: "مرحبا خدمة عملاء شبكة {network-name} اللاسلكية",
-            speedOptions: [],
-            imageCount: "7",
-            imageV: true,
-            packages: [],
-            offersTitle: "عروض ومميزات الشبكة الحصرية 🔥",
-            offers: "",
-            offersBtnText: "📺 مشاهدة البث المباشر والمباريات",
-            offersBtnUrl: "https://kor.fntvs.net/channel.php",
-            offersBtnV: true,
-            salesPoints: [],
-            estr: "",
-            estrV: false,
-            moba: "https://kor.fntvs.net/channel.php",
-            mobaV: true
-        };
-
         // INITIALIZE ON LOAD
         document.addEventListener('DOMContentLoaded', function () {
             loadInitialConfig();
@@ -1522,12 +1537,10 @@
         });
 
         function loadInitialConfig() {
-            // Check if window.siteConfig exists from config.js
-            if (window.siteConfig && typeof window.siteConfig === 'object') {
-                appConfig = JSON.parse(JSON.stringify(window.siteConfig));
+            if (window.hotspotConfig && typeof window.hotspotConfig === 'object') {
+                mapHotspotConfigToApp(window.hotspotConfig);
             }
 
-            // Also check localStorage for unsaved edits
             const cached = localStorage.getItem('mikrotik_bhnet_dash_config');
             if (cached) {
                 try {
@@ -1539,17 +1552,6 @@
                     console.warn('Could not parse cached config');
                 }
             }
-
-            // Ensure defaults
-            if (appConfig.estrV === undefined) appConfig.estrV = Boolean(appConfig.estr && appConfig.estr.trim().length > 0);
-            if (appConfig.mobaV === undefined) appConfig.mobaV = true;
-            if (appConfig.welcomeMessageV === undefined) appConfig.welcomeMessageV = true;
-            if (appConfig.erbV === undefined) appConfig.erbV = true;
-            if (appConfig.imageV === undefined) appConfig.imageV = true;
-            if (appConfig.offersBtnV === undefined) appConfig.offersBtnV = true;
-            if (!appConfig.supportPhone) appConfig.supportPhone = "738348945";
-            if (!appConfig.whatsappPhone) appConfig.whatsappPhone = "967738348945";
-            if (!appConfig.whatsappMsg) appConfig.whatsappMsg = "مرحبا خدمة عملاء شبكة {network-name} اللاسلكية";
         }
 
         function saveToCache() {
@@ -1560,35 +1562,46 @@
 
         // RENDER ALL FIELDS
         function renderAll() {
-            // Inputs
-            document.getElementById('siteNameInput').value = appConfig.siteName || '';
-            if (document.getElementById('subDecTextInput')) {
-                document.getElementById('subDecTextInput').value = appConfig.subDecText || 'للإنترنت اللاسلكي';
+            if (document.getElementById('siteNameInput')) {
+                document.getElementById('siteNameInput').value = appConfig.siteName || '';
             }
-            document.getElementById('supportPhoneInput').value = appConfig.supportPhone || '';
-            document.getElementById('whatsappPhoneInput').value = appConfig.whatsappPhone || '';
-            document.getElementById('whatsappMsgInput').value = appConfig.whatsappMsg || '';
-            document.getElementById('welcomeMessageInput').value = appConfig.welcomeMessage || '';
-            document.getElementById('textSlider1Input').value = appConfig.textSlider1 || '';
-            document.getElementById('mobaInput').value = appConfig.moba || '';
-            document.getElementById('estrInput').value = appConfig.estr || '';
-            document.getElementById('imageCountInput').value = appConfig.imageCount || '0';
+            if (document.getElementById('supportPhoneInput')) {
+                document.getElementById('supportPhoneInput').value = appConfig.supportPhone || '';
+            }
+            if (document.getElementById('whatsappPhoneInput')) {
+                document.getElementById('whatsappPhoneInput').value = appConfig.whatsappPhone || '';
+            }
+            if (document.getElementById('whatsappMsgInput')) {
+                document.getElementById('whatsappMsgInput').value = appConfig.whatsappMsg || '';
+            }
+            if (document.getElementById('textSlider1Input')) {
+                document.getElementById('textSlider1Input').value = appConfig.textSlider1 || '';
+            }
+            if (document.getElementById('mobaInput')) {
+                document.getElementById('mobaInput').value = appConfig.moba || '';
+            }
+            if (document.getElementById('estrInput')) {
+                document.getElementById('estrInput').value = appConfig.estr || '';
+            }
             
-            // Offers Modal Fields
-            document.getElementById('offersTitleInput').value = appConfig.offersTitle || '';
-            document.getElementById('offersInput').value = appConfig.offers || '';
-            document.getElementById('offersBtnTextInput').value = appConfig.offersBtnText || '';
-            document.getElementById('offersBtnUrlInput').value = appConfig.offersBtnUrl || '';
+            if (document.getElementById('offersTitleInput')) {
+                document.getElementById('offersTitleInput').value = appConfig.offersTitle || '';
+            }
+            if (document.getElementById('offersInput')) {
+                document.getElementById('offersInput').value = appConfig.offers || '';
+            }
+            if (document.getElementById('offersBtnTextInput')) {
+                document.getElementById('offersBtnTextInput').value = appConfig.offersBtnText || '';
+            }
+            if (document.getElementById('offersBtnUrlInput')) {
+                document.getElementById('offersBtnUrlInput').value = appConfig.offersBtnUrl || '';
+            }
 
-            // Toggles
-            setToggle('welcomeMessageVToggle', 'badgeWelcome', Boolean(appConfig.welcomeMessageV));
-            setToggle('erbVToggle', 'badgeErb', Boolean(appConfig.erbV));
             setToggle('mobaVToggle', 'badgeMoba', Boolean(appConfig.mobaV));
             setToggle('estrVToggle', 'badgeEstr', Boolean(appConfig.estrV));
             setToggle('imageVToggle', 'badgeImage', Boolean(appConfig.imageV));
             setToggle('offersBtnVToggle', 'badgeOffersBtn', Boolean(appConfig.offersBtnV));
 
-            // Dynamic tables & grids
             renderSpeedTable();
             renderPackages();
             renderSalesPoints();
@@ -1614,6 +1627,7 @@
                 badge.className = `status-badge ${value ? 'active' : 'inactive'}`;
             }
             saveToCache();
+            updateStats();
             showToast(`تم ${value ? 'تفعيل' : 'تعطيل'} الإعداد بنجاح`, 'info');
         }
 
@@ -1631,10 +1645,18 @@
         }
 
         function updateStats() {
-            document.getElementById('statSpeedsCount').textContent = (appConfig.speedOptions || []).length;
-            document.getElementById('statPackagesCount').textContent = (appConfig.packages || []).length;
-            document.getElementById('statSalesCount').textContent = (appConfig.salesPoints || []).length;
-            document.getElementById('statImagesCount').textContent = appConfig.imageCount || '0';
+            if (document.getElementById('statSpeedsCount')) {
+                document.getElementById('statSpeedsCount').textContent = (appConfig.speedOptions || []).length;
+            }
+            if (document.getElementById('statPackagesCount')) {
+                document.getElementById('statPackagesCount').textContent = (appConfig.packages || []).length;
+            }
+            if (document.getElementById('statSalesCount')) {
+                document.getElementById('statSalesCount').textContent = (appConfig.salesPoints || []).length;
+            }
+            if (document.getElementById('statBannerStatus')) {
+                document.getElementById('statBannerStatus').textContent = appConfig.imageV ? 'مفعل' : 'معطل';
+            }
         }
 
         // SPEED OPTIONS
@@ -1661,7 +1683,7 @@
                         <input type="text" value="${spd.label || ''}" placeholder="اسم السرعة" oninput="editSpeed(${index}, 'label', this.value)">
                     </td>
                     <td>
-                        <input type="text" value="${spd.value || ''}" placeholder="مثال: 4M/8M أو فارغ" oninput="editSpeed(${index}, 'value', this.value)">
+                        <input type="text" value="${spd.value !== undefined ? spd.value : ''}" placeholder="مثال: 512K/2048K أو فارغ" oninput="editSpeed(${index}, 'value', this.value)">
                     </td>
                     <td style="text-align: center;">
                         <input type="radio" name="defaultSpeedRadio" ${spd.selected ? 'checked' : ''} onchange="setDefaultSpeed(${index})" style="width: 18px; height: 18px; cursor: pointer; accent-color: #3b82f6;">
@@ -1678,8 +1700,10 @@
             if (!appConfig.speedOptions) appConfig.speedOptions = [];
             appConfig.speedOptions.push({
                 label: `سرعة جديدة ${appConfig.speedOptions.length + 1}`,
-                value: "4M/8M",
-                selected: appConfig.speedOptions.length === 0
+                value: "512K/2048K",
+                selected: appConfig.speedOptions.length === 0,
+                visible: true,
+                badge: ""
             });
             saveToCache();
             renderSpeedTable();
@@ -1734,23 +1758,23 @@
                 card.innerHTML = `
                     <div class="pkg-row">
                         <span class="pkg-label">اسم الباقة / الصلاحية</span>
-                        <input type="text" class="pkg-input" value="${pkg.vl || ''}" placeholder="مثال: باقة 3 أيام" oninput="editPackage(${index}, 'vl', this.value)">
+                        <input type="text" class="pkg-input" value="${pkg.vl || ''}" placeholder="مثال: 4 ايام" oninput="editPackage(${index}, 'vl', this.value)">
                     </div>
 
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
                         <div class="pkg-row">
                             <span class="pkg-label">الوقت</span>
-                            <input type="text" class="pkg-input" value="${pkg.time || ''}" placeholder="مفتوح" oninput="editPackage(${index}, 'time', this.value)">
+                            <input type="text" class="pkg-input" value="${pkg.time || ''}" placeholder="5 ساعات" oninput="editPackage(${index}, 'time', this.value)">
                         </div>
                         <div class="pkg-row">
                             <span class="pkg-label">حجم الرصيد</span>
-                            <input type="text" class="pkg-input" value="${pkg.size || ''}" placeholder="1.5 جيجا" oninput="editPackage(${index}, 'size', this.value)">
+                            <input type="text" class="pkg-input" value="${pkg.size || ''}" placeholder="250 ميجا" oninput="editPackage(${index}, 'size', this.value)">
                         </div>
                     </div>
 
                     <div class="pkg-row">
                         <span class="pkg-label">السعر</span>
-                        <input type="text" class="pkg-input pkg-price-input" value="${pkg.price || ''}" placeholder="200 ريال" oninput="editPackage(${index}, 'price', this.value)">
+                        <input type="text" class="pkg-input pkg-price-input" value="${pkg.price || ''}" placeholder="150 ريال" oninput="editPackage(${index}, 'price', this.value)">
                     </div>
 
                     <div class="pkg-actions">
@@ -1764,10 +1788,10 @@
         function addNewPackageCard() {
             if (!appConfig.packages) appConfig.packages = [];
             appConfig.packages.push({
-                vl: `باقة جديدة ${appConfig.packages.length + 1}`,
+                vl: `باقة جديدة`,
                 time: "مفتوح",
-                size: "5 جيجا",
-                price: "500 ريال"
+                size: "1 جيجا",
+                price: "300 ريال"
             });
             saveToCache();
             renderPackages();
@@ -1844,9 +1868,152 @@
             }
         }
 
-        // GENERATE CONFIG CODE STRING
+        // GENERATE CONFIG.JS MATCHING EXACT OFFICIAL TEMPLATE & COMMENTS
         function generateConfigJS() {
-            return `window.siteConfig = ${JSON.stringify(appConfig, null, 4)};\n`;
+            const speedsJson = (appConfig.speedOptions || []).map(s => {
+                return `    { "name": ${JSON.stringify(s.label || '')}, "value": ${JSON.stringify(s.value !== undefined ? s.value : '')}, "visible": ${s.visible !== false}, "isDefault": ${Boolean(s.selected)}, "badge": ${JSON.stringify(s.badge || '')} },`;
+            }).join('\n');
+
+            const profilesJson = (appConfig.packages || []).map(p => {
+                return `    { price: ${JSON.stringify(p.price || '')}, validity: ${JSON.stringify(p.vl || '')}, time: ${JSON.stringify(p.time || '')}, transfer: ${JSON.stringify(p.size || '')} },`;
+            }).join('\n');
+
+            const salesPointsJson = (appConfig.salesPoints || []).map(sp => {
+                return `    { name: ${JSON.stringify(sp || '')} },`;
+            }).join('\n');
+
+            const esterahahVal = Boolean(appConfig.estrV) ? (appConfig.estr || "") : "";
+            const mobaherVal = Boolean(appConfig.mobaV) ? (appConfig.moba || "fiberlive/live.html") : "";
+
+            return `Config({
+  // =========================================================================
+  // 1. البيانات الأساسية للشبكة (الاسم، الدعم الفني، الشريط الإخباري)
+  // =========================================================================
+
+  // اسم الشبكة الذي يظهر في أعلى الصفحة والترويسة
+  "network-name": ${JSON.stringify(appConfig.siteName || "شبكة الشعار نت")},
+
+  // رقم خدمة العملاء / واتساب / الدعم الفني للاتصال والاستفسار
+  "service-number": ${JSON.stringify(appConfig.supportPhone || "714587786")},
+
+  // =========================================================================
+  // 👇 [نص الشريط الإخباري المتحرك] 👇
+  // اكتب هنا النص الذي تريده أن يتحرك في الشريط (آيات قرآنية، إعلانات، تنبيهات)
+  // =========================================================================
+  "news-line":
+    ${JSON.stringify(appConfig.textSlider1 || "")},
+
+  // =========================================================================
+  // 2. البانر الإعلاني المتحرك والصور الإعلانية
+  // =========================================================================
+  // قائمة صور البانر الإعلاني (يتم اكتشافها وعرضها تلقائياً بالكامل من 1 إلى 7 صور بحسب ما هو موجود في مجلد adimg)
+  // اتركه فارغاً [] للاكتشاف التلقائي لجميع الصور (من 1 إلى 7 صور)، أو يمكنك تحديد قائمة مخصصة هنا
+  "ad-images": [],
+  "popup-adv-time": 5,           // مدة ظهور الإعلان بالثواني قبل إمكانية إغلاقه
+  "popup-adv-img-type": ${Boolean(appConfig.imageV)},    // تفعيل عرض صورة الإعلان
+  "popup-adv-repeat-after": 120, // تكرار ظهور الإعلان بعد عدد معين من الدقائق
+
+  // =========================================================================
+  // 3. إعدادات تسجيل الدخول ونوع الكرت
+  // =========================================================================
+  "login-type": "User",          // نوع تسجيل الدخول (User: مستخدم فقط / UserPass: مستخدم وكلمة مرور)
+  "login-chap": 0,               // نوع التشفير (0: عادي / 1: CHAP)
+  "input-type": "tel",           // نوع لوحة المفاتيح في الهاتف (tel: أرقام لسرعة الإدخال)
+  "input-autocomplete": "on",    // إكمال تلقائي لأرقام الكروت المحفوظة
+
+  // =========================================================================
+  // 4. إعدادات تغيير سرعة الإنترنت أثناء الاتصال
+  // =========================================================================
+  "login-speeds-mode": true,      // تفعيل ميزة اختيار السرعة قبل الدخول
+  "speed-trychange": 3,           // أقصى عدد لمرات تغيير السرعة المسموح بها للمشترك
+  "speed-trychange-timeout": 3,   // مدة حظر تغيير السرعة بالدقائق عند تجاوز المحاولات
+
+  // =========================================================================
+  // 4.1 قائمة السرعات المتاحة (تحكم كامل من هنا بلمسة واحدة!)
+  // =========================================================================
+  // لكل سرعة:
+  //   name       → الاسم الذي يظهر للمستخدم في الصفحة
+  //   value      → القيمة التي ترسل للميكروتيك (يجب تطابقها مع profile name في الراوتر)
+  //   visible    → true: ظاهرة للمستخدم | false: مخفية (موقوفة)
+  //   isDefault  → true: هذه هي السرعة المختارة افتراضياً عند فتح الصفحة (سرعة واحدة فقط)
+  //   badge      → نص الشارة الملونة بجانب الاسم (اختياري - اتركه "" لإخفائه)
+  // =========================================================================
+  "speeds": [
+${speedsJson}
+  ],
+
+  // =========================================================================
+  // 5. إعدادات معالجة وتصحيح أرقام الكروت المدخلة
+  // =========================================================================
+  "input-rm-white-spaces": 0,    // إزالة المسافات الفارغة تلقائياً
+  "input-to-lower": 0,           // تحويل الحروف الإنجليزية إلى صغيرة
+  "input-to-upper": 0,           // تحويل الحروف الإنجليزية إلى كبيرة
+  "input-to-arabic-numbers": 1,  // تحويل الأرقام العربية (١٢٣) إلى إنجليزية (123) تلقائياً
+  "input-only-numbers": 0,       // قبول الأرقام فقط في حقل الكرت
+  "input-no-numbers": 0,
+  "input-only-alphanumeric": 0,
+  "input-to-tel-type-when": 0,
+
+  // =========================================================================
+  // 6. إعدادات الكوكيز وحفظ الكرت في المتصفح
+  // =========================================================================
+  "enable-hot-cookie": 1,        // تفعيل حفظ كرت المستخدم لتسهيل الدخول التلقائي
+  "clear-router-cookie": 1,      // مسح كوكيز الراوتر عند تسجيل الخروج
+  "clear-hot-cookie": 1,         // مسح كوكيز الصفحة عند تسجيل الخروج
+
+  // =========================================================================
+  // 7. نظام مكافحة التخمين والحظر التلقائي (HotBlocker)
+  // =========================================================================
+  "enable-hot-blocker": 1,       // تفعيل نظام حظر التخمين والمحاولات الخاطئة
+  "try-count": 20,               // عدد المحاولات الخاطئة المسموح بها قبل فرض الحظر
+  "warn-when": 10,               // بدء إظهار رسالة التحذير عند الوصول لهذا العدد من الأخطاء
+  "block-time": 1,               // مدة الحظر بالدقائق عند تجاوز عدد المحاولات المسموحة
+  // نص رسالة التحذير التي تظهر للعميل عند تكرار إدخال كروت خاطئة
+  "warn-message":
+    "تحذير !! عدد محاولاتك الخاطئة اصبح {{tryCounter}} محاولات, عدد المحاولات المسموح بها هي {{tryCount}} محاولات فقط, عدد محاولاتك المتبقية {{restTryCount}} محاولات, سيتم حظرك لمدة {{blockTime}} دقائق اذا تجاوزت العدد المسموح للمحاولات",
+
+  // =========================================================================
+  // 8. إظهار وإخفاء أزرار القائمة والشاشات
+  // =========================================================================
+  "price-button": true,          // إظهار زر قائمة أسعار الكروت (true: نعم / false: لا)
+  "sell-point-button": true,     // إظهار زر نقاط البيع وأماكن التوزيع (true: نعم / false: لا)
+  "loan-button": true,           // إظهار زر خدمة الاستدانة / كرت سلف (true: نعم / false: لا)
+  "app-store-status-button": false,
+  "show-date-field": false,
+
+  // =========================================================================
+  // 9. الروابط الخارجية (البث المباشر / الاستراحة / متجر البرامج)
+  // =========================================================================
+  "redirect-to-esterahah": ${JSON.stringify(esterahahVal)},   // رابط صفحة الاستراحة / الترفيه (اختياري)
+  "redirect-to-mobasher": ${JSON.stringify(mobaherVal)},    // رابط البث المباشر والمباريات (مجلد fiberlive)
+  "app-store-base-url": "",
+  "app-store-base-url-ext": "",
+
+  // =========================================================================
+  // 10. جدول باقات وأسعار الكروت (منقولة من مشروع alshiarnet)
+  // =========================================================================
+  profiles: [
+${profilesJson}
+  ],
+
+  // =========================================================================
+  // 11. نقاط البيع ومراكز توزيع الكروت (منقولة من مشروع alshiarnet)
+  // =========================================================================
+  "sell-points": [
+${salesPointsJson}
+  ],
+
+  // =========================================================================
+  // 12. نصوص جديدنا والعروض (البث المباشر ورابطه فقط)
+  // =========================================================================
+  "news-title": "",
+  "news-content": "",
+  "news-code": "",
+  "news-extra-title": ${JSON.stringify(appConfig.offersTitle || "البث المباشر:")},
+  "news-extra-content": ${JSON.stringify(appConfig.offers || "استمتع بمشاهدة البث المباشر والمباريات عبر الرابط التالي:")},
+  "news-extra-badge": ${JSON.stringify(appConfig.offersBtnUrl || "fiberlive/live.html")},
+});
+`;
         }
 
         // DOWNLOAD FILE
@@ -1862,14 +2029,14 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
 
-            showToast('تم تحميل ملف config.js بنجاح!', 'success');
+            showToast('تم تحميل ملف config.js متوافق مع الميكروتيك 100%!', 'success');
         }
 
         // COPY CODE
         function copyConfigCode() {
             const code = generateConfigJS();
             navigator.clipboard.writeText(code).then(() => {
-                showToast('تم نسخ كود config.js إلى الحافظة!', 'success');
+                showToast('تم نسخ كود config.js بالكامل مع الملاحظات!', 'success');
             }).catch(() => {
                 showToast('تعذر النسخ تلقائياً، يرجى النسخ اليدوي', 'error');
             });
@@ -1932,17 +2099,26 @@
 
         function parseAndApplyConfig(content) {
             try {
-                let jsonStr = content;
-                if (content.includes('window.siteConfig')) {
+                // Try executing Config(...) safely via Function
+                let capturedConfig = null;
+                const mockConfig = function(c) { capturedConfig = c; };
+                
+                try {
+                    const fn = new Function('Config', 'window', content);
+                    fn(mockConfig, { siteConfig: null, hotspotConfig: null });
+                } catch(e) {
+                    // fallback JSON extraction
+                    let jsonStr = content;
                     const startIdx = content.indexOf('{');
                     const endIdx = content.lastIndexOf('}');
                     if (startIdx !== -1 && endIdx !== -1) {
                         jsonStr = content.substring(startIdx, endIdx + 1);
+                        capturedConfig = JSON.parse(jsonStr);
                     }
                 }
-                const parsed = JSON.parse(jsonStr);
-                if (parsed && typeof parsed === 'object') {
-                    appConfig = Object.assign({}, appConfig, parsed);
+
+                if (capturedConfig && typeof capturedConfig === 'object') {
+                    mapHotspotConfigToApp(capturedConfig);
                     saveToCache();
                     renderAll();
                     closeModal('importModal');

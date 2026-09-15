@@ -3,42 +3,74 @@
 
 <head>
     <meta charset="UTF-8">
-    <!-- منع اختفاء أو وميض الصفحة نهائياً عند التحديث للمسجلين وغير المسجلين وبدء العرض الفوري -->
+    <!-- منع اختفاء أو وميض الصفحة نهائياً عند التحديث للمسجلين وغير المسجلين وبدء العرض الفوري فوري 0ms -->
     <script>
         (function() {
             var m = "$(logged-in)";
             var c = false;
             try { c = localStorage.getItem("hotspot_logged_in") === "yes"; } catch (e) {}
-            var isLog = (m === "yes") || (m === "$(logged-in)" && c);
+            var isLog = (m === "yes") || (m === "$(logged-in)" && c) || (c && m !== "no");
             var root = document.documentElement;
             if (isLog) {
-                root.className = (root.className + " is-mTik-logged-in").trim();
+                root.classList.add("is-mTik-logged-in");
+                root.classList.remove("is-mTik-logged-out");
             } else {
-                root.className = (root.className + " is-mTik-logged-out").trim();
+                root.classList.add("is-mTik-logged-out");
+                root.classList.remove("is-mTik-logged-in");
             }
         })();
     </script>
     <style id="mTik-screen-shield">
-        /* تثبيت ظهور الشاشة كاملة فوراً مثل الشريط السفلي تماماً بدون أي اختفاء أو وميض */
+        /* تثبيت ظهور شاشة تسجيل الدخول أو شاشة تم تسجيل الدخول بنجاح فوراً بدون أي تأخير أو وميض أو أنيميشن تبطئ العرض */
         html.is-mTik-logged-in #login {
             display: none !important;
             visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
         }
-        html.is-mTik-logged-in #status {
-            display: block !important;
+        html.is-mTik-logged-in #status,
+        html.is-mTik-logged-in #status.app,
+        #status.active,
+        #status {
+            display: none;
+            position: static !important;
             opacity: 1 !important;
             visibility: visible !important;
+            pointer-events: auto !important;
+            background: transparent !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            animation: none !important;
+            transition: none !important;
+        }
+        html.is-mTik-logged-in #status,
+        html.is-mTik-logged-in #status.app,
+        html.is-mTik-logged-in #status.active,
+        #status.active {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+        html.is-mTik-logged-in #status .modal-sheet-card {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            background: transparent !important;
             animation: none !important;
             transition: none !important;
         }
         html.is-mTik-logged-out #status {
             display: none !important;
             visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
         }
         html.is-mTik-logged-out #login {
             display: block !important;
-            opacity: 1 !important;
             visibility: visible !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
             animation: none !important;
             transition: none !important;
         }
@@ -55,8 +87,6 @@
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
     <link rel="preload" href="fonts/almarai-400-ar.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fonts/almarai-700-ar.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="adimg/2.jpg" as="image" fetchpriority="high">
-    <link rel="preload" href="adimg/4.jpg" as="image">
     <link rel="stylesheet" href="fonts/Almarai.css">
     <link rel="stylesheet" href="css/fontello.min.css">
     <link rel="stylesheet" href="css/style.min.css">
@@ -66,15 +96,126 @@
     <!-- تهيئة وتحميل إعدادات الشبكة فورياً لمنع أي وميض للأسماء أو النصوص -->
     <script>
         window.hotspotConfig = window.hotspotConfig || {};
+
+        function applyHotspotConfigInstant(cfg) {
+            cfg = cfg || window.hotspotConfig || {};
+            if (!cfg || typeof cfg !== 'object') return;
+            
+            // 1. Network Name & Title
+            if (cfg['network-name']) {
+                var netName = cfg['network-name'];
+                document.title = netName.includes("شبكة") ? (netName + " اللاسلكية") : ("شبكة " + netName + " اللاسلكية");
+                document.querySelectorAll('[data-network-name]').forEach(function(el) {
+                    if (el.tagName === 'TITLE') {
+                        el.innerText = netName.includes("شبكة") ? (netName + " اللاسلكية") : ("شبكة " + netName + " اللاسلكية");
+                    } else {
+                        el.innerText = netName;
+                    }
+                });
+            }
+
+            // 2. Service Phone & WhatsApp
+            if (cfg['service-number']) {
+                var rawPhone = (cfg['service-number'] + '').replace(/\D/g, '');
+                var waPhone = rawPhone.startsWith('967') ? rawPhone : ('967' + rawPhone);
+                var netTitle = cfg['network-name'] || 'الشبكة';
+                var waMsg = encodeURIComponent('مرحبا خدمة عملاء ' + netTitle + ' اللاسلكية');
+
+                document.querySelectorAll('a[href^="tel:"], .support-btn-call, .fab-support').forEach(function(el) {
+                    el.setAttribute('href', 'tel:' + rawPhone);
+                });
+
+                document.querySelectorAll('a[href^="whatsapp:"], .support-btn-whatsapp').forEach(function(el) {
+                    el.setAttribute('href', 'whatsapp://send?phone=' + waPhone + '&text=' + waMsg);
+                });
+
+                document.querySelectorAll('[data-service-number], .contact').forEach(function(el) {
+                    el.innerText = 'خدمة العملاء: ' + rawPhone;
+                });
+
+                document.querySelectorAll('[data-service-phone-btn]').forEach(function(el) {
+                    el.innerText = 'اتصال: ' + rawPhone;
+                });
+
+                document.querySelectorAll('[data-service-number-val]').forEach(function(el) {
+                    el.innerText = rawPhone;
+                });
+            }
+
+            // 3. News Line (Ticker)
+            if (cfg['news-line']) {
+                document.querySelectorAll('[data-news-line], .marquee').forEach(function(el) {
+                    el.innerText = cfg['news-line'];
+                });
+            }
+
+            // 4. External Links (Esterahah & Mobasher)
+            var estrUrl = cfg['redirect-to-esterahah'];
+            document.querySelectorAll('[data-esterahah]').forEach(function(el) {
+                if (estrUrl && typeof estrUrl === 'string' && estrUrl.trim() !== '') {
+                    el.style.visibility = 'visible';
+                    el.style.display = 'flex';
+                    el.classList.remove('is-hidden');
+                    el.setAttribute('href', estrUrl);
+                    el.setAttribute('target', '_blank');
+                    el.setAttribute('rel', 'noopener noreferrer');
+                } else {
+                    el.style.visibility = 'hidden';
+                    el.style.display = 'none';
+                    el.classList.add('is-hidden');
+                }
+            });
+
+            var mobaUrl = cfg['redirect-to-mobasher'];
+            document.querySelectorAll('[data-mobasher]').forEach(function(el) {
+                if (mobaUrl && typeof mobaUrl === 'string' && mobaUrl.trim() !== '') {
+                    el.style.visibility = 'visible';
+                    el.style.display = 'flex';
+                    el.classList.remove('is-hidden');
+                    el.setAttribute('href', mobaUrl);
+                    el.setAttribute('target', '_blank');
+                    el.setAttribute('rel', 'noopener noreferrer');
+                } else {
+                    el.style.visibility = 'hidden';
+                    el.style.display = 'none';
+                    el.classList.add('is-hidden');
+                }
+            });
+
+            // 5. News Extra
+            if (cfg['news-extra-title']) {
+                document.querySelectorAll('[data-news-extra-title]').forEach(function(el) {
+                    el.innerText = '📺 ' + cfg['news-extra-title'];
+                });
+            }
+            if (cfg['news-extra-content']) {
+                document.querySelectorAll('[data-news-extra-content]').forEach(function(el) {
+                    el.innerText = cfg['news-extra-content'];
+                });
+            }
+            if (cfg['news-extra-badge']) {
+                document.querySelectorAll('[data-news-extra-badge]').forEach(function(el) {
+                    el.setAttribute('href', cfg['news-extra-badge']);
+                });
+            }
+        }
+
         function Config(cfg) {
             window.hotspotConfig = cfg;
             if (typeof hotspotConfig !== 'undefined') {
                 hotspotConfig = cfg;
             }
+            if (typeof applyHotspotConfigInstant === 'function') {
+                applyHotspotConfigInstant(cfg);
+            }
             if (typeof onConfigLoaded === 'function') {
                 try { onConfigLoaded(); } catch(e) {}
             }
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            applyHotspotConfigInstant(window.hotspotConfig);
+        });
     </script>
     <script src="config/config.js"></script>
 
@@ -85,27 +226,49 @@
             __isCachedLoggedIn = localStorage.getItem("hotspot_logged_in") === "yes";
         } catch (e) {}
 
-        var __isUserLoggedIn = (__mTikLoggedIn === "yes") || (__mTikLoggedIn === "$(logged-in)" && __isCachedLoggedIn);
+        var __isUserLoggedIn = (__mTikLoggedIn === "yes") || (__mTikLoggedIn === "$(logged-in)" && __isCachedLoggedIn) || (__isCachedLoggedIn && __mTikLoggedIn !== "no");
+
+        function __applyCachedStatusInstant() {
+            try {
+                var cachedStr = localStorage.getItem("hotspot_status_cache");
+                if (!cachedStr) return;
+                var c = JSON.parse(cachedStr);
+                if (typeof updateStatusDOM === "function") {
+                    updateStatusDOM(c);
+                } else {
+                    function _fmtB(b, rm) {
+                        var num = Number(b);
+                        if (isNaN(num) || num <= 0) return rm ? "مفتوح" : "0 بايت";
+                        if (num < 1024) return num + " بايت";
+                        if (num < 1048576) return (num / 1024).toFixed(1).replace(/\.0$/, "") + " كيلوبايت";
+                        if (num < 1073741824) return (num / 1048576).toFixed(1).replace(/\.0$/, "") + " ميجابايت";
+                        return (num / 1073741824).toFixed(2).replace(/\.00$/, "").replace(/\.([0-9])0$/, ".$1") + " جيجابايت";
+                    }
+                    function _fmtT(t) {
+                        if (!t || t === "0s" || t === "0") return "مفتوح";
+                        return String(t).replace(/(\d+)h/g, "$1س ").replace(/(\d+)m/g, "$1د ").replace(/(\d+)s/g, "$1ث").replace(/(\d+)d/g, "$1يوم ");
+                    }
+                    if (c.bytes_out) { var el = document.getElementById("bytes_out"); if (el) el.innerText = _fmtB(c.bytes_out, false); }
+                    if (c.bytes_in) { var el = document.getElementById("bytes_in"); if (el) el.innerText = _fmtB(c.bytes_in, false); }
+                    if (c.remain_bytes_total) { var el = document.getElementById("remain_bytes_total"); if (el) el.innerText = _fmtB(c.remain_bytes_total, true); }
+                    if (c.uptime) { var el = document.getElementById("uptime"); if (el) el.innerText = _fmtT(c.uptime); }
+                    if (c.session_time_left) { var el = document.getElementById("session_time_left"); if (el) el.innerText = _fmtT(c.session_time_left); }
+                    if (c.sspeed) {
+                        var spVal = String(c.sspeed).split("_")[0];
+                        var elSp = document.getElementById("sspeed");
+                        if (elSp) elSp.innerText = spVal;
+                        var elTrig = document.getElementById("statusSpeedTriggerText");
+                        if (elTrig) elTrig.innerText = spVal;
+                    }
+                }
+            } catch(e) {}
+        }
 
         if (__isUserLoggedIn) {
-            function __applyCachedStatusInstant() {
-                try {
-                    var cachedStr = localStorage.getItem("hotspot_status_cache");
-                    if (!cachedStr) return;
-                    var c = JSON.parse(cachedStr);
-                    if (typeof updateStatusDOM === "function") {
-                        updateStatusDOM(c);
-                    } else {
-                        for (var k in c) {
-                            var el = document.getElementById(k);
-                            if (el && typeof c[k] === "string" && !el.innerText) {
-                                el.innerText = c[k];
-                            }
-                        }
-                    }
-                } catch(e) {}
+            __applyCachedStatusInstant();
+            if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", __applyCachedStatusInstant, { once: true, passive: true });
             }
-            document.addEventListener("DOMContentLoaded", __applyCachedStatusInstant, { once: true, passive: true });
         }
     </script>
 
@@ -342,25 +505,21 @@
 
 
 
-                    <!-- 2026 Swipeable Touch Carousel (Instant zero-delay rendering) -->
+                    <!-- ADS_CAROUSEL_START -->
                     <div class="ads-carousel-wrapper">
                          <div class="carousel-container" id="adCarousel">
                              <div class="carousel-track" id="carouselTrack">
                                  <div class="carousel-slide">
-                                     <img class="im2" src="./adimg/2.jpg" alt="إعلان 1" fetchpriority="high" loading="eager" decoding="sync">
-                                 </div>
-                                 <div class="carousel-slide">
-                                     <img class="im4" src="./adimg/4.jpg" alt="إعلان 2" loading="eager" decoding="async">
+                                     <img class="im4" src="./adimg/4.jpg" alt="إعلان" fetchpriority="high" loading="eager" decoding="sync">
                                  </div>
                              </div>
-                             <button class="carousel-nav-btn prev" id="carouselPrev" aria-label="السابق">❮</button>
-                             <button class="carousel-nav-btn next" id="carouselNext" aria-label="التالي">❯</button>
+                             <button class="carousel-nav-btn prev" id="carouselPrev" aria-label="السابق" style="display: none;">❮</button>
+                             <button class="carousel-nav-btn next" id="carouselNext" aria-label="التالي" style="display: none;">❯</button>
                          </div>
-                         <div class="carousel-dots" id="carouselDots">
-                             <span class="carousel-dot active"></span>
-                             <span class="carousel-dot"></span>
+                         <div class="carousel-dots" id="carouselDots" style="display: none;">
                          </div>
                      </div>
+                    <!-- ADS_CAROUSEL_END -->
 
                     <!-- ========================================================================= -->
                     <!-- الشريط الإخباري المتحرك (تحت البنر) -->
@@ -464,26 +623,26 @@
                                 <path
                                     d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 11.9 12 12.5 12 14h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z" />
                             </svg>
-                            <span class="support-title">خدمة العملاء</span>
+                            <span class="support-title" data-service-number>خدمة العملاء: 714587786</span>
                         </div>
                         <div class="support-actions-grid">
                             <!-- WhatsApp Button with Country Code +967 and formatted pre-filled greeting message -->
-                            <a href="whatsapp://send?phone=967738348945&text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%20%D8%AE%D8%AF%D9%85%D8%A9%20%D8%B9%D9%85%D9%84%D8%A7%D8%A1%20%D8%B4%D8%A8%D9%83%D8%A9%20BH-NET%20%D8%A7%D9%84%D9%84%D8%A7%D8%B3%D9%84%D9%83%D9%8A%D8%A9"
+                            <a href="whatsapp://send?phone=967714587786&text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%20%D8%AE%D8%AF%D9%85%D8%A9%20%D8%B9%D9%85%D9%84%D8%A7%D8%A1%20%D8%B4%D8%A8%D9%83%D8%A9%20%D8%A7%D9%84%D8%B4%D8%B9%D8%A7%D8%B1%20%D9%86%D8%AA%20%D8%A7%D9%84%D9%84%D8%A7%D8%B3%D9%84%D9%83%D9%8A%D8%A9"
                                 class="support-btn support-btn-whatsapp" aria-label="مراسلة واتساب">
                                 <svg viewBox="0 0 24 24" class="support-btn-icon">
                                     <path
                                         d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2zm5.8 14.16c-.24.68-1.2 1.28-1.92 1.34-.69.06-1.58.08-4.57-1.16-3.82-1.58-6.28-5.47-6.47-5.73-.19-.25-1.57-2.09-1.57-3.99s.99-2.84 1.34-3.23c.35-.38.77-.48 1.03-.48.26 0 .52.01.75.02.24.01.56-.09.87.66.32.77 1.09 2.66 1.18 2.86.1.19.16.42.03.68-.13.25-.19.41-.38.64-.19.23-.4.51-.57.69-.19.19-.39.4-.17.78.22.38.98 1.62 2.11 2.62 1.45 1.29 2.67 1.69 3.05 1.88.38.19.61.16.83-.1.23-.26.96-1.12 1.22-1.5.26-.38.51-.32.86-.19.35.13 2.22 1.05 2.6 1.24.38.19.64.29.74.45.09.16.09.92-.15 1.6z" />
                                 </svg>
-                                <span>مراسلة واتساب</span>
+                                <span>واتساب الدعم</span>
                             </a>
 
                             <!-- Direct Phone Call Button (Without country code for native phone dialer) -->
-                            <a href="tel:738348945" class="support-btn support-btn-call" aria-label="اتصال مباشر">
+                            <a href="tel:714587786" class="support-btn support-btn-call" aria-label="اتصال مباشر">
                                 <svg viewBox="0 0 24 24" class="support-btn-icon">
                                     <path
                                         d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-2.2 2.2a15.11 15.11 0 01-6.59-6.59l2.2-2.21a.96.96 0 00.25-1A11.36 11.36 0 018.5 3.99c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.61c0-.55-.45-1-1-1z" />
                                 </svg>
-                                <span>اتصال هاتفي</span>
+                                <span data-service-phone-btn>اتصال: 714587786</span>
                             </a>
                         </div>
                     </div>
@@ -776,12 +935,12 @@
                                     </svg>
                                     <span>رجوع</span>
                                 </button>
-                                <a href="tel:738348945" class="fab-support">
+                                <a href="tel:714587786" class="fab-support">
                                     <svg viewBox="0 0 24 24">
                                         <path
                                             d="M20 15.5c-1.25 0-2.45-.2-3.57-.57a1.02 1.02 0 00-1.02.24l-2.2 2.2a15.045 15.045 0 01-6.59-6.59l2.2-2.21a.96.96 0 00.25-1A11.36 11.36 0 018.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z" />
                                     </svg>
-                                    <span class="contact" data-service-number>خدمة العملاء: 738348945</span>
+                                    <span class="contact" data-service-number>خدمة العملاء: 714587786</span>
                                 </a>
                             </div>
                         </div>
@@ -812,12 +971,12 @@
                                     </svg>
                                     <span>رجوع</span>
                                 </button>
-                                <a href="tel:738348945" class="fab-support">
+                                <a href="tel:714587786" class="fab-support">
                                     <svg viewBox="0 0 24 24">
                                         <path
                                             d="M20 15.5c-1.25 0-2.45-.2-3.57-.57a1.02 1.02 0 00-1.02.24l-2.2 2.2a15.045 15.045 0 01-6.59-6.59l2.2-2.21a.96.96 0 00.25-1A11.36 11.36 0 018.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z" />
                                     </svg>
-                                    <span class="contact" data-service-number>خدمة العملاء: 738348945</span>
+                                    <span class="contact" data-service-number>خدمة العملاء: 714587786</span>
                                 </a>
                             </div>
                         </div>
@@ -868,12 +1027,12 @@
                                     </svg>
                                     <span>رجوع</span>
                                 </button>
-                                <a href="tel:738348945" class="fab-support">
+                                <a href="tel:714587786" class="fab-support">
                                     <svg viewBox="0 0 24 24">
                                         <path
                                             d="M20 15.5c-1.25 0-2.45-.2-3.57-.57a1.02 1.02 0 00-1.02.24l-2.2 2.2a15.045 15.045 0 01-6.59-6.59l2.2-2.21a.96.96 0 00.25-1A11.36 11.36 0 018.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z" />
                                     </svg>
-                                    <span class="contact" data-service-number>خدمة العملاء: 738348945</span>
+                                    <span class="contact" data-service-number>خدمة العملاء: 714587786</span>
                                 </a>
                             </div>
                         </div>
@@ -956,6 +1115,12 @@
                                         d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 14H3V5h18v12zm-11-2l6-4-6-4v8z" />
                                 </svg>
                                 <span>البث المباشر والقنوات الرياضية</span>
+                            </a>
+                            <a class="stream-card-link esterahah-card-link" href="fiberlive/live.html" target="_blank" rel="noopener noreferrer" data-esterahah>
+                                <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                                </svg>
+                                <span>صفحة الاستراحة والترفيه</span>
                             </a>
                         </div>
 
@@ -1092,7 +1257,7 @@
                             </div>
                             <div class="support-actions-grid">
                                 <!-- WhatsApp Button with Country Code +967 and formatted pre-filled greeting message -->
-                                <a href="whatsapp://send?phone=967738348945&text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%20%D8%AE%D8%AF%D9%85%D8%A9%20%D8%B9%D9%85%D9%84%D8%A7%D8%A1%20%D8%B4%D8%A8%D9%83%D8%A9%20BH-NET%20%D8%A7%D9%84%D9%84%D8%A7%D8%B3%D9%84%D9%83%D9%8A%D8%A9"
+                                <a href="whatsapp://send?phone=967714587786&text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%20%D8%AE%D8%AF%D9%85%D8%A9%20%D8%B9%D9%85%D9%84%D8%A7%D8%A1%20%D8%B4%D8%A8%D9%83%D8%A9%20%D8%A7%D9%84%D8%B4%D8%B9%D8%A7%D8%B1%20%D9%86%D8%AA%20%D8%A7%D9%84%D9%84%D8%A7%D8%B3%D9%84%D9%83%D9%8A%D8%A9"
                                     class="support-btn support-btn-whatsapp" aria-label="مراسلة واتساب">
                                     <svg viewBox="0 0 24 24" class="support-btn-icon">
                                         <path
@@ -1102,7 +1267,7 @@
                                 </a>
 
                                 <!-- Direct Phone Call Button (Without country code for native phone dialer) -->
-                                <a href="tel:738348945" class="support-btn support-btn-call" aria-label="اتصال مباشر">
+                                <a href="tel:714587786" class="support-btn support-btn-call" aria-label="اتصال مباشر">
                                     <svg viewBox="0 0 24 24" class="support-btn-icon">
                                         <path
                                             d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-2.2 2.2a15.11 15.11 0 01-6.59-6.59l2.2-2.21a.96.96 0 00.25-1A11.36 11.36 0 018.5 3.99c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.61c0-.55-.45-1-1-1z" />
@@ -1116,28 +1281,36 @@
                         <script>
                             (function() {
                                 try {
-                                    var m = "$(logged-in)";
-                                    var c = localStorage.getItem("hotspot_logged_in") === "yes";
-                                    if (m === "yes" || (m !== "no" && c)) {
-                                        var cachedStr = localStorage.getItem("hotspot_status_cache");
-                                        if (cachedStr) {
-                                            var d = JSON.parse(cachedStr);
-                                            function fb(b, rm) {
-                                                var num = parseFloat(b);
-                                                if (isNaN(num) || num <= 0) return rm ? "مفتوح" : "0 ميجابايت";
-                                                var gb = num / 1073741824;
-                                                if (gb >= 1) return gb.toFixed(2) + " جيجابايت";
-                                                var mb = num / 1048576;
-                                                if (mb >= 1) return mb.toFixed(1) + " ميجابايت";
-                                                var kb = num / 1024;
-                                                return kb.toFixed(0) + " كيلوبايت";
-                                            }
-                                            if (d.bytes_out) { var el = document.getElementById("bytes_out"); if (el) el.innerText = fb(d.bytes_out, false); }
-                                            if (d.bytes_in) { var el = document.getElementById("bytes_in"); if (el) el.innerText = fb(d.bytes_in, false); }
-                                            if (d.remain_bytes_total) { var el = document.getElementById("remain_bytes_total"); if (el) el.innerText = fb(d.remain_bytes_total, true); }
-                                            if (d.uptime) { var el = document.getElementById("uptime"); if (el) el.innerText = d.uptime; }
-                                            if (d.session_time_left) { var el = document.getElementById("session_time_left"); if (el) el.innerText = d.session_time_left; }
-                                            if (d.sspeed) { var el = document.getElementById("sspeed"); if (el) el.innerText = d.sspeed.split("_")[0]; }
+                                    var cachedStr = localStorage.getItem("hotspot_status_cache");
+                                    if (cachedStr) {
+                                        var d = JSON.parse(cachedStr);
+                                        function fb(b, rm) {
+                                            var num = Number(b);
+                                            if (isNaN(num) || num <= 0) return rm ? "مفتوح" : "0 بايت";
+                                            if (num < 1024) return num + " بايت";
+                                            if (num < 1048576) return (num / 1024).toFixed(1).replace(/\.0$/, "") + " كيلوبايت";
+                                            if (num < 1073741824) return (num / 1048576).toFixed(1).replace(/\.0$/, "") + " ميجابايت";
+                                            return (num / 1073741824).toFixed(2).replace(/\.00$/, "").replace(/\.([0-9])0$/, ".$1") + " جيجابايت";
+                                        }
+                                        function fu(u) {
+                                            if (!u) return "-";
+                                            return String(u).replace(/(\d+)h/g, "$1س ").replace(/(\d+)m/g, "$1د ").replace(/(\d+)s/g, "$1ث").replace(/(\d+)d/g, "$1يوم ");
+                                        }
+                                        function ft(t) {
+                                            if (!t || t === "0s" || t === "0") return "مفتوح";
+                                            return String(t).replace(/(\d+)h/g, "$1س ").replace(/(\d+)m/g, "$1د ").replace(/(\d+)s/g, "$1ث").replace(/(\d+)d/g, "$1يوم ");
+                                        }
+                                        if (d.bytes_out) { var el = document.getElementById("bytes_out"); if (el) el.innerText = fb(d.bytes_out, false); }
+                                        if (d.bytes_in) { var el = document.getElementById("bytes_in"); if (el) el.innerText = fb(d.bytes_in, false); }
+                                        if (d.remain_bytes_total) { var el = document.getElementById("remain_bytes_total"); if (el) el.innerText = fb(d.remain_bytes_total, true); }
+                                        if (d.uptime) { var el = document.getElementById("uptime"); if (el) el.innerText = fu(d.uptime); }
+                                        if (d.session_time_left) { var el = document.getElementById("session_time_left"); if (el) el.innerText = ft(d.session_time_left); }
+                                        if (d.sspeed) {
+                                            var spVal = String(d.sspeed).split("_")[0];
+                                            var elSp = document.getElementById("sspeed");
+                                            if (elSp) elSp.innerText = spVal;
+                                            var elTrig = document.getElementById("statusSpeedTriggerText");
+                                            if (elTrig) elTrig.innerText = spVal;
                                         }
                                     }
                                 } catch (e) {}
@@ -1180,7 +1353,7 @@
                             </div>
                             <div class="support-actions-grid">
                                 <!-- WhatsApp Button with Country Code +967 and formatted pre-filled greeting message -->
-                                <a href="whatsapp://send?phone=967738348945&text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%20%D8%AE%D8%AF%D9%85%D8%A9%20%D8%B9%D9%85%D9%84%D8%A7%D8%A1%20%D8%B4%D8%A8%D9%83%D8%A9%20BH-NET%20%D8%A7%D9%84%D9%84%D8%A7%D8%B3%D9%84%D9%83%D9%8A%D8%A9"
+                                <a href="whatsapp://send?phone=967714587786&text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%20%D8%AE%D8%AF%D9%85%D8%A9%20%D8%B9%D9%85%D9%84%D8%A7%D8%A1%20%D8%B4%D8%A8%D9%83%D8%A9%20%D8%A7%D9%84%D8%B4%D8%B9%D8%A7%D8%B1%20%D9%86%D8%AA%20%D8%A7%D9%84%D9%84%D8%A7%D8%B3%D9%84%D9%83%D9%8A%D8%A9"
                                     class="support-btn support-btn-whatsapp" aria-label="مراسلة واتساب">
                                     <svg viewBox="0 0 24 24" class="support-btn-icon">
                                         <path
@@ -1188,7 +1361,7 @@
                                     </svg>
                                     <span>مراسلة واتساب</span>
                                 </a>
-                                <a href="tel:738348945" class="support-btn support-btn-call" aria-label="اتصال مباشر">
+                                <a href="tel:714587786" class="support-btn support-btn-call" aria-label="اتصال مباشر">
                                     <svg viewBox="0 0 24 24" class="support-btn-icon">
                                         <path
                                             d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-2.2 2.2a15.11 15.11 0 01-6.59-6.59l2.2-2.21a.96.96 0 00.25-1A11.36 11.36 0 018.5 3.99c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.61c0-.55-.45-1-1-1z" />
@@ -1217,12 +1390,12 @@
                             <div class="wrapper" id="grid"></div>
                         </div>
                         <button class="app-logout button app-submit back">الصفحة السابقة</button>
-                        <a href="tel:738348945" class="fab-support">
+                        <a href="tel:714587786" class="fab-support">
                             <svg viewBox="0 0 24 24">
                                 <path
                                     d="M20 15.5c-1.25 0-2.45-.2-3.57-.57a1.02 1.02 0 00-1.02.24l-2.2 2.2a15.045 15.045 0 01-6.59-6.59l2.2-2.21a.96.96 0 00.25-1A11.36 11.36 0 018.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z" />
                             </svg>
-                            <span class="contact back" data-service-number>خدمة العملاء: 738348945</span>
+                            <span class="contact back" data-service-number>خدمة العملاء: 714587786</span>
                         </a>
                     </div>
                 </div>
@@ -1300,7 +1473,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
-            // 1. CAROUSEL SEAMLESS INFINITE LOOP & AUTOPLAY (Fully Automatic Detection 1 to 7 images)
+            // 1. CAROUSEL SEAMLESS INFINITE LOOP & AUTOPLAY (Fully Dynamic Auto Detection 1 to 7 images)
             const track = document.getElementById('carouselTrack');
             const dotsContainer = document.getElementById('carouselDots');
             const prevBtn = document.getElementById('carouselPrev');
@@ -1314,11 +1487,15 @@
                 let isTransitioning = false;
                 let currentIndex = 1;
 
-                const initCarousel = () => {
+                function stopAutoplay() {
                     if (autoplayInterval) {
                         clearInterval(autoplayInterval);
                         autoplayInterval = null;
                     }
+                }
+
+                function setupCarouselBehavior(totalSlides) {
+                    stopAutoplay();
                     if (transitionSafetyTimeout) {
                         clearTimeout(transitionSafetyTimeout);
                         transitionSafetyTimeout = null;
@@ -1326,98 +1503,50 @@
                     isTransitioning = false;
                     currentIndex = 1;
 
-                    // 1. تشغيل الشرائح الحالية في الصفحة فوراً بدون أي تأخير (0ms)
-                    const initialSlides = Array.from(track.querySelectorAll('.carousel-slide:not(.carousel-clone)'));
-                    if (initialSlides.length === 0) {
-                        if (wrapper) wrapper.style.display = 'none';
-                    } else {
-                        if (wrapper) wrapper.style.display = '';
-                        setupCarouselBehavior(initialSlides.length);
-                    }
-
-                    // 2. فحص ذكي في الخلفية لاكتشاف أي صور جديدة مضافة (1 إلى 7) أو محذوفة ومزامنتها تلقائياً
-                    const candidates = (window.hotspotConfig && Array.isArray(window.hotspotConfig['ad-images']) && window.hotspotConfig['ad-images'].length > 0)
-                        ? window.hotspotConfig['ad-images']
-                        : ['./adimg/1.jpg', './adimg/2.jpg', './adimg/3.jpg', './adimg/4.jpg', './adimg/5.jpg', './adimg/6.jpg', './adimg/7.jpg'];
-
-                    Promise.all(candidates.map((src, index) => {
-                        return new Promise((resolve) => {
-                            const probe = new Image();
-                            let settled = false;
-                            const done = (ok) => {
-                                if (settled) return;
-                                settled = true;
-                                resolve(ok ? { index, src } : null);
-                            };
-                            probe.onload = () => done(true);
-                            probe.onerror = () => done(false);
-                            setTimeout(() => done(false), 2000);
-                            probe.src = src;
-                        });
-                    })).then(results => {
-                        const valid = results.filter(Boolean).sort((a, b) => a.index - b.index).map(r => r.src);
-                        const currentSrcs = Array.from(track.querySelectorAll('.carousel-slide:not(.carousel-clone) img')).map(img => img.getAttribute('src'));
-                        
-                        const isSame = valid.length === currentSrcs.length && valid.every((src, i) => src === currentSrcs[i]);
-                        if (!isSame) {
-                            buildDynamicSlides(valid);
-                        }
-                    });
-
-                    function buildDynamicSlides(sources) {
-                        if (sources.length === 0) {
-                            track.innerHTML = '';
-                            if (wrapper) wrapper.style.display = 'none';
-                            return;
-                        }
-                        if (wrapper) wrapper.style.display = '';
-                        track.innerHTML = '';
-                        sources.forEach((src, idx) => {
-                            const slide = document.createElement('div');
-                            slide.className = 'carousel-slide';
-                            const img = document.createElement('img');
-                            img.className = 'im' + (idx + 1);
-                            img.src = src;
-                            img.alt = 'إعلان ' + (idx + 1);
-                            img.loading = 'eager';
-                            img.decoding = idx === 0 ? 'sync' : 'async';
-                            slide.appendChild(img);
-                            track.appendChild(slide);
-                        });
-                        setupCarouselBehavior(sources.length);
-                    }
-                };
-
-                function setupCarouselBehavior(totalSlides) {
+                    // Remove all previous clones
                     track.querySelectorAll('.carousel-clone').forEach(el => el.remove());
 
-                    if (dotsContainer) {
-                        dotsContainer.innerHTML = '';
-                        if (totalSlides > 1) {
-                            dotsContainer.style.display = '';
-                            for (let i = 0; i < totalSlides; i++) {
-                                const d = document.createElement('span');
-                                d.className = i === 0 ? 'carousel-dot active' : 'carousel-dot';
-                                dotsContainer.appendChild(d);
-                            }
-                        } else {
-                            dotsContainer.style.display = 'none';
-                        }
-                    }
-
-                    if (totalSlides <= 1) {
-                        track.style.transition = 'none';
-                        track.style.transform = 'translateX(0%)';
+                    // Case 0: No images present
+                    if (totalSlides <= 0) {
+                        if (wrapper) wrapper.style.display = 'none';
+                        if (dotsContainer) dotsContainer.style.display = 'none';
                         if (prevBtn) prevBtn.style.display = 'none';
                         if (nextBtn) nextBtn.style.display = 'none';
                         return;
                     }
 
+                    if (wrapper) wrapper.style.display = '';
+
+                    // Case 1: Exactly 1 image present -> Clean static banner mode
+                    if (totalSlides === 1) {
+                        track.style.transition = 'none';
+                        track.style.transform = 'translateX(0%)';
+                        if (prevBtn) prevBtn.style.display = 'none';
+                        if (nextBtn) nextBtn.style.display = 'none';
+                        if (dotsContainer) {
+                            dotsContainer.innerHTML = '';
+                            dotsContainer.style.display = 'none';
+                        }
+                        return;
+                    }
+
+                    // Case 2: 2 to 7 images present -> Multi-slide infinite loop mode
                     if (prevBtn) prevBtn.style.display = '';
                     if (nextBtn) nextBtn.style.display = '';
 
+                    // Setup Dots
+                    if (dotsContainer) {
+                        dotsContainer.innerHTML = '';
+                        dotsContainer.style.display = '';
+                        for (let i = 0; i < totalSlides; i++) {
+                            const d = document.createElement('span');
+                            d.className = i === 0 ? 'carousel-dot active' : 'carousel-dot';
+                            dotsContainer.appendChild(d);
+                        }
+                    }
+
                     const originalSlides = Array.from(track.querySelectorAll('.carousel-slide:not(.carousel-clone)'));
-                    if (originalSlides.length !== totalSlides || totalSlides <= 0) return;
+                    if (originalSlides.length !== totalSlides || totalSlides <= 1) return;
 
                     const firstClone = originalSlides[0].cloneNode(true);
                     const lastClone = originalSlides[totalSlides - 1].cloneNode(true);
@@ -1428,121 +1557,251 @@
                     track.appendChild(firstClone);
 
                     track.style.transition = 'none';
-                    track.style.transform = `translateX(-100%)`;
+                    track.style.transform = 'translateX(-100%)';
                     void track.offsetHeight;
 
                     bindEvents(totalSlides);
                 }
 
-                    function bindEvents(totalSlides) {
-                        const dots = dotsContainer ? dotsContainer.querySelectorAll('.carousel-dot') : [];
+                function bindEvents(totalSlides) {
+                    const dots = dotsContainer ? dotsContainer.querySelectorAll('.carousel-dot') : [];
 
-                        function updateDots() {
-                            const realIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-                            dots.forEach((dot, idx) => {
-                                dot.classList.toggle('active', idx === realIndex);
+                    function updateDots() {
+                        const realIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+                        dots.forEach((dot, idx) => {
+                            dot.classList.toggle('active', idx === realIndex);
+                        });
+                    }
+
+                    function goToSlide(index, animated = true) {
+                        currentIndex = index;
+                        if (animated) {
+                            track.style.transition = 'transform 0.45s cubic-bezier(0.25, 1, 0.5, 1)';
+                        } else {
+                            track.style.transition = 'none';
+                        }
+                        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                        updateDots();
+
+                        clearTimeout(transitionSafetyTimeout);
+                        if (animated) {
+                            isTransitioning = true;
+                            transitionSafetyTimeout = setTimeout(() => {
+                                checkCloneReset();
+                                isTransitioning = false;
+                            }, 500);
+                        }
+                    }
+
+                    function checkCloneReset() {
+                        if (currentIndex === totalSlides + 1) {
+                            track.style.transition = 'none';
+                            currentIndex = 1;
+                            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                            void track.offsetHeight;
+                        } else if (currentIndex === 0) {
+                            track.style.transition = 'none';
+                            currentIndex = totalSlides;
+                            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                            void track.offsetHeight;
+                        }
+                        isTransitioning = false;
+                    }
+
+                    track.ontransitionend = (e) => {
+                        if (e.target === track && e.propertyName === 'transform') {
+                            checkCloneReset();
+                        }
+                    };
+
+                    function nextSlide() {
+                        if (isTransitioning) return;
+                        goToSlide(currentIndex + 1);
+                    }
+
+                    function prevSlide() {
+                        if (isTransitioning) return;
+                        goToSlide(currentIndex - 1);
+                    }
+
+                    function startAutoplay() {
+                        stopAutoplay();
+                        if (totalSlides <= 1) return;
+                        autoplayInterval = setInterval(() => {
+                            nextSlide();
+                        }, 4000);
+                    }
+
+                    if (prevBtn) prevBtn.onclick = () => { prevSlide(); startAutoplay(); };
+                    if (nextBtn) nextBtn.onclick = () => { nextSlide(); startAutoplay(); };
+
+                    dots.forEach((dot, idx) => {
+                        dot.onclick = () => {
+                            if (isTransitioning) return;
+                            goToSlide(idx + 1);
+                            startAutoplay();
+                        };
+                    });
+
+                    // Touch Swipe Gestures for Mobile
+                    let touchStartX = 0;
+                    let touchEndX = 0;
+
+                    if (carouselContainer) {
+                        carouselContainer.ontouchstart = (e) => {
+                            if (totalSlides <= 1) return;
+                            touchStartX = e.changedTouches[0].screenX;
+                            stopAutoplay();
+                        };
+
+                        carouselContainer.ontouchend = (e) => {
+                            if (totalSlides <= 1) return;
+                            touchEndX = e.changedTouches[0].screenX;
+                            const diff = touchEndX - touchStartX;
+                            if (Math.abs(diff) > 40) {
+                                if (diff > 0) {
+                                    prevSlide();
+                                } else {
+                                    nextSlide();
+                                }
+                            }
+                            startAutoplay();
+                        };
+                    }
+
+                    startAutoplay();
+                }
+
+                function normalizeAdPath(p) {
+                    return (p || '').replace(/^(\.\/|\/)/, '').trim().toLowerCase();
+                }
+
+                function buildDynamicSlides(sources) {
+                    if (!sources || sources.length === 0) {
+                        track.innerHTML = '';
+                        if (wrapper) wrapper.style.display = 'none';
+                        setupCarouselBehavior(0);
+                        return;
+                    }
+                    if (wrapper) wrapper.style.display = '';
+                    track.innerHTML = '';
+                    sources.forEach((src, idx) => {
+                        const slide = document.createElement('div');
+                        slide.className = 'carousel-slide';
+                        const img = document.createElement('img');
+                        img.className = 'im' + (idx + 1);
+                        img.src = src;
+                        img.alt = 'إعلان ' + (idx + 1);
+                        img.loading = 'eager';
+                        img.decoding = idx === 0 ? 'sync' : 'async';
+                        img.onerror = function () {
+                            slide.remove();
+                            const remaining = Array.from(track.querySelectorAll('.carousel-slide:not(.carousel-clone)'));
+                            setupCarouselBehavior(remaining.length);
+                        };
+                        slide.appendChild(img);
+                        track.appendChild(slide);
+                    });
+                    setupCarouselBehavior(sources.length);
+                }
+
+                const initCarousel = () => {
+                    // Attach fallback onerror to existing server-rendered slides
+                    track.querySelectorAll('.carousel-slide:not(.carousel-clone) img').forEach(img => {
+                        img.onerror = function () {
+                            const pSlide = img.closest('.carousel-slide');
+                            if (pSlide) pSlide.remove();
+                            const remaining = Array.from(track.querySelectorAll('.carousel-slide:not(.carousel-clone)'));
+                            setupCarouselBehavior(remaining.length);
+                        };
+                    });
+
+                    // 1. تشغيل الشرائح الحالية في الصفحة فوراً بدون أي تأخير (0ms)
+                    const initialSlides = Array.from(track.querySelectorAll('.carousel-slide:not(.carousel-clone)'));
+                    if (initialSlides.length === 0) {
+                        if (wrapper) wrapper.style.display = 'none';
+                    } else {
+                        if (wrapper) wrapper.style.display = '';
+                        setupCarouselBehavior(initialSlides.length);
+                    }
+
+                    // 2. فحص ديناميكي شامل للصور (1 إلى 7) في مجلد adimg
+                    const probeAllCandidateImages = () => {
+                        const formats = ['.jpg', '.png', '.jpeg', '.webp'];
+                        const candidateList = [];
+                        
+                        if (window.hotspotConfig && Array.isArray(window.hotspotConfig['ad-images']) && window.hotspotConfig['ad-images'].length > 0) {
+                            window.hotspotConfig['ad-images'].forEach(src => {
+                                if (src && typeof src === 'string') candidateList.push(src);
                             });
                         }
 
-                        function goToSlide(index, animated = true) {
-                            currentIndex = index;
-                            if (animated) {
-                                track.style.transition = 'transform 0.45s cubic-bezier(0.25, 1, 0.5, 1)';
-                            } else {
-                                track.style.transition = 'none';
-                            }
-                            track.style.transform = `translateX(-${currentIndex * 100}%)`;
-                            updateDots();
-
-                            clearTimeout(transitionSafetyTimeout);
-                            if (animated) {
-                                isTransitioning = true;
-                                transitionSafetyTimeout = setTimeout(() => {
-                                    checkCloneReset();
-                                    isTransitioning = false;
-                                }, 500);
-                            }
+                        for (let num = 1; num <= 7; num++) {
+                            formats.forEach(ext => {
+                                candidateList.push(`./adimg/${num}${ext}`);
+                            });
                         }
 
-                        function checkCloneReset() {
-                            if (currentIndex === totalSlides + 1) {
-                                track.style.transition = 'none';
-                                currentIndex = 1;
-                                track.style.transform = `translateX(-${currentIndex * 100}%)`;
-                                void track.offsetHeight;
-                            } else if (currentIndex === 0) {
-                                track.style.transition = 'none';
-                                currentIndex = totalSlides;
-                                track.style.transform = `translateX(-${currentIndex * 100}%)`;
-                                void track.offsetHeight;
-                            }
-                            isTransitioning = false;
-                        }
+                        const uniqueCandidates = Array.from(new Set(candidateList));
 
-                        track.ontransitionend = (e) => {
-                            if (e.target === track && e.propertyName === 'transform') {
-                                checkCloneReset();
-                            }
-                        };
-
-                        function nextSlide() {
-                            if (isTransitioning) return;
-                            goToSlide(currentIndex + 1);
-                        }
-
-                        function prevSlide() {
-                            if (isTransitioning) return;
-                            goToSlide(currentIndex - 1);
-                        }
-
-                        function startAutoplay() {
-                            stopAutoplay();
-                            autoplayInterval = setInterval(() => {
-                                nextSlide();
-                            }, 4000);
-                        }
-
-                        function stopAutoplay() {
-                            if (autoplayInterval) clearInterval(autoplayInterval);
-                        }
-
-                        if (prevBtn) prevBtn.onclick = () => { prevSlide(); startAutoplay(); };
-                        if (nextBtn) nextBtn.onclick = () => { nextSlide(); startAutoplay(); };
-
-                        dots.forEach((dot, idx) => {
-                            dot.onclick = () => {
-                                if (isTransitioning) return;
-                                goToSlide(idx + 1);
-                                startAutoplay();
-                            };
-                        });
-
-                        // Touch Swipe Gestures for Mobile
-                        let touchStartX = 0;
-                        let touchEndX = 0;
-
-                        if (carouselContainer) {
-                            carouselContainer.ontouchstart = (e) => {
-                                touchStartX = e.changedTouches[0].screenX;
-                                stopAutoplay();
-                            };
-
-                            carouselContainer.ontouchend = (e) => {
-                                touchEndX = e.changedTouches[0].screenX;
-                                const diff = touchEndX - touchStartX;
-                                if (Math.abs(diff) > 40) {
-                                    if (diff > 0) {
-                                        prevSlide();
-                                    } else {
-                                        nextSlide();
-                                    }
+                        Promise.all(uniqueCandidates.map((src, order) => {
+                            return new Promise((resolve) => {
+                                const probe = new Image();
+                                let settled = false;
+                                const done = (ok) => {
+                                    if (settled) return;
+                                    settled = true;
+                                    resolve(ok ? { order, src } : null);
+                                };
+                                probe.onload = () => done(true);
+                                probe.onerror = () => done(false);
+                                setTimeout(() => done(false), 1500);
+                                probe.src = src;
+                            });
+                        })).then(results => {
+                            const validFound = results.filter(Boolean);
+                            const seenNums = new Set();
+                            const finalSources = [];
+                            
+                            validFound.forEach(item => {
+                                const match = item.src.match(/(\d+)\.(jpg|jpeg|png|webp)/i);
+                                const numKey = match ? parseInt(match[1], 10) : item.order;
+                                if (!seenNums.has(numKey) && finalSources.length < 7) {
+                                    seenNums.add(numKey);
+                                    finalSources.push({ num: numKey, src: item.src });
                                 }
-                                startAutoplay();
-                            };
-                        }
+                            });
 
-                        startAutoplay();
-                    }
+                            finalSources.sort((a, b) => a.num - b.num);
+                            const validSrcs = finalSources.map(f => f.src);
+
+                            const currentSrcs = Array.from(track.querySelectorAll('.carousel-slide:not(.carousel-clone) img')).map(img => img.getAttribute('src'));
+                            const isSame = validSrcs.length === currentSrcs.length && validSrcs.every((src, i) => normalizeAdPath(src) === normalizeAdPath(currentSrcs[i]));
+                            if (!isSame) {
+                                buildDynamicSlides(validSrcs);
+                            }
+                        });
+                    };
+
+                    // Fast check via API if running on server
+                    fetch('/api/ad-images', { cache: 'no-cache' })
+                        .then(res => res.ok ? res.json() : null)
+                        .then(data => {
+                            if (data && Array.isArray(data.images)) {
+                                const validSrcs = data.images.slice(0, 7);
+                                const currentSrcs = Array.from(track.querySelectorAll('.carousel-slide:not(.carousel-clone) img')).map(img => img.getAttribute('src'));
+                                const isSame = validSrcs.length === currentSrcs.length && validSrcs.every((src, i) => normalizeAdPath(src) === normalizeAdPath(currentSrcs[i]));
+                                if (!isSame) {
+                                    buildDynamicSlides(validSrcs);
+                                }
+                            } else {
+                                probeAllCandidateImages();
+                            }
+                        })
+                        .catch(() => {
+                            probeAllCandidateImages();
+                        });
+                };
 
                 initCarousel();
             }
@@ -2309,14 +2568,18 @@
 
             // 6. UNIVERSAL WHATSAPP INTENT DISPATCHER (WHATSAPP & WHATSAPP BUSINESS)
             const waButtons = document.querySelectorAll('.support-btn-whatsapp');
-            const waPhone = '967738348945';
-            const waMsg = encodeURIComponent('مرحبا خدمة عملاء شبكة BH-NET اللاسلكية');
-            const waSchemeUrl = `whatsapp://send?phone=${waPhone}&text=${waMsg}`;
-            const waWebUrl = `https://api.whatsapp.com/send?phone=${waPhone}&text=${waMsg}`;
 
             waButtons.forEach(btn => {
                 btn.addEventListener('click', function (e) {
                     e.preventDefault();
+
+                    const cfg = window.hotspotConfig || {};
+                    const rawPhone = (cfg['service-number'] || '714587786').toString().replace(/\D/g, '');
+                    const waPhone = rawPhone.startsWith('967') ? rawPhone : ('967' + rawPhone);
+                    const netName = cfg['network-name'] || 'الشبكة';
+                    const waMsg = encodeURIComponent('مرحبا خدمة عملاء ' + netName + ' اللاسلكية');
+                    const waSchemeUrl = `whatsapp://send?phone=${waPhone}&text=${waMsg}`;
+                    const waWebUrl = `https://api.whatsapp.com/send?phone=${waPhone}&text=${waMsg}`;
 
                     const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 

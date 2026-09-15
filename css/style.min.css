@@ -2338,7 +2338,7 @@ body.modal-scroll-locked {
   touch-action: none;
 }
 
-.app {
+.app:not(#status) {
   display: none;
   position: fixed;
   inset: 0;
@@ -2357,7 +2357,7 @@ body.modal-scroll-locked {
   transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.app.active {
+.app:not(#status).active {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -2366,7 +2366,7 @@ body.modal-scroll-locked {
   overscroll-behavior: contain !important;
 }
 
-.app.closing {
+.app:not(#status).closing {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -4871,7 +4871,7 @@ input[name="username"] {
 
 /* 14. Modals & Popups (.loyalty-modal-content, .modal-sheet-card, .points-auth-modal-card) */
 .loyalty-modal,
-.app {
+.app:not(#status) {
   background: rgba(11, 17, 32, 0.5) !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
